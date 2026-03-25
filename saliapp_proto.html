@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f0f0f; color: #fff; min-height: 100vh; max-width: 430px; margin: 0 auto; }
+
+/* ── Aloitus ── */
+#screen-start { padding: 32px 24px 80px; }
+.start-title { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.start-sub { font-size: 14px; color: #666; margin-bottom: 32px; }
+.start-section { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+.start-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+.start-btn { background: #1a1a1a; border: 1.5px solid #2a2a2a; border-radius: 14px; padding: 16px 8px; text-align: center; cursor: pointer; }
+.start-btn.selected { border-color: #3b82f6; background: #1c3a5e; }
+.start-btn-main { font-size: 17px; font-weight: 700; margin-bottom: 3px; }
+.start-btn.selected .start-btn-main { color: #60a5fa; }
+.start-btn-sub { font-size: 11px; color: #666; }
+.start-btn.selected .start-btn-sub { color: #3b82f6; }
+.start-go { width: 100%; padding: 18px; border-radius: 16px; border: none; font-size: 18px; font-weight: 700; background: #3b82f6; color: #fff; cursor: pointer; opacity: 0.4; transition: opacity 0.2s; }
+.start-go.ready { opacity: 1; }
+
+/* ── Mini header ── */
+.mini-header { background: #1a1a1a; border-bottom: 1px solid #2a2a2a; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 20; }
+.mini-title { font-size: 15px; font-weight: 600; }
+.mini-rir { font-size: 12px; color: #fbbf24; }
+
+/* ── Timer ── */
+.timer-bar { background: #1a1a1a; border-bottom: 1px solid #2a2a2a; padding: 10px 20px; display: flex; align-items: center; gap: 12px; position: sticky; top: 49px; z-index: 19; cursor: default; transition: background 0.3s; }
+.timer-bar.done { cursor: pointer; background: #0f1f0f; border-color: #166534; }
+.timer-ring-wrap { position: relative; width: 40px; height: 40px; flex-shrink: 0; }
+.timer-ring-wrap svg { transform: rotate(-90deg); }
+.timer-bg { fill: none; stroke: #2a2a2a; stroke-width: 3; }
+.timer-fg { fill: none; stroke: #3b82f6; stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.3s; }
+.timer-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+.timer-info { flex: 1; }
+.timer-text { font-size: 13px; color: #aaa; }
+.timer-subtext { font-size: 11px; color: #555; margin-top: 1px; }
+.timer-skip { background: #2a2a2a; border: none; color: #888; font-size: 12px; padding: 6px 12px; border-radius: 8px; cursor: pointer; flex-shrink: 0; }
+
+/* ── Progress ── */
+.progress-wrap { padding: 10px 20px 0; }
+.progress-label { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 5px; }
+.progress-bar { background: #2a2a2a; border-radius: 4px; height: 4px; }
+.progress-fill { background: #3b82f6; border-radius: 4px; height: 4px; transition: width 0.3s; }
+
+/* ── Exercise card ── */
+.exercise-wrap { padding: 14px 20px 0; }
+.exercise-card { background: #1a1a1a; border-radius: 16px; padding: 16px; border: 1px solid #2a2a2a; margin-bottom: 12px; }
+.exercise-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.exercise-name { font-size: 22px; font-weight: 700; }
+.ex-right { text-align: right; }
+.ex-badge { font-size: 11px; padding: 3px 9px; border-radius: 20px; font-weight: 500; display: inline-block; margin-bottom: 3px; }
+.badge-penkki { background: #3d1f1f; color: #f87171; }
+.badge-kyykky { background: #2d2a10; color: #fbbf24; }
+.badge-leuat { background: #1a2d3d; color: #60a5fa; }
+.badge-apu { background: #1f2d1f; color: #4ade80; }
+.ex-rir { font-size: 12px; color: #fbbf24; }
+
+.info-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.info-box { background: #252525; border-radius: 10px; padding: 10px; text-align: center; }
+.info-label { font-size: 10px; color: #666; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+.info-val { font-size: 15px; font-weight: 700; }
+.info-sub { font-size: 10px; color: #555; margin-top: 1px; }
+
+/* ── Set rows ── */
+.sets-group-label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.set-row { background: #252525; border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; border: 1.5px solid #333; transition: border-color 0.2s, background 0.2s; }
+.set-row.is-done { border-color: #166534; background: #0f1a0f; }
+.set-row.is-bo { border-color: #1a3a1a; }
+.set-row.is-bo.is-done { border-color: #166534; }
+.set-num { font-size: 12px; color: #666; font-weight: 600; width: 24px; flex-shrink: 0; text-align: center; }
+.set-kg-label { font-size: 13px; color: #666; flex-shrink: 0; min-width: 48px; }
+.set-kg-label.active-kg { color: #e5e5e5; }
+
+/* ── Stepper ── */
+.drum-outer { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 2px 0; }
+.step-btn { width: 36px; height: 36px; border-radius: 10px; border: none; background: #333; color: #aaa; font-size: 22px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; }
+.step-btn:active { background: #444; transform: scale(0.93); }
+.drum-number { font-size: 34px; font-weight: 800; line-height: 1.1; transition: color 0.15s; color: #3a3a3a; min-width: 44px; text-align: center; }
+.drum-number.color-pending  { color: #3a3a3a; }
+.drum-number.color-target   { color: #e5e5e5; }
+.drum-number.color-above    { color: #4ade80; }
+.drum-number.color-below    { color: #f87171; }
+
+.done-btn { background: #3b82f6; border: none; color: #fff; font-size: 13px; font-weight: 700; padding: 10px 14px; border-radius: 10px; cursor: pointer; flex-shrink: 0; white-space: nowrap; min-width: 64px; text-align: center; }
+.done-btn:active { opacity: 0.8; }
+.done-btn.is-done { background: #166534; color: #4ade80; }
+.done-btn.bo-color { background: #14532d; }
+.done-btn.bo-color.is-done { background: #166534; color: #4ade80; }
+.step-btn:disabled { opacity: 0.2; cursor: default; }
+.drum-number.locked { color: #555; }
+
+.epley-line { font-size: 11px; color: #fbbf24; text-align: center; min-height: 16px; margin-top: -4px; margin-bottom: 6px; }
+
+/* ── Nav ── */
+.nav-wrap { display: flex; gap: 10px; padding: 4px 20px 20px; }
+.btn { flex: 1; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; }
+.btn:active { opacity: 0.8; }
+.btn-prev { background: #2a2a2a; color: #aaa; }
+.btn-next { background: #3b82f6; color: #fff; }
+.btn-finish { background: #166534; color: #4ade80; }
+
+/* ── Bottom tabs ── */
+.bottom-tabs { position: fixed; bottom: 0; left: 0; right: 0; max-width: 430px; margin: 0 auto; background: #1a1a1a; border-top: 1px solid #2a2a2a; display: flex; }
+.btab { flex: 1; padding: 12px 4px 16px; text-align: center; cursor: pointer; font-size: 11px; color: #666; }
+.btab.active { color: #3b82f6; }
+.btab-icon { font-size: 20px; margin-bottom: 2px; }
+.main-content { padding-bottom: 70px; }
+
+/* ── Other screens ── */
+.screen { display: none; padding: 16px 20px 80px; }
+.screen-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.screen-sub { font-size: 13px; color: #666; margin-bottom: 16px; }
+.sum-row { background: #1a1a1a; border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #2a2a2a; }
+.sum-liike { font-size: 15px; font-weight: 600; }
+.sum-detail { font-size: 12px; color: #888; margin-top: 2px; }
+.sum-epley { font-size: 15px; font-weight: 700; color: #fbbf24; }
+.section-label { font-size: 13px; font-weight: 600; color: #888; margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.ep-table { background: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #2a2a2a; margin-bottom: 16px; }
+.ep-hdr { display: grid; grid-template-columns: 70px 1fr 1fr 52px; padding: 9px 12px; background: #252525; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+.ep-row { display: grid; grid-template-columns: 70px 1fr 1fr 52px; padding: 11px 12px; border-top: 1px solid #222; font-size: 13px; }
+.ep-row:nth-child(even) { background: #1e1e1e; }
+.ep-meso { color: #888; font-size: 12px; }
+.ep-best { font-weight: 700; color: #fbbf24; }
+.ep-up { color: #4ade80; font-size: 12px; }
+.ep-dim { color: #444; }
+</style>
+</head>
+<body>
+<div class="main-content">
+
+<!-- ALOITUS -->
+<div id="screen-start">
+  <div class="start-title">Saliohjelma</div>
+  <div class="start-sub">Meso 3 / 26 · Valitse viikko ja päivä</div>
+  <div class="start-section">Viikko</div>
+  <div class="start-grid">
+    <div class="start-btn" id="wb0" onclick="selWeek(0)"><div class="start-btn-main">Viikko 1</div><div class="start-btn-sub">RIR 2 · 3+1</div></div>
+    <div class="start-btn" id="wb1" onclick="selWeek(1)"><div class="start-btn-main">Viikko 2</div><div class="start-btn-sub">RIR 1 · 3+1</div></div>
+    <div class="start-btn" id="wb2" onclick="selWeek(2)"><div class="start-btn-main">Viikko 3</div><div class="start-btn-sub">RIR 0 · 4+1</div></div>
+  </div>
+  <div class="start-section">Päivä</div>
+  <div class="start-grid">
+    <div class="start-btn" id="db0" onclick="selDay(0)"><div class="start-btn-main">Päivä 1</div><div class="start-btn-sub">5 liikettä</div></div>
+    <div class="start-btn" id="db1" onclick="selDay(1)"><div class="start-btn-main">Päivä 2</div><div class="start-btn-sub">5 liikettä</div></div>
+    <div class="start-btn" id="db2" onclick="selDay(2)"><div class="start-btn-main">Päivä 3</div><div class="start-btn-sub">5 liikettä</div></div>
+  </div>
+  <button class="start-go" id="start-go" onclick="startWorkout()">Aloita treeni →</button>
+</div>
+
+<!-- TREENI -->
+<div id="screen-workout" style="display:none">
+  <div class="mini-header">
+    <div><div style="font-size:12px;color:#666">Meso 3/26</div><div class="mini-title" id="mini-title">—</div></div>
+    <div class="mini-rir" id="mini-rir">—</div>
+  </div>
+  <div class="timer-bar" id="timer-bar" style="display:none">
+    <div class="timer-ring-wrap">
+      <svg width="40" height="40" viewBox="0 0 40 40">
+        <circle class="timer-bg" cx="20" cy="20" r="17"/>
+        <circle class="timer-fg" id="t-ring" cx="20" cy="20" r="17" stroke-dasharray="106.8" stroke-dashoffset="0"/>
+      </svg>
+      <div class="timer-num" id="t-num">2:00</div>
+    </div>
+    <div class="timer-info">
+      <div class="timer-text" id="t-text">Lepo käynnissä</div>
+      <div class="timer-subtext" id="t-sub">120s jäljellä</div>
+    </div>
+    <button class="timer-skip" id="t-skip" onclick="skipTimer()">Ohita</button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-label"><span id="prog-txt">Liike 1/5</span><span id="prog-pct">20%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:20%"></div></div>
+  </div>
+  <div class="exercise-wrap" id="ex-wrap"></div>
+  <div class="nav-wrap">
+    <button class="btn btn-prev" id="btn-prev" onclick="prevEx()">← Edellinen</button>
+    <button class="btn btn-next" id="btn-next" onclick="nextEx()">Seuraava →</button>
+  </div>
+</div>
+
+<!-- YHTEENVETO -->
+<div id="screen-summary" class="screen">
+  <div class="screen-title">Päivän yhteenveto</div>
+  <div class="screen-sub" id="sum-sub">—</div>
+  <div id="sum-list"></div>
+  <div id="tallenna-wrap" style="display:none;margin-top:16px">
+    <button id="tallenna-btn" onclick="tallennaSheetsin()" style="width:100%;padding:18px;border-radius:16px;border:none;font-size:17px;font-weight:700;background:#3b82f6;color:#fff;cursor:pointer">
+      Tallenna Sheetsiin →
+    </button>
+    <div id="tallenna-status" style="text-align:center;font-size:13px;color:#666;margin-top:10px;min-height:20px"></div>
+  </div>
+</div>
+
+<!-- KEHITYS -->
+<div id="screen-epley" class="screen">
+  <div class="screen-title">Voimakehitys</div>
+  <div class="screen-sub">Epley 1RM-arviot mesoittain</div>
+  <div class="section-label">Penkkipunnerrus</div>
+  <div class="ep-table">
+    <div class="ep-hdr"><span>Meso</span><span>1RM arvio</span><span>Paras setti</span><span>+/−</span></div>
+    <div class="ep-row"><span class="ep-meso">M5/25</span><span>100.3 kg</span><span class="ep-dim">88.5×6</span><span class="ep-dim">—</span></div>
+    <div class="ep-row"><span class="ep-meso">M6/25</span><span>101.7 kg</span><span class="ep-dim">85×6</span><span class="ep-up">+1.4</span></div>
+    <div class="ep-row"><span class="ep-meso">M7/25</span><span>104.2 kg</span><span class="ep-dim">95×4</span><span class="ep-up">+2.5</span></div>
+    <div class="ep-row"><span class="ep-meso">M1/26</span><span>106.8 kg</span><span class="ep-dim">92.5×5</span><span class="ep-up">+2.6</span></div>
+    <div class="ep-row"><span class="ep-meso">M2/26</span><span class="ep-best">109.5 kg</span><span style="color:#fbbf24">100×3</span><span class="ep-up">+2.7</span></div>
+    <div class="ep-row"><span class="ep-meso">M3/26</span><span class="ep-dim">—</span><span class="ep-dim">ei dataa</span><span class="ep-dim">—</span></div>
+  </div>
+  <div class="section-label">Kyykky</div>
+  <div class="ep-table">
+    <div class="ep-hdr"><span>Meso</span><span>1RM arvio</span><span>Paras setti</span><span>+/−</span></div>
+    <div class="ep-row"><span class="ep-meso">M5/25</span><span>100.3 kg</span><span class="ep-dim">88.5×6</span><span class="ep-dim">—</span></div>
+    <div class="ep-row"><span class="ep-meso">M6/25</span><span>100.8 kg</span><span class="ep-dim">85×6</span><span class="ep-up">+0.5</span></div>
+    <div class="ep-row"><span class="ep-meso">M7/25</span><span>109.5 kg</span><span class="ep-dim">90×7</span><span class="ep-up">+8.7</span></div>
+    <div class="ep-row"><span class="ep-meso">M1/26</span><span>110.2 kg</span><span class="ep-dim">92.5×6</span><span class="ep-up">+0.7</span></div>
+    <div class="ep-row"><span class="ep-meso">M2/26</span><span class="ep-best">114.3 kg</span><span style="color:#fbbf24">100×4</span><span class="ep-up">+4.1</span></div>
+    <div class="ep-row"><span class="ep-meso">M3/26</span><span class="ep-dim">—</span><span class="ep-dim">ei dataa</span><span class="ep-dim">—</span></div>
+  </div>
+  <div class="section-label">Leuat</div>
+  <div class="ep-table">
+    <div class="ep-hdr"><span>Meso</span><span>1RM arvio</span><span>Paras setti</span><span>+/−</span></div>
+    <div class="ep-row"><span class="ep-meso">M1/26</span><span>104.1 kg</span><span class="ep-dim">bw+10×5</span><span class="ep-dim">—</span></div>
+    <div class="ep-row"><span class="ep-meso">M2/26</span><span class="ep-best">107.3 kg</span><span style="color:#fbbf24">bw+20×3</span><span class="ep-up">+3.2</span></div>
+    <div class="ep-row"><span class="ep-meso">M3/26</span><span class="ep-dim">—</span><span class="ep-dim">ei dataa</span><span class="ep-dim">—</span></div>
+  </div>
+</div>
+
+</div>
+
+<div class="bottom-tabs" id="bottom-tabs" style="display:none">
+  <div class="btab active" id="btab-workout" onclick="showScreen('workout')"><div class="btab-icon">🏋️</div>Treeni</div>
+  <div class="btab" id="btab-summary" onclick="showScreen('summary')"><div class="btab-icon">📋</div>Yhteenveto</div>
+  <div class="btab" id="btab-epley" onclick="showScreen('epley')"><div class="btab-icon">📈</div>Kehitys</div>
+</div>
+
+<script>
+// ── Ohjelma ──
+const WEEKS = [{rir:2,sc:3},{rir:1,sc:3},{rir:0,sc:4}];
+const DAYS = [
+  [
+    {n:'Penkki',   b:'penkki', kg:[92.5,97.5,102.5], boKg:75,   rMin:3,rMax:5,  boT:12},
+    {n:'Kyykky',   b:'kyykky', kg:[92.5,97.5,102.5], boKg:75,   rMin:3,rMax:5,  boT:14},
+    {n:'Leuat',    b:'leuat',  kg:[12.5,17.5,22.5],  boKg:'bw', rMin:3,rMax:5,  boT:11},
+    {n:'Olkapäät', b:'apu',    kg:[12,12,12],          boKg:null, rMin:22,rMax:22,boT:null},
+    {n:'Crunch',   b:'apu',    kg:['bw','bw','bw'],    boKg:null, rMin:28,rMax:28,boT:null},
+  ],[
+    {n:'Penkki',          b:'penkki', kg:[92.5,97.5,102.5], boKg:75,   rMin:3,rMax:5,  boT:12},
+    {n:'Kyykky',          b:'kyykky', kg:[92.5,97.5,102.5], boKg:75,   rMin:3,rMax:5,  boT:14},
+    {n:'Leuat',           b:'leuat',  kg:[12.5,17.5,22.5],  boKg:'bw', rMin:3,rMax:5,  boT:11},
+    {n:'Olkapääkaapeli',  b:'apu',    kg:[7.5,7.5,7.5],      boKg:null, rMin:24,rMax:24,boT:null},
+    {n:'Ojentajat',       b:'apu',    kg:[22.5,22.5,22.5],   boKg:null, rMin:22,rMax:22,boT:null},
+  ],[
+    {n:'Penkki',          b:'penkki', kg:[92.5,97.5,102.5], boKg:75,   rMin:3,rMax:5,  boT:12},
+    {n:'Kyykky',          b:'kyykky', kg:[92.5,97.5,102.5], boKg:75,   rMin:3,rMax:5,  boT:14},
+    {n:'Leuat',           b:'leuat',  kg:[12.5,17.5,22.5],  boKg:'bw', rMin:3,rMax:5,  boT:11, d3:true},
+    {n:'Olkapääkaapeli',  b:'apu',    kg:[14,14,14],          boKg:null, rMin:23,rMax:23,boT:null},
+    {n:'Hauiskäännöt',    b:'apu',    kg:[25,25,25],          boKg:null, rMin:19,rMax:19,boT:null},
+  ]
+];
+
+// Historia ±2.5kg haulle
+const HIST = [
+  {n:'Penkki',  kg:88.5,r:6},{n:'Penkki',  kg:90,  r:4},{n:'Penkki',  kg:92.5,r:5},
+  {n:'Penkki',  kg:95,  r:4},{n:'Penkki',  kg:97.5,r:3},{n:'Penkki',  kg:100, r:3},
+  {n:'Kyykky',  kg:88.5,r:6},{n:'Kyykky',  kg:90,  r:7},{n:'Kyykky',  kg:92.5,r:6},
+  {n:'Kyykky',  kg:95,  r:5},{n:'Kyykky',  kg:97.5,r:3},{n:'Kyykky',  kg:100, r:4},
+  {n:'Leuat',   kg:10,  r:5},{n:'Leuat',   kg:12.5,r:4},{n:'Leuat',   kg:15,  r:4},
+  {n:'Leuat',   kg:17.5,r:3},{n:'Leuat',   kg:20,  r:3},
+  {n:'Olkapäät',kg:12,  r:18},{n:'Crunch', kg:0,   r:26},
+  {n:'Olkapääkaapeli',kg:7.5,r:20},{n:'Olkapääkaapeli',kg:14,r:17},
+  {n:'Ojentajat',kg:22.5,r:18},{n:'Hauiskäännöt',kg:25,r:15},
+];
+
+function epley(kg,r){ const k=parseFloat(kg),rr=parseFloat(r); if(!k||!rr||rr<1)return null; return Math.round(k*(1+rr/30)*10)/10; }
+
+function getPrev(name, targetKg){
+  const tKg=parseFloat(targetKg)||0;
+  const matches=HIST.filter(h=>h.n===name&&Math.abs(h.kg-tKg)<=2.5);
+  if(!matches.length)return null;
+  return matches.reduce((best,h)=>{
+    const e=epley(h.kg,h.r)||0, be=epley(best.kg,best.r)||0;
+    return e>be?h:best;
+  });
+}
+
+function drumColor(val,min,max,isBo,boT){
+  const v=parseInt(val); if(isNaN(v))return 'color-pending';
+  if(isBo)return v>=boT?'color-target':'color-below';
+  if(v>=min&&v<=max)return 'color-target';
+  return v>max?'color-above':'color-below';
+}
+
+// ── State ──
+let CW=-1, CD=-1, CE=0;
+// results[w][d][e] = {sets:[r0,r1,...], bo:r}
+const RES = Array.from({length:3},()=>Array.from({length:3},()=>Array.from({length:5},()=>({sets:[],bo:null}))));
+// drum values per set
+const DRUM = {}; // key "w_d_e_s" or "w_d_e_bo"
+
+function dk(s){ return `${CW}_${CD}_${CE}_${s}`; }
+function getDrum(s){ return DRUM[dk(s)]!==undefined ? DRUM[dk(s)] : null; }
+function setDrum(s,v){ DRUM[dk(s)]=v; }
+
+// ── Timer ──
+let TI=null, TR=0;
+const TTOTAL=120;
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxZG_4VmrwoJkSc4L3zk-rgF5oBlEG_5FSoWGw0BOgUF5oPg9E0FabysRprXovcFeA/exec";
+
+function startTimer(){
+  clearInterval(TI); TR=TTOTAL;
+  const bar=document.getElementById('timer-bar');
+  bar.style.display='flex';
+  bar.classList.remove('done');
+  bar.onclick=null;
+  document.getElementById('t-skip').style.display='block';
+  document.getElementById('t-text').textContent='Lepo käynnissä';
+  document.getElementById('t-text').style.color='';
+  document.getElementById('t-sub').style.color='';
+  document.getElementById('t-ring').style.stroke='#3b82f6';
+  updateTimerUI();
+  TI=setInterval(()=>{ TR--; updateTimerUI(); if(TR<=0){ clearInterval(TI); timerDone(); }},1000);
+}
+
+function updateTimerUI(){
+  const pct=TR/TTOTAL, circ=106.8;
+  document.getElementById('t-ring').style.strokeDashoffset=((1-pct)*circ).toFixed(1);
+  if(TR>30) document.getElementById('t-ring').style.stroke='#3b82f6';
+  else if(TR>10) document.getElementById('t-ring').style.stroke='#fbbf24';
+  else document.getElementById('t-ring').style.stroke='#f87171';
+  const m=Math.floor(TR/60),s=TR%60;
+  document.getElementById('t-num').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  document.getElementById('t-sub').textContent=`${TR}s jäljellä`;
+}
+
+function timerDone(){
+  const bar=document.getElementById('timer-bar');
+  bar.classList.add('done');
+  document.getElementById('t-ring').style.stroke='#4ade80';
+  document.getElementById('t-ring').style.strokeDashoffset='0';
+  document.getElementById('t-num').textContent='✓';
+  document.getElementById('t-text').textContent='Lepo ohi — seuraava setti!';
+  document.getElementById('t-text').style.color='#4ade80';
+  document.getElementById('t-sub').textContent='Napauta sulkeaksesi';
+  document.getElementById('t-sub').style.color='#4ade80';
+  document.getElementById('t-skip').style.display='none';
+  bar.onclick=()=>{ bar.style.display='none'; bar.classList.remove('done'); bar.onclick=null; };
+}
+
+function skipTimer(){ clearInterval(TI); document.getElementById('timer-bar').style.display='none'; }
+
+// ── Drum setup ──
+function setupDrum(el, initVal, onUpdate){
+  if(!el)return;
+  const numEl=el.querySelector('.drum-number');
+  const minusBtn=el.querySelector('.step-btn.minus');
+  const plusBtn=el.querySelector('.step-btn.plus');
+
+  function setVal(v){
+    v=Math.max(1,Math.min(30,v));
+    el.dataset.v=v;
+    numEl.textContent=v;
+    if(onUpdate) onUpdate(v);
+  }
+
+  setVal(initVal);
+  minusBtn.addEventListener('click',()=>setVal(parseInt(el.dataset.v)-1));
+  plusBtn.addEventListener('click',()=>setVal(parseInt(el.dataset.v)+1));
+}
+
+// ── Render ──
+function render(){
+  const li=DAYS[CD], l=li[CE], w=WEEKS[CW];
+  const kgRaw=l.kg[CW], kgNum=parseFloat(kgRaw)||0;
+  const sc=(l.d3&&CW<2)?2:w.sc;
+  const hasBo=l.boKg!==null;
+  const total=li.length;
+  const res=RES[CW][CD][CE];
+
+  // progress
+  const pct=Math.round((CE+1)/total*100);
+  document.getElementById('prog-txt').textContent=`Liike ${CE+1}/${total}`;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+
+  // prev
+  const prev=getPrev(l.n, kgNum);
+  let prevTxt='—', prevSub='';
+  if(prev){ prevTxt=`${prev.kg}×${prev.r}`; const pe=epley(prev.kg,prev.r); if(pe)prevSub=`≈${pe} kg`; }
+
+  // sets HTML
+  let setsHtml='<div class="sets-group-label">Raskas · '+kgRaw+' kg · tavoite '+l.rMin+'–'+l.rMax+' toistoa</div>';
+  for(let i=0;i<sc;i++){
+    const done=res.sets[i]!=null;
+    const initV=done?res.sets[i]:(getDrum('s'+i)!=null?getDrum('s'+i):l.rMin);
+    const col=done?drumColor(initV,l.rMin,l.rMax,false,0):'color-pending';
+    setsHtml+=`
+    <div class="set-row${done?' is-done':''}" id="sr-${i}">
+      <div class="set-num">S${i+1}</div>
+      <div class="set-kg-label${done?' active-kg':''}">${kgRaw} kg</div>
+      <div class="drum-outer" id="drum-s${i}" data-v="${initV}">
+          <button class="step-btn minus">−</button>
+          <div class="drum-number ${col}" id="dn-s${i}">${initV}</div>
+          <button class="step-btn plus">+</button>
+        </div>
+      <button class="done-btn${done?' is-done':''}" id="db-${i}" onclick="doneSet(${i})">${done?'✓ '+res.sets[i]:'Tehty'}</button>
+    </div>
+    <div class="epley-line" id="ep-${i}">${done&&kgNum?'1RM ≈ '+(epley(kgNum,res.sets[i])||'—')+' kg':''}</div>`;
+  }
+
+  let boHtml='';
+  if(hasBo){
+    const done=res.bo!=null;
+    const initV=done?res.bo:(getDrum('bo')!=null?getDrum('bo'):l.boT);
+    const col=done?drumColor(initV,l.boT,l.boT,true,l.boT):'color-pending';
+    boHtml=`
+    <div class="sets-group-label" style="color:#4ade80;margin-top:4px">Back-off · ${l.boKg} kg · tavoite ${l.boT} toistoa</div>
+    <div class="set-row is-bo${done?' is-done':''}" id="sr-bo">
+      <div class="set-num" style="color:#4ade80;font-size:11px">BO</div>
+      <div class="set-kg-label${done?' active-kg':''}">${l.boKg} kg</div>
+      <div class="drum-outer" id="drum-bo" data-v="${initV}">
+          <button class="step-btn minus">−</button>
+          <div class="drum-number ${col}" id="dn-bo">${initV}</div>
+          <button class="step-btn plus">+</button>
+        </div>
+      <button class="done-btn bo-color${done?' is-done':''}" id="db-bo" onclick="doneBo()">${done?'✓ '+res.bo:'Tehty'}</button>
+    </div>`;
+  }
+
+  const isLast=CE===total-1;
+  document.getElementById('ex-wrap').innerHTML=`
+    <div class="exercise-card">
+      <div class="exercise-header">
+        <div class="exercise-name">${l.n}</div>
+        <div class="ex-right">
+          <div class="ex-badge badge-${l.b}">${l.b==='apu'?'Apuliike':'Pääliike'}</div>
+          <div class="ex-rir">RIR ${w.rir}</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-box">
+          <div class="info-label">Raskas kg</div>
+          <div class="info-val">${kgRaw}</div>
+          <div class="info-sub">${l.rMin}–${l.rMax} toistoa</div>
+        </div>
+        ${hasBo?`<div class="info-box"><div class="info-label">Back-off</div><div class="info-val" style="color:#4ade80">${l.boKg}</div><div class="info-sub">${l.boT} toistoa</div></div>`
+        :`<div class="info-box"><div class="info-label">Settiä</div><div class="info-val">${sc}</div><div class="info-sub">kpl</div></div>`}
+        <div class="info-box">
+          <div class="info-label">Paras ±2.5kg</div>
+          <div class="info-val" style="font-size:13px;color:#fbbf24">${prevTxt}</div>
+          <div class="info-sub">${prevSub}</div>
+        </div>
+      </div>
+      ${setsHtml}
+      ${boHtml}
+    </div>`;
+
+  // Setup drums
+  for(let i=0;i<sc;i++){
+    const el=document.getElementById('drum-s'+i);
+    const idx=i;
+    setupDrum(el, parseInt(el.dataset.v), v=>{
+      setDrum('s'+idx, v);
+      const dn=document.getElementById('dn-s'+idx);
+      if(dn) dn.className='drum-number '+drumColor(v,l.rMin,l.rMax,false,0);
+    });
+  }
+  if(hasBo){
+    const bel=document.getElementById('drum-bo');
+    setupDrum(bel, parseInt(bel.dataset.v), v=>{
+      setDrum('bo',v);
+      const dn=document.getElementById('dn-bo');
+      if(dn) dn.className='drum-number '+drumColor(v,l.boT,l.boT,true,l.boT);
+    });
+  }
+
+  document.getElementById('btn-prev').style.display=CE===0?'none':'flex';
+  document.getElementById('btn-next').textContent=isLast?'Yhteenveto →':'Seuraava →';
+  document.getElementById('btn-next').className='btn '+(isLast?'btn-finish':'btn-next');
+}
+
+function setStepperLocked(idx, locked){
+  const drum = document.getElementById('drum-s'+idx);
+  if(!drum) return;
+  drum.querySelectorAll('.step-btn').forEach(b=>b.disabled=locked);
+  // Ei muuteta numeron väriä — säilyttää oikean värin (vihreä/punainen/valkoinen)
+}
+
+function setBoLocked(locked){
+  const drum = document.getElementById('drum-bo');
+  if(!drum) return;
+  drum.querySelectorAll('.step-btn').forEach(b=>b.disabled=locked);
+}
+
+function doneSet(i){
+  const el=document.getElementById('drum-s'+i);
+  if(!el)return;
+  const l=DAYS[CD][CE], kgNum=parseFloat(l.kg[CW])||0;
+  const btn=document.getElementById('db-'+i);
+  const row=document.getElementById('sr-'+i);
+
+  // Toggle: jos jo tehty → peruuta
+  if(RES[CW][CD][CE].sets[i]!=null){
+    RES[CW][CD][CE].sets[i]=null;
+    btn.innerHTML='Tehty';
+    btn.classList.remove('is-done');
+    row.classList.remove('is-done');
+    document.getElementById('ep-'+i).textContent='';
+    const dn=document.getElementById('dn-s'+i);
+    if(dn) dn.className='drum-number color-pending';
+    setStepperLocked(i, false);
+    return;
+  }
+
+  const v=parseInt(el.dataset.v);
+  RES[CW][CD][CE].sets[i]=v;
+  setDrum('s'+i, v);
+
+  const ev=epley(kgNum,v);
+  btn.textContent='✓ '+v;
+  btn.classList.add('is-done');
+  row.classList.add('is-done');
+
+  const ep=document.getElementById('ep-'+i);
+  if(ep) ep.textContent=ev?'1RM ≈ '+ev+' kg':'';
+
+  const dn=document.getElementById('dn-s'+i);
+  if(dn) dn.className='drum-number '+drumColor(v,l.rMin,l.rMax,false,0);
+
+  setStepperLocked(i, true);
+  startTimer();
+}
+
+function doneBo(){
+  const el=document.getElementById('drum-bo');
+  if(!el)return;
+  const l=DAYS[CD][CE];
+  const btn=document.getElementById('db-bo');
+  const row=document.getElementById('sr-bo');
+
+  // Toggle: jos jo tehty → peruuta
+  if(RES[CW][CD][CE].bo!=null){
+    RES[CW][CD][CE].bo=null;
+    btn.textContent='Tehty';
+    btn.classList.remove('is-done');
+    row.classList.remove('is-done');
+    const boEpEl=document.getElementById('ep-bo');
+    if(boEpEl) boEpEl.textContent='';
+    setBoLocked(false);
+    const dn=document.getElementById('dn-bo');
+    if(dn) dn.className='drum-number color-pending';
+    return;
+  }
+
+  const v=parseInt(el.dataset.v);
+  RES[CW][CD][CE].bo=v;
+  setDrum('bo',v);
+
+  btn.textContent='✓ '+v;
+  btn.classList.add('is-done');
+  row.classList.add('is-done');
+
+  const dn=document.getElementById('dn-bo');
+  if(dn) dn.className='drum-number '+drumColor(v,l.boT,l.boT,true,l.boT);
+
+  // Epley back-offille
+  const boKgNum = parseFloat(l.boKg)||0;
+  const boEp = boKgNum ? epley(boKgNum, v) : null;
+  let boEpEl = document.getElementById('ep-bo');
+  if(!boEpEl){
+    boEpEl = document.createElement('div');
+    boEpEl.id = 'ep-bo';
+    boEpEl.className = 'epley-line';
+    row.parentNode.insertBefore(boEpEl, row.nextSibling);
+  }
+  boEpEl.textContent = boEp ? '1RM ≈ '+boEp+' kg' : '';
+
+  setBoLocked(true);
+  startTimer();
+}
+
+function nextEx(){ const t=DAYS[CD].length; if(CE<t-1){CE++;render();window.scrollTo(0,0);}else{showScreen('summary');} }
+function prevEx(){ if(CE>0){CE--;render();window.scrollTo(0,0);} }
+
+function buildSummary(){
+  document.getElementById('sum-sub').textContent=`Päivä ${CD+1} · Viikko ${CW+1} · RIR ${WEEKS[CW].rir}`;
+  const li=DAYS[CD];
+  let html='';
+  li.forEach((l,i)=>{
+    const r=RES[CW][CD][i];
+    const kgNum=parseFloat(l.kg[CW])||0;
+    const done=r.sets.filter(v=>v!=null);
+    const epleys=done.map(v=>epley(kgNum,v)).filter(Boolean);
+    const best=epleys.length?Math.max(...epleys):null;
+    html+=`<div class="sum-row">
+      <div><div class="sum-liike">${l.n}</div>
+      <div class="sum-detail">${l.kg[CW]} kg · ${done.join(' / ')||'—'}${r.bo!=null?' · bo:'+r.bo:''}</div></div>
+      <div class="sum-epley">${best?best+' kg':'—'}</div>
+    </div>`;
+  });
+  document.getElementById('sum-list').innerHTML=html||'<p style="color:#666;text-align:center;padding:20px">Ei vielä tuloksia</p>';
+  document.getElementById('tallenna-wrap').style.display='block';
+}
+
+function selWeek(w){ CW=w; [0,1,2].forEach(i=>document.getElementById('wb'+i).classList.toggle('selected',i===w)); chkReady(); }
+function selDay(d){ CD=d; [0,1,2].forEach(i=>document.getElementById('db'+i).classList.toggle('selected',i===d)); chkReady(); }
+function chkReady(){ document.getElementById('start-go').classList.toggle('ready',CW>=0&&CD>=0); }
+
+function startWorkout(){
+  if(CW<0||CD<0)return;
+  CE=0;
+  document.getElementById('screen-start').style.display='none';
+  document.getElementById('bottom-tabs').style.display='flex';
+  document.getElementById('mini-title').textContent=`Viikko ${CW+1} · Päivä ${CD+1}`;
+  document.getElementById('mini-rir').textContent=`RIR ${WEEKS[CW].rir} · ${WEEKS[CW].sc}+1 settiä`;
+  showScreen('workout');
+  render();
+}
+
+function tallennaSheetsin(){
+  const btn = document.getElementById('tallenna-btn');
+  const status = document.getElementById('tallenna-status');
+
+  const li = DAYS[CD];
+  const tulokset = li.map((l, i) => {
+    const r = RES[CW][CD][i];
+    const sc = (l.d3 && CW < 2) ? 2 : WEEKS[CW].sc;
+    return {
+      liike: l.n,
+      set1: r.sets[0] ?? null,
+      set2: r.sets[1] ?? null,
+      set3: sc >= 3 ? (r.sets[2] ?? null) : null,
+      bo:   r.bo ?? null
+    };
+  });
+
+  const data = {
+    viikko: CW + 1,
+    paiva: `Day ${CD + 1}`,
+    tulokset
+  };
+
+  // Koodataan data URL-parametriksi ja avataan linkki
+  const encoded = encodeURIComponent(JSON.stringify(data));
+  const url = SHEETS_URL + '?data=' + encoded;
+
+  // Avataan uudessa välilehdessä
+  window.open(url, '_blank');
+
+  btn.textContent = '✓ Tallennettu!';
+  btn.style.background = '#166534';
+  btn.style.color = '#4ade80';
+  status.textContent = 'Tarkista Sheetsistä että luvut tallentuivat oikein';
+  status.style.color = '#4ade80';
+}
+
+function showScreen(s){
+  document.getElementById('screen-workout').style.display=s==='workout'?'block':'none';
+  ['summary','epley'].forEach(n=>{
+    document.getElementById('screen-'+n).style.display=n===s?'block':'none';
+  });
+  ['workout','summary','epley'].forEach(n=>{
+    document.getElementById('btab-'+n).classList.toggle('active',n===s);
+  });
+  if(s==='summary') buildSummary();
+}
+</script>
+</body>
+</html>
