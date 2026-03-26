@@ -12,19 +12,19 @@
         "name": "Penkki",
         "badge": "penkki",
         "kg": [92.5, 97.5, 102.5],
-        "boKg": 75,
+        "boKg": 80,
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 13
+        "boTarget": 10
       },
       {
         "name": "Kyykky",
         "badge": "kyykky",
         "kg": [92.5, 97.5, 102.5],
-        "boKg": 75,
+        "boKg": 80,
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 14
+        "boTarget": 12
       },
       {
         "name": "Leuat",
@@ -59,19 +59,19 @@
         "name": "Penkki",
         "badge": "penkki",
         "kg": [92.5, 97.5, 102.5],
-        "boKg": 75,
+        "boKg": 80,
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 13
+        "boTarget": 10
       },
       {
         "name": "Kyykky",
         "badge": "kyykky",
         "kg": [92.5, 97.5, 102.5],
-        "boKg": 75,
+        "boKg": 80,
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 14
+        "boTarget": 12
       },
       {
         "name": "Leuat",
@@ -106,19 +106,19 @@
         "name": "Penkki",
         "badge": "penkki",
         "kg": [92.5, 97.5, 102.5],
-        "boKg": 75,
+        "boKg": 80,
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 13
+        "boTarget": 10
       },
       {
         "name": "Kyykky",
         "badge": "kyykky",
         "kg": [92.5, 97.5, 102.5],
-        "boKg": 75,
+        "boKg": 80,
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 14
+        "boTarget": 12
       },
       {
         "name": "Leuat",
