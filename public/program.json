@@ -15,7 +15,7 @@
         "boKg": 75,
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 12
+        "boTarget": 13
       },
       {
         "name": "Kyykky",
@@ -33,15 +33,15 @@
         "boKg": "bw",
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 11
+        "boTarget": 10
       },
       {
         "name": "Olkapäät",
         "badge": "apu",
         "kg": [12, 12, 12],
         "boKg": null,
-        "rMin": 22,
-        "rMax": 22,
+        "rMin": 21,
+        "rMax": 21,
         "boTarget": null
       },
       {
@@ -62,7 +62,7 @@
         "boKg": 75,
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 12
+        "boTarget": 13
       },
       {
         "name": "Kyykky",
@@ -80,15 +80,15 @@
         "boKg": "bw",
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 11
+        "boTarget": 10
       },
       {
         "name": "Olkapääkaapeli",
         "badge": "apu",
         "kg": [7.5, 7.5, 7.5],
         "boKg": null,
-        "rMin": 24,
-        "rMax": 24,
+        "rMin": 22,
+        "rMax": 22,
         "boTarget": null
       },
       {
@@ -109,7 +109,7 @@
         "boKg": 75,
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 12
+        "boTarget": 13
       },
       {
         "name": "Kyykky",
@@ -127,7 +127,7 @@
         "boKg": "bw",
         "rMin": 3,
         "rMax": 5,
-        "boTarget": 11,
+        "boTarget": 10,
         "setsOverride": 2
       },
       {
@@ -135,8 +135,8 @@
         "badge": "apu",
         "kg": [14, 14, 14],
         "boKg": null,
-        "rMin": 23,
-        "rMax": 23,
+        "rMin": 22,
+        "rMax": 22,
         "boTarget": null
       },
       {
@@ -144,8 +144,8 @@
         "badge": "apu",
         "kg": [25, 25, 25],
         "boKg": null,
-        "rMin": 19,
-        "rMax": 19,
+        "rMin": 18,
+        "rMax": 18,
         "boTarget": null
       }
     ]

@@ -2,6 +2,7 @@ import React from 'react'
 import SetRow from './SetRow'
 import { getBestPrev, epley } from '../utils/epley'
 import { getSetCount } from '../hooks/useWorkout'
+import { getProgressionTarget } from '../utils/progression'
 
 const BADGE_LABELS = {
   penkki: 'Pääliike',
@@ -27,6 +28,19 @@ export default function ExerciseCard({
   const week = program.weeks[weekIndex]
   const numSets = getSetCount(program, weekIndex, exercise)
   const hasBo = exercise.boKg !== null
+  const isAux = exercise.badge === 'apu'
+
+  // Progressiiviset toistotavoitteet
+  const effectiveBoTarget = hasBo
+    ? getProgressionTarget(exercise.boTarget, weekIndex, dayIndex, exerciseIndex, 'bo')
+    : null
+  const effectiveRepsTarget = isAux
+    ? getProgressionTarget(exercise.rMin, weekIndex, dayIndex, exerciseIndex, 'aux')
+    : null
+
+  // Käytettävät rMin/rMax SetRow'lle
+  const rMin = isAux ? effectiveRepsTarget : exercise.rMin
+  const rMax = isAux ? effectiveRepsTarget : exercise.rMax
 
   // kg-arvot
   const kgRaw = exercise.kg[weekIndex]
@@ -61,7 +75,9 @@ export default function ExerciseCard({
           <div className="info-box">
             <div className="info-label">Raskas</div>
             <div className="info-val">{kgRaw === 'bw' ? 'bw' : `${kgRaw} kg`}</div>
-            <div className="info-sub">{exercise.rMin}–{exercise.rMax} toistoa</div>
+            <div className="info-sub">
+              {isAux ? `${effectiveRepsTarget} toistoa` : `${exercise.rMin}–${exercise.rMax} toistoa`}
+            </div>
           </div>
 
           {hasBo ? (
@@ -70,7 +86,7 @@ export default function ExerciseCard({
               <div className="info-val" style={{ color: '#4ade80' }}>
                 {boKgRaw === 'bw' ? 'bw' : `${boKgRaw} kg`}
               </div>
-              <div className="info-sub">{exercise.boTarget} toistoa</div>
+              <div className="info-sub">{effectiveBoTarget} toistoa</div>
             </div>
           ) : (
             <div className="info-box">
@@ -94,8 +110,8 @@ export default function ExerciseCard({
             index={i}
             kgLabel={kgLabel}
             kgNum={kgNum}
-            rMin={exercise.rMin}
-            rMax={exercise.rMax}
+            rMin={rMin}
+            rMax={rMax}
             isDone={result.sets[i] != null}
             savedReps={result.sets[i]}
             onDone={reps => onDoneSet(i, reps)}
@@ -111,8 +127,8 @@ export default function ExerciseCard({
               type="bo"
               kgLabel={boKgLabel}
               kgNum={boKgNum}
-              rMin={exercise.boTarget}
-              rMax={exercise.boTarget}
+              rMin={effectiveBoTarget}
+              rMax={effectiveBoTarget}
               isDone={result.bo != null}
               savedReps={result.bo}
               onDone={reps => onDoneBo(reps)}
