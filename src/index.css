@@ -316,7 +316,7 @@ body {
   background: none;
 }
 .btab.active { color: #a855f7; }
-.btab-icon { font-size: 20px; margin-bottom: 2px; }
+.btab svg { display: block; margin: 0 auto 2px; }
 
 /* ── Yhteenveto ── */
 .screen { padding: 16px 20px 80px; }

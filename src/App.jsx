@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react'
+import { Dumbbell, ClipboardList, TrendingUp, Settings } from 'lucide-react'
 import { useWorkout } from './hooks/useWorkout'
 import { useTimer } from './hooks/useTimer'
 import { loadBodyweight } from './utils/storage'
@@ -118,28 +119,28 @@ export default function App() {
             className={`btab${screen === 'workout' ? ' active' : ''}`}
             onClick={() => handleTabChange('workout')}
           >
-            <div className="btab-icon">🏋️</div>
+            <Dumbbell size={22} />
             Treeni
           </button>
           <button
             className={`btab${screen === 'summary' ? ' active' : ''}`}
             onClick={() => handleTabChange('summary')}
           >
-            <div className="btab-icon">📋</div>
+            <ClipboardList size={22} />
             Yhteenveto
           </button>
           <button
             className={`btab${screen === 'progress' ? ' active' : ''}`}
             onClick={() => handleTabChange('progress')}
           >
-            <div className="btab-icon">📈</div>
+            <TrendingUp size={22} />
             Kehitys
           </button>
           <button
             className={`btab${screen === 'settings' ? ' active' : ''}`}
             onClick={() => handleTabChange('settings')}
           >
-            <div className="btab-icon">⚙️</div>
+            <Settings size={22} />
             Asetukset
           </button>
         </nav>
