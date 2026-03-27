@@ -20,8 +20,10 @@ export default function SettingsScreen({ bodyweight, onBodyweightChange }) {
 
   return (
     <div className="screen">
-      <div className="screen-title">Asetukset</div>
-      <div className="screen-sub">Tallennetaan paikallisesti puhelimelle</div>
+      <div className="settings-header">
+        <div className="screen-title">Asetukset</div>
+        <div className="screen-sub">Tallennetaan paikallisesti puhelimelle</div>
+      </div>
 
       <div className="settings-field">
         <label className="settings-label" htmlFor="bw-input">

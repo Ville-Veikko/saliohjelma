@@ -28,7 +28,14 @@ export default function StartScreen({ program, selectedWeek, selectedDay, setSel
 
   return (
     <div className="start-screen">
-      <div className="start-title">Saliohjelma</div>
+      <div className="start-hero">
+        <img
+          src={`${import.meta.env.BASE_URL}sali-icon.svg`}
+          alt="Saliohjelma"
+          className="start-logo"
+        />
+        <div className="start-title">Saliohjelma</div>
+      </div>
       <div className="start-sub">{program.meso} · Valitse viikko ja päivä</div>
 
       {/* Resume-banneri — näkyy jos on tallennettu treeni ja molemmat on valittu */}

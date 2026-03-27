@@ -16,9 +16,15 @@ body {
 }
 
 /* ── Aloitus ── */
-.start-screen { padding: 32px 24px 80px; }
-.start-title { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
-.start-sub { font-size: 14px; color: #666; margin-bottom: 32px; }
+.start-screen {
+  padding: 32px 24px 80px;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top, #2d1b4e 0%, #0f0f0f 60%);
+}
+.start-hero { display: flex; flex-direction: column; align-items: center; margin-bottom: 8px; }
+.start-logo { width: 60px; height: 60px; margin-bottom: 10px; }
+.start-title { font-size: 28px; font-weight: 700; }
+.start-sub { font-size: 14px; color: #888; margin-bottom: 32px; text-align: center; }
 .start-section { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
 .start-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 28px; }
 .start-btn {
@@ -30,15 +36,15 @@ body {
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
 }
-.start-btn.selected { border-color: #3b82f6; background: #1c3a5e; }
+.start-btn.selected { border-color: #a855f7; background: #3b1f6e; }
 .start-btn.done { border-color: #166534; background: #052e16; }
 .start-btn.done.selected { border-color: #22c55e; background: #14532d; }
 .start-btn-main { font-size: 17px; font-weight: 700; margin-bottom: 3px; }
-.start-btn.selected .start-btn-main { color: #60a5fa; }
+.start-btn.selected .start-btn-main { color: #c084fc; }
 .start-btn.done .start-btn-main { color: #4ade80; }
 .start-btn.done.selected .start-btn-main { color: #86efac; }
 .start-btn-sub { font-size: 11px; color: #666; }
-.start-btn.selected .start-btn-sub { color: #3b82f6; }
+.start-btn.selected .start-btn-sub { color: #a855f7; }
 .start-btn.done .start-btn-sub { color: #166534; }
 .done-check { font-size: 13px; }
 .start-go {
@@ -48,7 +54,7 @@ body {
   border: none;
   font-size: 18px;
   font-weight: 700;
-  background: #3b82f6;
+  background: #7c3aed;
   color: #fff;
   cursor: pointer;
   opacity: 0.4;
@@ -302,7 +308,7 @@ body {
   border: none;
   background: none;
 }
-.btab.active { color: #3b82f6; }
+.btab.active { color: #a855f7; }
 .btab-icon { font-size: 20px; margin-bottom: 2px; }
 
 /* ── Yhteenveto ── */
@@ -397,7 +403,13 @@ body {
   outline: none;
   transition: border-color 0.2s;
 }
-.settings-input:focus { border-color: #3b82f6; }
+.settings-input:focus { border-color: #7c3aed; }
+.settings-header {
+  background: #1a0f2e;
+  margin: -16px -20px 20px;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid #2d1b4e;
+}
 .settings-save {
   width: 100%;
   padding: 16px;
@@ -405,7 +417,7 @@ body {
   border: none;
   font-size: 16px;
   font-weight: 700;
-  background: #3b82f6;
+  background: #7c3aed;
   color: #fff;
   cursor: pointer;
   transition: opacity 0.1s;
