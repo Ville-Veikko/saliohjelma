@@ -354,6 +354,35 @@ body {
 .save-status { text-align: center; font-size: 13px; color: #666; margin-top: 10px; min-height: 20px; }
 .save-status.ok { color: #4ade80; }
 
+/* ── Historia-selaus ── */
+.hist-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin: 28px 0 12px;
+  padding-top: 20px;
+  border-top: 1px solid #2a2a2a;
+}
+.hist-selector-row { margin-bottom: 12px; }
+.hist-selector-label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.hist-grid { display: flex; gap: 8px; margin-bottom: 12px; }
+.hist-btn {
+  flex: 1;
+  background: #1a1a1a;
+  border: 1.5px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 8px 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #aaa;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.hist-btn.selected { border-color: #7c3aed; background: #2d1b4e; color: #c084fc; }
+.hist-empty { font-size: 14px; color: #555; text-align: center; padding: 24px 0; }
+
 /* ── Kehitys ── */
 .section-label {
   font-size: 13px;
