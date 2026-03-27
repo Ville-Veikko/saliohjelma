@@ -10,6 +10,11 @@ export default function MiniHeader({ program, weekIndex, dayIndex, onBack }) {
         </button>
         <div className="mini-title">Viikko {weekIndex + 1} · Päivä {dayIndex + 1}</div>
       </div>
+      <img
+        src={`${import.meta.env.BASE_URL}sali-icon.svg`}
+        alt=""
+        className="mini-header-icon"
+      />
       <div className="mini-rir">RIR {week.rir} · {week.sets}+1 settiä</div>
     </div>
   )

@@ -97,7 +97,7 @@ function LiftTable({ liftName, program, workout, bodyweight }) {
             : <span className="ep-down">{row.delta}</span>
 
         return (
-          <div key={i} className="ep-row">
+          <div key={i} className={`ep-row${isBest ? ' ep-best-row' : ''}`}>
             <span className="ep-meso">{row.meso}</span>
             <span className={isBest ? 'ep-best' : row.best1rm ? '' : 'ep-dim'}>
               {row.best1rm ? `${row.best1rm} kg` : '—'}

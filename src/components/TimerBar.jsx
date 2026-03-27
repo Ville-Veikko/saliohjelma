@@ -10,7 +10,7 @@ export default function TimerBar({ timer }) {
   const pct = remaining / total
   const offset = ((1 - pct) * CIRC).toFixed(1)
 
-  let ringColor = '#3b82f6'
+  let ringColor = '#a855f7'
   if (remaining <= 10) ringColor = '#f87171'
   else if (remaining <= 30) ringColor = '#fbbf24'
 
