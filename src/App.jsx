@@ -49,13 +49,15 @@ export default function App() {
   }, [workoutHook])
 
   const handleTabChange = useCallback((tab) => {
-    setScreen(tab)
-  }, [])
+    if (tab === 'workout') {
+      setScreen(workoutHook.workout ? 'workout' : 'start')
+    } else {
+      setScreen(tab)
+    }
+  }, [workoutHook.workout])
 
   if (workoutHook.loading) return <LoadingScreen />
   if (workoutHook.error) return <ErrorScreen message={workoutHook.error} />
-
-  const showTabs = screen !== 'start'
 
   return (
     <>
@@ -113,10 +115,9 @@ export default function App() {
         )}
       </div>
 
-      {showTabs && (
-        <nav className="bottom-tabs">
+      <nav className="bottom-tabs">
           <button
-            className={`btab${screen === 'workout' ? ' active' : ''}`}
+            className={`btab${screen === 'workout' || screen === 'start' ? ' active' : ''}`}
             onClick={() => handleTabChange('workout')}
           >
             <Dumbbell size={22} />
@@ -143,8 +144,7 @@ export default function App() {
             <Settings size={22} />
             Asetukset
           </button>
-        </nav>
-      )}
+      </nav>
     </>
   )
 }
