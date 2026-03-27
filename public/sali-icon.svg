@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#5b21b6"/>
+    </radialGradient>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;display=swap');
+    </style>
+  </defs>
+
+  <rect width="512" height="512" rx="100" fill="url(#bg)"/>
+
+  <!-- Kaareva tanko — nostettu ylemmäs, kapeampi -->
+  <path d="M 100 252 Q 256 196 412 252"
+        stroke="white" stroke-width="13" fill="none" stroke-linecap="round"/>
+
+  <!-- VASEN — iso levy -->
+  <rect x="66" y="188" width="38" height="134" rx="11" fill="white"
+        transform="rotate(-20, 85, 252)"/>
+
+  <!-- VASEN — pieni levy -->
+  <rect x="30" y="206" width="28" height="104" rx="9" fill="white"
+        transform="rotate(-20, 50, 255)"/>
+
+  <!-- OIKEA — iso levy -->
+  <rect x="408" y="188" width="38" height="134" rx="11" fill="white"
+        transform="rotate(20, 427, 252)"/>
+
+  <!-- OIKEA — pieni levy -->
+  <rect x="454" y="206" width="28" height="104" rx="9" fill="white"
+        transform="rotate(20, 462, 255)"/>
+
+  <!-- SALI teksti -->
+  <text x="256" y="415"
+        font-family="'Bebas Neue', Impact, sans-serif"
+        font-size="100"
+        font-weight="400"
+        fill="white"
+        text-anchor="middle"
+        letter-spacing="20">SALI</text>
+</svg>
