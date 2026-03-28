@@ -1,25 +1,30 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 
-function pingAudio() {
+function pingAudio(audioCtx) {
+  if (!audioCtx) return
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)()
-    const osc = ctx.createOscillator()
-    const gain = ctx.createGain()
+    const osc = audioCtx.createOscillator()
+    const gain = audioCtx.createGain()
     osc.connect(gain)
-    gain.connect(ctx.destination)
+    gain.connect(audioCtx.destination)
     osc.type = 'sine'
     osc.frequency.value = 800
-    gain.gain.setValueAtTime(0.3, ctx.currentTime)
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35)
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime)
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35)
     osc.start()
-    osc.stop(ctx.currentTime + 0.35)
-    osc.onended = () => ctx.close()
-  } catch {}
+    osc.stop(audioCtx.currentTime + 0.35)
+  } catch (e) {
+    console.warn('Audio ping epäonnistui:', e)
+  }
 }
 
 function sendNotification() {
-  if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-    new Notification('Lepo ohi!', { body: 'Seuraava setti odottaa.' })
+  try {
+    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+      new Notification('Lepo ohi!', { body: 'Seuraava setti odottaa.' })
+    }
+  } catch (e) {
+    console.warn('Notifikaatio epäonnistui:', e)
   }
 }
 
@@ -28,11 +33,17 @@ export function useTimer(totalSeconds) {
   const [running, setRunning] = useState(false)
   const [done, setDone] = useState(false)
   const intervalRef = useRef(null)
+  // AudioContext luodaan start()-kutsussa (käyttäjän interaktio) ja säilytetään ref:ssä
+  const audioCtxRef = useRef(null)
 
   // Pyydä notifikaatiolupa heti käynnistyksessä
   useEffect(() => {
-    if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
-      Notification.requestPermission()
+    try {
+      if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
+        Notification.requestPermission()
+      }
+    } catch (e) {
+      console.warn('Notification.requestPermission epäonnistui:', e)
     }
   }, [])
 
@@ -45,13 +56,26 @@ export function useTimer(totalSeconds) {
     setRunning(true)
     setDone(false)
 
+    // Luo AudioContext käyttäjän interaktion aikana (selaimen vaatimus)
+    try {
+      if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
+        audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()
+      }
+      if (audioCtxRef.current.state === 'suspended') {
+        audioCtxRef.current.resume()
+      }
+    } catch (e) {
+      console.warn('AudioContext luonti epäonnistui:', e)
+      audioCtxRef.current = null
+    }
+
     intervalRef.current = setInterval(() => {
       setRemaining(prev => {
         if (prev <= 1) {
           clearInterval(intervalRef.current)
           setRunning(false)
           setDone(true)
-          pingAudio()
+          pingAudio(audioCtxRef.current)
           sendNotification()
           return 0
         }
