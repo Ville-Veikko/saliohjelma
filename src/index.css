@@ -63,6 +63,24 @@ body {
 .start-go.ready { opacity: 1; }
 .start-go:active { opacity: 0.8; }
 
+.start-saved-area { margin-top: 8px; }
+.start-saved-label { text-align: center; font-size: 13px; color: #4ade80; font-weight: 600; margin-bottom: 10px; }
+.start-saved-btns { display: flex; gap: 10px; }
+.start-go-view { flex: 1; margin-top: 0; }
+.start-go-fresh {
+  flex: 1;
+  padding: 18px;
+  border-radius: 16px;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  background: #2a2a2a;
+  color: #888;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.start-go-fresh:active { opacity: 0.7; }
+
 .resume-banner {
   background: #1c3a5e;
   border: 1.5px solid #3b82f6;

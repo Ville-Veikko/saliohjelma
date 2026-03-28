@@ -8,23 +8,33 @@ function formatTimestamp(iso) {
     + ' ' + d.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' })
 }
 
-export default function StartScreen({ program, selectedWeek, selectedDay, setSelectedWeek, setSelectedDay, savedInfo, onStart }) {
+export default function StartScreen({
+  program,
+  selectedWeek, selectedDay,
+  setSelectedWeek, setSelectedDay,
+  savedInfo, sheetsHistory,
+  onStart, onStartFresh, onViewResults,
+}) {
   const ready = selectedWeek >= 0 && selectedDay >= 0
+  const histData = sheetsHistory?.data
 
-  // Lasketaan päivien valmius kertaalleen renderöinnin yhteydessä
-  // isDayDone[weekIdx][dayIdx] = true jos >50 % seteistä tehty
-  const isDayDone = program.weeks.map((_, wi) =>
-    program.days.map((_, di) => getDayProgress(wi, di) > 0.5)
-  )
-  const isWeekDone = program.weeks.map((_, wi) =>
-    program.days.every((_, di) => isDayDone[wi][di])
-  )
+  // Sheets-pohjainen valmius
+  function isDayInSheets(wi, di) {
+    return !!histData?.[`v${wi + 1}_Day${di + 1}`]
+  }
+  function isWeekInSheets(wi) {
+    return program.days.every((_, di) => isDayInSheets(wi, di))
+  }
 
-  // Jos tallennettu data on sama kuin valittu viikko/päivä, tarjotaan resumea
+  // Valittu päivä Sheetsissa
+  const selectedInSheets = ready && isDayInSheets(selectedWeek, selectedDay)
+
+  // Jatka-banneri: localStorage-data mutta ei Sheetsissa
   const showResume =
     savedInfo &&
     savedInfo.week === selectedWeek &&
-    savedInfo.day === selectedDay
+    savedInfo.day === selectedDay &&
+    !selectedInSheets
 
   return (
     <div className="start-screen">
@@ -38,7 +48,7 @@ export default function StartScreen({ program, selectedWeek, selectedDay, setSel
       </div>
       <div className="start-sub">{program.meso} · Valitse viikko ja päivä</div>
 
-      {/* Resume-banneri — näkyy jos on tallennettu treeni ja molemmat on valittu */}
+      {/* Resume-banneri — vain jos localStorage-data eikä Sheetsissa */}
       {showResume && (
         <div className="resume-banner">
           <div className="resume-text">
@@ -51,27 +61,32 @@ export default function StartScreen({ program, selectedWeek, selectedDay, setSel
         </div>
       )}
 
+      {/* Viikkonapit */}
       <div className="start-section">Viikko</div>
       <div className="start-grid">
-        {program.weeks.map((w, i) => (
-          <div
-            key={i}
-            className={`start-btn${selectedWeek === i ? ' selected' : ''}${isWeekDone[i] ? ' done' : ''}`}
-            onClick={() => setSelectedWeek(i)}
-          >
-            <div className="start-btn-main">
-              {isWeekDone[i] && <span className="done-check">✓ </span>}
-              Viikko {i + 1}
+        {program.weeks.map((w, i) => {
+          const done = isWeekInSheets(i)
+          return (
+            <div
+              key={i}
+              className={`start-btn${selectedWeek === i ? ' selected' : ''}${done ? ' done' : ''}`}
+              onClick={() => setSelectedWeek(i)}
+            >
+              <div className="start-btn-main">
+                {done && <span className="done-check">✓ </span>}
+                Viikko {i + 1}
+              </div>
+              <div className="start-btn-sub">RIR {w.rir} · {w.sets}+1</div>
             </div>
-            <div className="start-btn-sub">RIR {w.rir} · {w.sets}+1</div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
+      {/* Päivänapit */}
       <div className="start-section">Päivä</div>
       <div className="start-grid">
         {program.days.map((day, di) => {
-          const done = selectedWeek >= 0 && isDayDone[selectedWeek][di]
+          const done = selectedWeek >= 0 && isDayInSheets(selectedWeek, di)
           return (
             <div
               key={di}
@@ -88,12 +103,39 @@ export default function StartScreen({ program, selectedWeek, selectedDay, setSel
         })}
       </div>
 
-      <button
-        className={`start-go${ready ? ' ready' : ''}`}
-        onClick={() => ready && onStart(selectedWeek, selectedDay)}
-      >
-        Aloita treeni →
-      </button>
+      {/* Aloitusalue */}
+      {!ready ? (
+        <button className="start-go" disabled>
+          Aloita treeni →
+        </button>
+      ) : selectedInSheets ? (
+        // Päivä löytyy Sheetsista
+        <div className="start-saved-area">
+          <div className="start-saved-label">✓ Tallennettu Sheetsiin</div>
+          <div className="start-saved-btns">
+            <button
+              className="start-go ready start-go-view"
+              onClick={() => onViewResults(selectedWeek, selectedDay)}
+            >
+              Katso tulokset
+            </button>
+            <button
+              className="start-go-fresh"
+              onClick={() => onStartFresh(selectedWeek, selectedDay)}
+            >
+              Aloita alusta
+            </button>
+          </div>
+        </div>
+      ) : (
+        // Normaali aloitus
+        <button
+          className="start-go ready"
+          onClick={() => onStart(selectedWeek, selectedDay)}
+        >
+          Aloita treeni →
+        </button>
+      )}
     </div>
   )
 }

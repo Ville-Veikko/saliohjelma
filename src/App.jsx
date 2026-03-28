@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { Dumbbell, ClipboardList, TrendingUp, Settings } from 'lucide-react'
 import { useWorkout } from './hooks/useWorkout'
 import { useTimer } from './hooks/useTimer'
-import { loadBodyweight, loadTimerDuration } from './utils/storage'
+import { loadBodyweight, loadTimerDuration, clearWorkout } from './utils/storage'
 import StartScreen from './components/StartScreen'
 import WorkoutScreen from './components/WorkoutScreen'
 import SummaryScreen from './components/SummaryScreen'
@@ -62,10 +62,24 @@ export default function App() {
       })
   }, [workoutHook.program])
 
+  // Seed yhteenveto-näkymän historia-valinnalle (asetetaan "Katso tulokset" -napista)
+  const [summaryHistSeed, setSummaryHistSeed] = useState(null)
+
   const handleStartWorkout = useCallback((week, day) => {
     workoutHook.startWorkout(week, day)
     setScreen('workout')
   }, [workoutHook])
+
+  const handleStartFresh = useCallback((week, day) => {
+    clearWorkout(week, day)
+    workoutHook.startWorkout(week, day)
+    setScreen('workout')
+  }, [workoutHook])
+
+  const handleViewResults = useCallback((week, day) => {
+    setSummaryHistSeed({ week, day })
+    setScreen('summary')
+  }, [])
 
   const handleNext = useCallback(() => {
     const result = workoutHook.nextExercise()
@@ -106,7 +120,10 @@ export default function App() {
             setSelectedWeek={workoutHook.setSelectedWeek}
             setSelectedDay={workoutHook.setSelectedDay}
             savedInfo={workoutHook.savedInfo}
+            sheetsHistory={sheetsHistory}
             onStart={handleStartWorkout}
+            onStartFresh={handleStartFresh}
+            onViewResults={handleViewResults}
           />
         )}
 
@@ -134,6 +151,8 @@ export default function App() {
             workout={workoutHook.workout}
             bodyweight={bodyweight}
             sheetsHistory={sheetsHistory}
+            initialHistWeek={summaryHistSeed?.week ?? 0}
+            initialHistDay={summaryHistSeed?.day ?? 0}
             onSaved={handleSaved}
           />
         )}

@@ -52,11 +52,11 @@ function SummaryRows({ rows }) {
   ))
 }
 
-export default function SummaryScreen({ program, workout, bodyweight, sheetsHistory, onSaved }) {
+export default function SummaryScreen({ program, workout, bodyweight, sheetsHistory, initialHistWeek, initialHistDay, onSaved }) {
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [histWeek, setHistWeek] = useState(0)
-  const [histDay, setHistDay] = useState(0)
+  const [histWeek, setHistWeek] = useState(initialHistWeek ?? 0)
+  const [histDay, setHistDay] = useState(initialHistDay ?? 0)
 
   const hasWorkout = !!workout
 
