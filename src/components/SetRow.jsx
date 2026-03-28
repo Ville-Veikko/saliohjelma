@@ -1,59 +1,71 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import Stepper from './Stepper'
 
-/**
- * Yksi settirivi — joko raskas setti (type='set') tai back-off (type='bo').
- * Tilat: null = odottaa, number = tehty, 'skip' = ohitettu
- */
+const LONG_PRESS_MS = 1500
+
 export default function SetRow({
-  type,          // 'set' | 'bo'
-  index,         // settiindeksi (type='set') tai undefined (type='bo')
-  kgLabel,       // näytettävä kg-teksti, esim. "92.5 kg" tai "bw"
-  kgNum,         // numeerinen kg Epley-laskuun
+  type,
+  index,
+  kgLabel,
   rMin,
   rMax,
   isDone,
   isSkipped,
-  savedReps,     // null tai number — tallennettu arvo jos done
-  onDone,        // (reps) => void
-  onUndo,        // () => void
-  onSkip,        // () => void
-  onTimerStart,  // () => void
+  savedReps,
+  onDone,
+  onUndo,
+  onSkip,
+  onTimerStart,
 }) {
   const stepperValRef = useRef(rMin)
+  const pressTimerRef = useRef(null)
+  const didLongPressRef = useRef(false)
+  const [pressing, setPressing] = useState(false)
 
   function handleStepperChange(v) {
     stepperValRef.current = v
   }
 
-  function handleDone() {
+  function handlePointerDown(e) {
+    if (isDone || isSkipped) return
+    e.preventDefault()
+    didLongPressRef.current = false
+    setPressing(true)
+    pressTimerRef.current = setTimeout(() => {
+      didLongPressRef.current = true
+      setPressing(false)
+      onSkip?.()
+    }, LONG_PRESS_MS)
+  }
+
+  function handlePointerUp() {
+    clearTimeout(pressTimerRef.current)
+    setPressing(false)
     if (isDone || isSkipped) {
       onUndo()
-    } else {
-      const reps = stepperValRef.current
-      onDone(reps)
+      return
+    }
+    if (!didLongPressRef.current) {
+      onDone(stepperValRef.current)
       onTimerStart?.()
     }
+  }
+
+  function handlePointerCancel() {
+    clearTimeout(pressTimerRef.current)
+    setPressing(false)
   }
 
   const isBo = type === 'bo'
   const label = isBo ? 'BO' : `S${index + 1}`
 
-  if (isSkipped) {
-    return (
-      <div className={`set-row is-skipped${isBo ? ' is-bo' : ''}`}>
-        <div className={`set-num${isBo ? ' bo-num' : ''}`}>{label}</div>
-        <div className="set-kg-label">{kgLabel}</div>
-        <div className="skip-label">Ohitettu</div>
-        <button className="done-btn is-skipped-btn" onClick={handleDone}>
-          ↩ Peru
-        </button>
-      </div>
-    )
-  }
+  let circleClass = 'circle-btn'
+  if (isDone) circleClass += ' done'
+  else if (isSkipped) circleClass += ' skipped'
+  else if (pressing) circleClass += ' pressing'
 
   return (
-    <div className={`set-row${isBo ? ' is-bo' : ''}${isDone ? ' is-done' : ''}`}>
+    <div className={`set-row${isBo ? ' is-bo' : ''}${isDone ? ' is-done' : ''}${isSkipped ? ' is-skipped' : ''}`}>
       <div className={`set-num${isBo ? ' bo-num' : ''}`}>{label}</div>
       <div className={`set-kg-label${isDone ? ' active-kg' : ''}`}>{kgLabel}</div>
 
@@ -61,21 +73,20 @@ export default function SetRow({
         initValue={isDone ? savedReps : rMin}
         rMin={rMin}
         rMax={rMax}
-        locked={isDone}
+        locked={isDone || isSkipped}
         onChange={handleStepperChange}
       />
 
-      {!isDone && (
-        <button className="skip-btn" onClick={() => onSkip?.()}>
-          Ohita
-        </button>
-      )}
-
       <button
-        className={`done-btn${isBo ? ' bo-color' : ''}${isDone ? ' is-done' : ''}`}
-        onClick={handleDone}
+        className={circleClass}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerCancel}
+        onPointerCancel={handlePointerCancel}
+        onContextMenu={e => e.preventDefault()}
       >
-        {isDone ? `✓ ${savedReps}` : 'Tehty'}
+        {isDone && '✓'}
+        {isSkipped && '−'}
       </button>
     </div>
   )

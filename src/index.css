@@ -255,43 +255,45 @@ body {
 .step-number.color-above   { color: #4ade80; }
 .step-number.color-below   { color: #f87171; }
 
-.done-btn {
-  background: #7c3aed;
-  border: none;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 10px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  flex-shrink: 0;
-  white-space: nowrap;
-  min-width: 64px;
-  text-align: center;
-  transition: opacity 0.1s;
+.set-row.is-skipped { border-color: #252525; background: #191919; opacity: 0.4; }
+
+/* ── Ympyränappi ── */
+@keyframes circle-press {
+  from { box-shadow: inset 0 0 0 0px rgba(124, 58, 237, 0.25); }
+  to   { box-shadow: inset 0 0 0 16px rgba(124, 58, 237, 0.25); }
 }
-.done-btn:active { opacity: 0.8; }
-.done-btn.is-done { background: #166534; color: #4ade80; }
-.done-btn.bo-color { background: #14532d; }
-.done-btn.bo-color.is-done { background: #166534; color: #4ade80; }
-.done-btn.is-skipped-btn { background: #2a2a2a; color: #555; font-size: 12px; min-width: 58px; }
-
-.set-row.is-skipped { border-color: #252525; background: #191919; opacity: 0.55; }
-.skip-label { flex: 1; font-size: 12px; color: #444; font-style: italic; text-decoration: line-through; }
-
-.skip-btn {
+.circle-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #7c3aed;
   background: transparent;
-  border: 1px solid #333;
-  color: #555;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 6px 10px;
-  border-radius: 8px;
+  color: transparent;
   cursor: pointer;
   flex-shrink: 0;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 800;
+  touch-action: none;
+  user-select: none;
+  transition: background 0.15s, border-color 0.15s;
+  -webkit-user-select: none;
 }
-.skip-btn:active { opacity: 0.7; }
+.circle-btn.pressing {
+  animation: circle-press 1.5s linear forwards;
+}
+.circle-btn.done {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+}
+.circle-btn.skipped {
+  background: #2a2a2a;
+  border-color: #333;
+  color: #555;
+}
 
 .epley-line {
   font-size: 11px;
