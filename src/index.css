@@ -450,12 +450,22 @@ body {
   margin-bottom: 10px;
 }
 .hist-card-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
   font-size: 11px;
   font-weight: 600;
   color: #666;
   text-transform: uppercase;
   letter-spacing: 0.6px;
   margin-bottom: 8px;
+}
+.hist-best1rm {
+  color: #fbbf24;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
 }
 /* Pääliikkeiden ruudukko: kg-sarake + P1/P2/P3 */
 .hist-lift-grid {

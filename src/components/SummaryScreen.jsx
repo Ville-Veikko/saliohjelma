@@ -93,12 +93,13 @@ function fmtSets(t, numSets) {
 }
 
 /** Pääliikekortit: Penkki / Kyykky / Leuat — kaikki päivät valitulta viikolta */
-function MainLiftCard({ liftName, program, histWeek, sheetsData }) {
+function MainLiftCard({ liftName, program, histWeek, sheetsData, bodyweight }) {
   const ex = program.days[0].find(e => e.name === liftName)
   if (!ex) return null
   const numSets = program.weeks[histWeek].sets
   const mainKg = ex.kg[histWeek]
   const boKg = ex.boKg
+  const isLeuat = ex.badge === 'leuat'
 
   const dayCount = program.days.length
   const setsByDay = program.days.map((_, di) => {
@@ -111,9 +112,31 @@ function MainLiftCard({ liftName, program, histWeek, sheetsData }) {
     return String(t.bo)
   })
 
+  // Paras 1RM kaikista seteistä valitulta viikolta
+  const mainKgNum = parseFloat(mainKg) || 0
+  const kgNum = isLeuat ? mainKgNum + (bodyweight ?? 0) : mainKgNum
+  const boKgNum = boKg === 'bw' ? (bodyweight ?? 0) : parseFloat(boKg) || 0
+  let best1rm = null
+  program.days.forEach((_, di) => {
+    const t = getTulokset(sheetsData, histWeek, di, liftName)
+    if (!t) return
+    ;[t.set1, t.set2, t.set3, t.set4].forEach(v => {
+      if (typeof v !== 'number') return
+      const e = epley(kgNum, v)
+      if (e && (!best1rm || e > best1rm)) best1rm = e
+    })
+    if (typeof t.bo === 'number' && boKgNum) {
+      const e = epley(boKgNum, t.bo)
+      if (e && (!best1rm || e > best1rm)) best1rm = e
+    }
+  })
+
   return (
     <div className="hist-card">
-      <div className="hist-card-title">{liftName}</div>
+      <div className="hist-card-title">
+        {liftName}
+        {best1rm && <span className="hist-best1rm">{best1rm} kg</span>}
+      </div>
       <div className="hist-lift-grid" style={{ gridTemplateColumns: `68px repeat(${dayCount}, 1fr)` }}>
         <span />
         {program.days.map((_, di) => (
@@ -296,6 +319,7 @@ export default function SummaryScreen({ program, workout, bodyweight, sheetsHist
               program={program}
               histWeek={histWeek}
               sheetsData={sheetsData}
+              bodyweight={bodyweight}
             />
           ))}
 
