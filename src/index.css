@@ -305,12 +305,28 @@ body {
 }
 
 /* ── Nav ── */
-.nav-wrap { display: flex; gap: 10px; padding: 4px 20px 20px; }
+.nav-wrap { display: flex; padding: 4px 20px 20px; }
 .nav-btn { flex: 1; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: opacity 0.1s; }
 .nav-btn:active { opacity: 0.8; }
-.nav-btn-prev { background: #2a2a2a; color: #aaa; }
-.nav-btn-next { background: #7c3aed; color: #fff; }
 .nav-btn-finish { background: #166534; color: #4ade80; }
+
+/* ── Pisteindikaattorit ── */
+.dot-indicators { display: flex; justify-content: center; gap: 7px; padding: 6px 0 10px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: #2a2a2a; transition: background 0.2s, transform 0.2s; }
+.dot.active { background: #7c3aed; transform: scale(1.4); }
+
+/* ── Swipe-animaatio ── */
+@keyframes slide-in-from-right {
+  from { transform: translateX(110%); }
+  to   { transform: translateX(0); }
+}
+@keyframes slide-in-from-left {
+  from { transform: translateX(-110%); }
+  to   { transform: translateX(0); }
+}
+.swipe-area { touch-action: pan-y; overflow: hidden; }
+.swipe-area.slide-from-right { animation: slide-in-from-right 0.25s ease-out; }
+.swipe-area.slide-from-left  { animation: slide-in-from-left 0.25s ease-out; }
 
 /* ── Bottom tabs ── */
 .bottom-tabs {
