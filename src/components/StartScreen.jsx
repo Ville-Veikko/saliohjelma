@@ -1,5 +1,4 @@
 import React from 'react'
-import { getDayProgress } from '../utils/storage'
 
 function formatTimestamp(iso) {
   if (!iso) return ''

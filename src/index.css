@@ -26,14 +26,18 @@ body {
 .start-title { font-size: 28px; font-weight: 700; }
 .start-sub { font-size: 14px; color: #888; margin-bottom: 32px; text-align: center; }
 .start-section { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
-.start-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+.start-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
 .start-btn {
+  flex: 1 1 calc(33.333% - 7px);
+  min-width: calc(33.333% - 7px);
+  max-width: calc(33.333% - 7px);
   background: #1a1a1a;
   border: 1.5px solid #2a2a2a;
   border-radius: 14px;
   padding: 16px 8px;
   text-align: center;
   cursor: pointer;
+  box-sizing: border-box;
   transition: border-color 0.15s, background 0.15s;
 }
 .start-btn.selected { border-color: #7c3aed; background: #2d1b4e; }

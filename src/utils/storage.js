@@ -65,8 +65,8 @@ export function loadWorkout(week, day) {
  * Tarkistaa onko jollekin viikolle/päivälle tallennettu keskeneräinen treeni.
  * Palauttaa { week, day, timestamp } tai null.
  */
-export function findSavedWorkout() {
-  for (let w = 0; w < 3; w++) {
+export function findSavedWorkout(maxWeeks = 12) {
+  for (let w = 0; w < maxWeeks; w++) {
     for (let d = 0; d < 3; d++) {
       const raw = localStorage.getItem(workoutKey(w, d))
       if (raw) {

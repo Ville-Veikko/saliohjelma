@@ -55,7 +55,7 @@ export function useWorkout() {
 
   useEffect(() => {
     if (!program) return
-    setSavedInfo(findSavedWorkout())
+    setSavedInfo(findSavedWorkout(program.weeks.length))
   }, [program])
 
   // ── Aktiivinen treeni ────────────────────────────────────────────────────
