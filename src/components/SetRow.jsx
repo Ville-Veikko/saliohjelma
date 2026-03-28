@@ -41,14 +41,16 @@ export default function SetRow({
   function handlePointerUp() {
     clearTimeout(pressTimerRef.current)
     setPressing(false)
+    if (didLongPressRef.current) {
+      didLongPressRef.current = false
+      return
+    }
     if (isDone || isSkipped) {
       onUndo()
       return
     }
-    if (!didLongPressRef.current) {
-      onDone(stepperValRef.current)
-      onTimerStart?.()
-    }
+    onDone(stepperValRef.current)
+    onTimerStart?.()
   }
 
   function handlePointerCancel() {
