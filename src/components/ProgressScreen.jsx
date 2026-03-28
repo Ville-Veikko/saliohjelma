@@ -112,16 +112,23 @@ function EpleyChart({ liftName, historyData, sheetsEpley, bodyweight }) {
     const mesoLabels = [...Object.keys(historyData), 'M3/26']
 
     // Yksi arvo per meso: paras epley siitä mesosta
+    const extraData = [] // { kg, reps } tooltip-näyttöä varten
     const dataPoints = mesoLabels.map(mesoName => {
       if (mesoName === 'M3/26') {
         const sl = sheetsEpley?.data?.epley?.[liftName]
-        if (!sl) return null
+        if (!sl) { extraData.push(null); return null }
         const kgNum = liftName === 'Leuat' ? sl.bestKg + (bodyweight ?? 0) : sl.bestKg
-        return epley(kgNum, sl.bestReps) ?? null
+        const e = epley(kgNum, sl.bestReps) ?? null
+        extraData.push(e ? { kg: kgNum, reps: sl.bestReps } : null)
+        return e
       }
       const liftData = historyData[mesoName]?.[liftKey]
-      if (!liftData?.length) return null
-      return liftData.reduce((best, e) => e.epley > (best ?? 0) ? e.epley : best, null)
+      if (!liftData?.length) { extraData.push(null); return null }
+      const best = liftData.reduce((b, e) => e.epley > (b?.epley ?? 0) ? e : b, null)
+      if (!best) { extraData.push(null); return null }
+      const displayKg = liftName === 'Leuat' ? best.kg + (bodyweight ?? 0) : best.kg
+      extraData.push({ kg: displayKg, reps: best.reps })
+      return best.epley
     })
 
     const chart = new Chart(canvasRef.current, {
@@ -151,7 +158,12 @@ function EpleyChart({ liftName, historyData, sheetsEpley, bodyweight }) {
           legend: { display: false },
           tooltip: {
             callbacks: {
-              label: (ctx) => ctx.parsed.y != null ? `${ctx.parsed.y} kg` : '',
+              label: (ctx) => {
+                if (ctx.parsed.y == null) return ''
+                const extra = extraData[ctx.dataIndex]
+                if (extra) return `${ctx.parsed.y} kg — ${extra.kg} kg × ${extra.reps}`
+                return `${ctx.parsed.y} kg`
+              },
             },
           },
         },
