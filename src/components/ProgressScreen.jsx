@@ -1,26 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend } from 'chart.js'
+import { Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend, Filler } from 'chart.js'
 import { epley } from '../utils/epley'
 
-Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend)
+Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend, Filler)
 
 const MAIN_LIFTS = ['Penkki', 'Kyykky', 'Leuat']
 
-const MESO_COLORS = {
-  'M4/24': '#505050',
-  'M5/24': '#6a6a6a',
-  'M6/24': '#898989',
-  'M1/25': '#1a3566',
-  'M2/25': '#1e4480',
-  'M3/25': '#205998',
-  'M4/25': '#2570b8',
-  'M5/25': '#3388d4',
-  'M6/25': '#52a0ea',
-  'M7/25': '#7bbcf6',
-  'M1/26': '#7c3aed',
-  'M2/26': '#9333ea',
-  'M3/26': '#a855f7',
-}
+const LINE_COLOR = '#a855f7'
+const LINE_COLOR_DIM = '#7c3aed44'
 
 /**
  * Rakentaa per-liike historiarivit history.json-datasta.
@@ -120,92 +107,57 @@ function EpleyChart({ liftName, historyData, sheetsEpley, bodyweight }) {
     if (!canvasRef.current || !historyData) return
 
     const liftKey = liftName.toLowerCase()
-    const datasets = []
 
-    // Laske viikkojen maksimimäärä tässä liikkeessä
-    let maxWeeks = 0
-    for (const mesoData of Object.values(historyData)) {
-      const ld = mesoData[liftKey]
-      if (ld) maxWeeks = Math.max(maxWeeks, ld.length)
-    }
-    // M3/26 on yksi piste, ei tarvita ylimääräistä paikkaa
-    maxWeeks = Math.max(maxWeeks, 1)
+    // Rakennetaan x-akseli: kaikki historyData-mesot + M3/26
+    const mesoLabels = [...Object.keys(historyData), 'M3/26']
 
-    // Historialliset mesot
-    for (const [mesoName, mesoData] of Object.entries(historyData)) {
-      const liftData = mesoData[liftKey]
-      if (!liftData?.length) continue
-
-      const color = MESO_COLORS[mesoName] ?? '#888'
-      // Täytä null-arvoilla jos viikkoja vähemmän kuin max
-      const dataPoints = Array(maxWeeks).fill(null)
-      liftData.forEach((entry, i) => {
-        dataPoints[i] = entry.epley
-      })
-
-      datasets.push({
-        label: mesoName,
-        data: dataPoints,
-        borderColor: color,
-        backgroundColor: color,
-        borderWidth: 1.5,
-        pointRadius: 4,
-        pointHoverRadius: 6,
-        tension: 0.3,
-        spanGaps: false,
-      })
-    }
-
-    // M3/26 Sheetsistä (yksi piste)
-    const sheetsLift = sheetsEpley?.data?.epley?.[liftName]
-    if (sheetsLift) {
-      const isLeuat = liftName === 'Leuat'
-      const kgNum = isLeuat ? sheetsLift.bestKg + (bodyweight ?? 0) : sheetsLift.bestKg
-      const best1rm = epley(kgNum, sheetsLift.bestReps)
-      if (best1rm) {
-        const dataPoints = Array(maxWeeks).fill(null)
-        dataPoints[0] = best1rm
-        datasets.push({
-          label: 'M3/26',
-          data: dataPoints,
-          borderColor: MESO_COLORS['M3/26'],
-          backgroundColor: MESO_COLORS['M3/26'],
-          borderWidth: 2,
-          pointRadius: 6,
-          pointHoverRadius: 8,
-          tension: 0.3,
-          spanGaps: false,
-        })
+    // Yksi arvo per meso: paras epley siitä mesosta
+    const dataPoints = mesoLabels.map(mesoName => {
+      if (mesoName === 'M3/26') {
+        const sl = sheetsEpley?.data?.epley?.[liftName]
+        if (!sl) return null
+        const kgNum = liftName === 'Leuat' ? sl.bestKg + (bodyweight ?? 0) : sl.bestKg
+        return epley(kgNum, sl.bestReps) ?? null
       }
-    }
-
-    const labels = Array.from({ length: maxWeeks }, (_, i) => `V${i + 1}`)
+      const liftData = historyData[mesoName]?.[liftKey]
+      if (!liftData?.length) return null
+      return liftData.reduce((best, e) => e.epley > (best ?? 0) ? e.epley : best, null)
+    })
 
     const chart = new Chart(canvasRef.current, {
       type: 'line',
-      data: { labels, datasets },
+      data: {
+        labels: mesoLabels,
+        datasets: [{
+          label: liftName,
+          data: dataPoints,
+          borderColor: LINE_COLOR,
+          backgroundColor: LINE_COLOR_DIM,
+          borderWidth: 2,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          pointBackgroundColor: mesoLabels.map((m, i) =>
+            dataPoints[i] != null ? LINE_COLOR : 'transparent'
+          ),
+          tension: 0.3,
+          spanGaps: false,
+          fill: true,
+        }],
+      },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              color: '#aaa',
-              font: { size: 10 },
-              boxWidth: 14,
-              padding: 6,
-            },
-          },
+          legend: { display: false },
           tooltip: {
             callbacks: {
-              label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y} kg`,
+              label: (ctx) => ctx.parsed.y != null ? `${ctx.parsed.y} kg` : '',
             },
           },
         },
         scales: {
           x: {
-            ticks: { color: '#aaa', font: { size: 11 } },
+            ticks: { color: '#aaa', font: { size: 10 }, maxRotation: 45 },
             grid: { color: '#2a2a2a' },
             border: { color: '#333' },
           },
