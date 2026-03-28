@@ -27,7 +27,8 @@ function calcCurrentMesoBest(program, workout, bodyweight, liftName) {
         if (!res) return
 
         const kgRaw = ex.kg[w]
-        const kgNum = kgRaw === 'bw' ? (bodyweight ?? 0) : parseFloat(kgRaw) || 0
+        const extraKg = kgRaw === 'bw' ? (bodyweight ?? 0) : parseFloat(kgRaw) || 0
+        const kgNum = ex.badge === 'leuat' ? extraKg + (bodyweight ?? 0) : extraKg
         if (!kgNum) return
 
         const numSets = getSetCount(program, w, ex)

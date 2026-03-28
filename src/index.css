@@ -143,7 +143,7 @@ body {
 .timer-ring-wrap { position: relative; width: 40px; height: 40px; flex-shrink: 0; }
 .timer-ring-wrap svg { transform: rotate(-90deg); }
 .timer-bg { fill: none; stroke: #2a2a2a; stroke-width: 3; }
-.timer-fg { fill: none; stroke: #3b82f6; stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.3s; }
+.timer-fg { fill: none; stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.3s; }
 .timer-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
 .timer-info { flex: 1; }
 .timer-text { font-size: 13px; color: #aaa; }
