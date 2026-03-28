@@ -1,7 +1,22 @@
 import React, { useState } from 'react'
-import { saveBodyweight } from '../utils/storage'
+import { saveBodyweight, saveTimerDuration } from '../utils/storage'
 
-export default function SettingsScreen({ bodyweight, onBodyweightChange }) {
+const TIMER_MIN = 30
+const TIMER_MAX = 300
+const TIMER_STEP = 15
+
+function formatDuration(s) {
+  const m = Math.floor(s / 60)
+  const sec = s % 60
+  return `${m}:${String(sec).padStart(2, '0')}`
+}
+
+export default function SettingsScreen({
+  bodyweight,
+  onBodyweightChange,
+  timerDuration,
+  onTimerDurationChange,
+}) {
   const [input, setInput] = useState(bodyweight != null ? String(bodyweight) : '')
   const [savedMsg, setSavedMsg] = useState(false)
 
@@ -16,6 +31,12 @@ export default function SettingsScreen({ bodyweight, onBodyweightChange }) {
 
   function handleKey(e) {
     if (e.key === 'Enter') handleSave()
+  }
+
+  function handleTimerChange(delta) {
+    const next = Math.min(TIMER_MAX, Math.max(TIMER_MIN, timerDuration + delta))
+    saveTimerDuration(next)
+    onTimerDurationChange(next)
   }
 
   return (
@@ -54,6 +75,33 @@ export default function SettingsScreen({ bodyweight, onBodyweightChange }) {
       <div className="settings-info">
         Kehonpaino tarvitaan leuanvetojen Epley-laskentaan (lisäpaino + kehonpaino = kokonaispaino).
         Arvo tallennetaan ainoastaan tähän laitteeseen — ei lähetetä minnekään.
+      </div>
+
+      {/* Lepoaika */}
+      <div className="settings-field" style={{ marginTop: 32 }}>
+        <div className="settings-label">Lepoaika</div>
+        <div className="timer-dur-row">
+          <button
+            className="timer-dur-btn"
+            onClick={() => handleTimerChange(-TIMER_STEP)}
+            disabled={timerDuration <= TIMER_MIN}
+          >
+            −
+          </button>
+          <div className="timer-dur-val">{formatDuration(timerDuration)}</div>
+          <button
+            className="timer-dur-btn"
+            onClick={() => handleTimerChange(TIMER_STEP)}
+            disabled={timerDuration >= TIMER_MAX}
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      <div className="settings-info">
+        Lepotauko settien välillä. Muutos astuu voimaan seuraavasta treenistä.
+        Tallennetaan paikallisesti.
       </div>
     </div>
   )

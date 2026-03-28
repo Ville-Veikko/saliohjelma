@@ -1,5 +1,7 @@
 const WORKOUT_PREFIX = 'saliohjelma_treeni'
 const BODYWEIGHT_KEY = 'saliohjelma_kehonpaino'
+const TIMER_KEY = 'saliohjelma_timer_kesto'
+const TIMER_DEFAULT = 120
 
 // ── Kehonpaino ──────────────────────────────────────────────────────────────
 
@@ -10,6 +12,15 @@ export function loadBodyweight() {
 
 export function saveBodyweight(kg) {
   localStorage.setItem(BODYWEIGHT_KEY, String(kg))
+}
+
+export function loadTimerDuration() {
+  const raw = localStorage.getItem(TIMER_KEY)
+  return raw ? parseInt(raw, 10) : TIMER_DEFAULT
+}
+
+export function saveTimerDuration(seconds) {
+  localStorage.setItem(TIMER_KEY, String(seconds))
 }
 
 // ── Treeni ──────────────────────────────────────────────────────────────────

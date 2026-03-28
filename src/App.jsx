@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { Dumbbell, ClipboardList, TrendingUp, Settings } from 'lucide-react'
 import { useWorkout } from './hooks/useWorkout'
 import { useTimer } from './hooks/useTimer'
-import { loadBodyweight } from './utils/storage'
+import { loadBodyweight, loadTimerDuration } from './utils/storage'
 import StartScreen from './components/StartScreen'
 import WorkoutScreen from './components/WorkoutScreen'
 import SummaryScreen from './components/SummaryScreen'
@@ -28,7 +28,8 @@ function ErrorScreen({ message }) {
 
 export default function App() {
   const workoutHook = useWorkout()
-  const timer = useTimer()
+  const [timerDuration, setTimerDuration] = useState(() => loadTimerDuration())
+  const timer = useTimer(timerDuration)
 
   // 'start' | 'workout' | 'summary' | 'progress' | 'settings'
   const [screen, setScreen] = useState('start')
@@ -122,6 +123,8 @@ export default function App() {
           <SettingsScreen
             bodyweight={bodyweight}
             onBodyweightChange={setBodyweight}
+            timerDuration={timerDuration}
+            onTimerDurationChange={setTimerDuration}
           />
         )}
       </div>
