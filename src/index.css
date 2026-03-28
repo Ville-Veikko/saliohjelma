@@ -441,6 +441,85 @@ body {
 .hist-btn.selected { border-color: #7c3aed; background: #2d1b4e; color: #c084fc; }
 .hist-empty { font-size: 14px; color: #555; text-align: center; padding: 24px 0; }
 
+/* ── Historia-kortit ── */
+.hist-card {
+  background: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #2a2a2a;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.hist-card-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
+}
+/* Pääliikkeiden ruudukko: kg-sarake + P1/P2/P3 */
+.hist-lift-grid {
+  display: grid;
+  gap: 2px 8px;
+  align-items: center;
+}
+.hist-col-hdr {
+  font-size: 11px;
+  color: #555;
+  text-align: center;
+  padding-bottom: 4px;
+}
+.hist-lift-kg {
+  font-size: 13px;
+  color: #ccc;
+  white-space: nowrap;
+}
+.hist-bo-kg {
+  color: #888;
+  font-size: 12px;
+  padding-top: 2px;
+}
+.hist-lift-sets {
+  font-size: 13px;
+  text-align: center;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.hist-bo-sets {
+  color: #aaa;
+  font-size: 12px;
+  padding-top: 2px;
+}
+/* Olkapää + erilliset kortit */
+.hist-aux-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+  border-top: 1px solid #252525;
+}
+.hist-aux-row:first-of-type { border-top: none; }
+.hist-aux-label {
+  font-size: 11px;
+  color: #555;
+  min-width: 24px;
+  flex-shrink: 0;
+}
+.hist-aux-name {
+  font-size: 13px;
+  color: #aaa;
+  flex: 1;
+}
+.hist-aux-detail {
+  font-size: 13px;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.hist-aux-empty {
+  font-size: 13px;
+  color: #444;
+}
+
 /* ── Kehitys ── */
 .section-label {
   font-size: 13px;

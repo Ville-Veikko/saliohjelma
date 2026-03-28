@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { epley } from '../utils/epley'
 import { getSetCount } from '../hooks/useWorkout'
 
-// kg-label joka huomioi leuat-lisäpainon + kehonpaino
+// ── Apufunktiot nykyiselle treenille ──────────────────────────────────────
+
 function kgDisplay(kgRaw, isLeuat, bodyweight) {
   if (isLeuat) {
     const bw = bodyweight ? String(bodyweight) : 'bw'
@@ -11,14 +12,12 @@ function kgDisplay(kgRaw, isLeuat, bodyweight) {
   return String(kgRaw)
 }
 
-// back-off kg -label
 function boKgDisplay(boKgRaw) {
   if (boKgRaw == null) return null
   if (boKgRaw === 'bw') return 'bw'
   return `${boKgRaw} kg`
 }
 
-// Rakentaa rivit aktiivisesta treenistä (localStorage-results-rakenne)
 function buildRowsFromWorkout(program, week, day, results, bodyweight) {
   const exercises = program.days[day]
   return exercises.map((ex, i) => {
@@ -40,7 +39,6 @@ function buildRowsFromWorkout(program, week, day, results, bodyweight) {
   })
 }
 
-// Rakentaa rivit Sheets-historiasta ({ liike, set1, set2, set3, set4, bo })
 function buildRowsFromSheets(program, tulokset, viikko, paiva, bodyweight) {
   const week = viikko - 1
   const dayNum = parseInt(String(paiva).replace('Day ', ''), 10) - 1
@@ -78,11 +76,128 @@ function SummaryRows({ rows }) {
   ))
 }
 
+// ── Historia-kortit ───────────────────────────────────────────────────────
+
+/** Hakee tulokset-rivin Sheetsistä: { set1..4, bo } tai null */
+function getTulokset(sheetsData, week, day, exerciseName) {
+  const entry = sheetsData?.[`v${week + 1}_Day${day + 1}`]
+  return entry?.tulokset?.find(t => t.liike === exerciseName) ?? null
+}
+
+/** Muotoilee setit yhden päivän datasta: "4/4/3" tai "—" */
+function fmtSets(t, numSets) {
+  if (!t) return '—'
+  const vals = [t.set1, t.set2, t.set3, t.set4].slice(0, numSets)
+  if (vals.every(v => v == null)) return '—'
+  return vals.map(v => (typeof v === 'number' ? v : '?')).join('/')
+}
+
+/** Pääliikekortit: Penkki / Kyykky / Leuat — kaikki päivät valitulta viikolta */
+function MainLiftCard({ liftName, program, histWeek, sheetsData }) {
+  const ex = program.days[0].find(e => e.name === liftName)
+  if (!ex) return null
+  const numSets = program.weeks[histWeek].sets
+  const mainKg = ex.kg[histWeek]
+  const boKg = ex.boKg
+
+  const dayCount = program.days.length
+  const setsByDay = program.days.map((_, di) => {
+    const t = getTulokset(sheetsData, histWeek, di, liftName)
+    return fmtSets(t, numSets)
+  })
+  const boByDay = program.days.map((_, di) => {
+    const t = getTulokset(sheetsData, histWeek, di, liftName)
+    if (!t || typeof t.bo !== 'number') return '—'
+    return String(t.bo)
+  })
+
+  return (
+    <div className="hist-card">
+      <div className="hist-card-title">{liftName}</div>
+      <div className="hist-lift-grid" style={{ gridTemplateColumns: `68px repeat(${dayCount}, 1fr)` }}>
+        <span />
+        {program.days.map((_, di) => (
+          <span key={di} className="hist-col-hdr">P{di + 1}</span>
+        ))}
+        <span className="hist-lift-kg">{mainKg} kg</span>
+        {setsByDay.map((s, di) => (
+          <span key={di} className="hist-lift-sets">{s}</span>
+        ))}
+        {boKg != null && <>
+          <span className="hist-lift-kg hist-bo-kg">{boKg === 'bw' ? 'bw' : `${boKg} kg`}</span>
+          {boByDay.map((b, di) => (
+            <span key={di} className="hist-lift-sets hist-bo-sets">{b}</span>
+          ))}
+        </>}
+      </div>
+    </div>
+  )
+}
+
+/** Olkapää-kortti: yksi rivi per päivä, hartialiike voi olla eri per päivä */
+function ShoulderCard({ program, histWeek, sheetsData }) {
+  const numSets = program.weeks[histWeek].sets
+  const rows = program.days.map((day, di) => {
+    const ex = day[3] // hartialiike on aina indeksi 3
+    if (!ex) return null
+    const kgRaw = ex.kg[histWeek]
+    const kgLabel = kgRaw === 'bw' ? 'bw' : `${kgRaw} kg`
+    const t = getTulokset(sheetsData, histWeek, di, ex.name)
+    const sets = fmtSets(t, numSets)
+    return { label: `P${di + 1}`, name: ex.name, kgLabel, sets }
+  }).filter(Boolean)
+
+  return (
+    <div className="hist-card">
+      <div className="hist-card-title">Olkapäät</div>
+      {rows.map((row, i) => (
+        <div key={i} className="hist-aux-row">
+          <span className="hist-aux-label">{row.label}</span>
+          <span className="hist-aux-name">{row.name}</span>
+          <span className="hist-aux-detail">{row.kgLabel} · {row.sets}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** Erilliset kortit: Crunch/Ojentajat/Hauiskäännöt — kaikki viikot yhdellä päivällä */
+function AuxCard({ program, day, sheetsData }) {
+  const ex = program.days[day]?.[4]
+  if (!ex) return null
+
+  const rows = program.weeks.map((w, wi) => {
+    const numSets = w.sets
+    const kgRaw = ex.kg[wi]
+    const kgLabel = kgRaw === 'bw' ? 'bw' : `${kgRaw} kg`
+    const t = getTulokset(sheetsData, wi, day, ex.name)
+    const sets = fmtSets(t, numSets)
+    const hasData = t != null
+    return { label: `V${wi + 1}`, kgLabel, sets, hasData }
+  })
+
+  return (
+    <div className="hist-card">
+      <div className="hist-card-title">{ex.name}</div>
+      {rows.map((row, i) => (
+        <div key={i} className="hist-aux-row">
+          <span className="hist-aux-label">{row.label}</span>
+          {row.hasData
+            ? <span className="hist-aux-detail">{row.kgLabel} · {row.sets}</span>
+            : <span className="hist-aux-empty">—</span>
+          }
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ── Pääkomponentti ────────────────────────────────────────────────────────
+
 export default function SummaryScreen({ program, workout, bodyweight, sheetsHistory, initialHistWeek, initialHistDay, onSaved }) {
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
   const [histWeek, setHistWeek] = useState(initialHistWeek ?? 0)
-  const [histDay, setHistDay] = useState(initialHistDay ?? 0)
 
   const hasWorkout = !!workout
 
@@ -116,12 +231,7 @@ export default function SummaryScreen({ program, workout, bodyweight, sheetsHist
     onSaved?.()
   }
 
-  // Historia-osio: hae valitun viikon/päivän data Sheets-historiasta
-  const histKey = `v${histWeek + 1}_Day${histDay + 1}`
-  const histEntry = sheetsHistory?.data?.[histKey]
-  const histRows = histEntry
-    ? buildRowsFromSheets(program, histEntry.tulokset, histEntry.viikko, histEntry.paiva, bodyweight)
-    : null
+  const sheetsData = sheetsHistory?.data ?? null
 
   return (
     <div className="screen">
@@ -157,42 +267,55 @@ export default function SummaryScreen({ program, workout, bodyweight, sheetsHist
       {/* ── Historia-selaus ── */}
       <div className="hist-section-title">Selaa aiempia treenejä</div>
 
-      <div className="hist-selector-row">
-        <div className="hist-selector-label">Viikko</div>
-        <div className="hist-grid">
-          {program.weeks.map((_, i) => (
-            <button
-              key={i}
-              className={`hist-btn${histWeek === i ? ' selected' : ''}`}
-              onClick={() => setHistWeek(i)}
-            >
-              V{i + 1}
-            </button>
-          ))}
-        </div>
-
-        <div className="hist-selector-label">Päivä</div>
-        <div className="hist-grid">
-          {program.days.map((_, di) => (
-            <button
-              key={di}
-              className={`hist-btn${histDay === di ? ' selected' : ''}`}
-              onClick={() => setHistDay(di)}
-            >
-              P{di + 1}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {sheetsHistory?.loading ? (
         <div className="hist-empty">Ladataan historiaa...</div>
       ) : sheetsHistory?.error ? (
         <div className="hist-empty">Historian lataus epäonnistui</div>
-      ) : histRows ? (
-        <SummaryRows rows={histRows} />
       ) : (
-        <div className="hist-empty">Ei tuloksia tälle päivälle</div>
+        <>
+          {/* Viikkosuodatin */}
+          <div className="hist-selector-row">
+            <div className="hist-grid">
+              {program.weeks.map((_, i) => (
+                <button
+                  key={i}
+                  className={`hist-btn${histWeek === i ? ' selected' : ''}`}
+                  onClick={() => setHistWeek(i)}
+                >
+                  V{i + 1}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Pääliikekortit */}
+          {['Penkki', 'Kyykky', 'Leuat'].map(lift => (
+            <MainLiftCard
+              key={lift}
+              liftName={lift}
+              program={program}
+              histWeek={histWeek}
+              sheetsData={sheetsData}
+            />
+          ))}
+
+          {/* Olkapää-kortti */}
+          <ShoulderCard
+            program={program}
+            histWeek={histWeek}
+            sheetsData={sheetsData}
+          />
+
+          {/* Erilliset kortit per päivä */}
+          {program.days.map((_, di) => (
+            <AuxCard
+              key={di}
+              program={program}
+              day={di}
+              sheetsData={sheetsData}
+            />
+          ))}
+        </>
       )}
 
     </div>
