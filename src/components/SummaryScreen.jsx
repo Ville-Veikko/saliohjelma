@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { epley } from '../utils/epley'
 import { getSetCount } from '../hooks/useWorkout'
-import { loadWorkout } from '../utils/storage'
 
-function buildRows(program, week, day, results, bodyweight) {
+// Rakentaa rivit aktiivisesta treenistä (localStorage-results-rakenne)
+function buildRowsFromWorkout(program, week, day, results, bodyweight) {
   const exercises = program.days[day]
   return exercises.map((ex, i) => {
     const r = results[i]
@@ -15,8 +15,26 @@ function buildRows(program, week, day, results, bodyweight) {
     const best1rm = epleys.length ? Math.max(...epleys) : null
     const setsStr = doneSets.length ? doneSets.join(' / ') : '—'
     const boStr = typeof r.bo === 'number' ? ` · bo: ${r.bo}` : ''
-    const detail = `${kgRaw} kg · ${setsStr}${boStr}`
-    return { name: ex.name, detail, best1rm }
+    return { name: ex.name, detail: `${kgRaw} kg · ${setsStr}${boStr}`, best1rm }
+  })
+}
+
+// Rakentaa rivit Sheets-historiasta ({ liike, set1, set2, set3, set4, bo })
+function buildRowsFromSheets(program, tulokset, viikko, paiva, bodyweight) {
+  const week = viikko - 1
+  const dayNum = parseInt(String(paiva).replace('Day ', ''), 10) - 1
+  const exercises = program.days[dayNum] || []
+  return tulokset.map(t => {
+    const ex = exercises.find(e => e.name === t.liike)
+    const kgRaw = ex ? ex.kg[week] : null
+    const kgNum = !kgRaw ? 0 : kgRaw === 'bw' ? (bodyweight ?? 0) : parseFloat(kgRaw) || 0
+    const doneSets = [t.set1, t.set2, t.set3, t.set4].filter(v => typeof v === 'number')
+    const epleys = kgNum ? doneSets.map(v => epley(kgNum, v)).filter(Boolean) : []
+    const best1rm = epleys.length ? Math.max(...epleys) : null
+    const setsStr = doneSets.length ? doneSets.join(' / ') : '—'
+    const boStr = typeof t.bo === 'number' ? ` · bo: ${t.bo}` : ''
+    const kgLabel = kgRaw ?? '?'
+    return { name: t.liike, detail: `${kgLabel} kg · ${setsStr}${boStr}`, best1rm }
   })
 }
 
@@ -34,7 +52,7 @@ function SummaryRows({ rows }) {
   ))
 }
 
-export default function SummaryScreen({ program, workout, bodyweight, onSaved }) {
+export default function SummaryScreen({ program, workout, bodyweight, sheetsHistory, onSaved }) {
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
   const [histWeek, setHistWeek] = useState(0)
@@ -72,10 +90,11 @@ export default function SummaryScreen({ program, workout, bodyweight, onSaved })
     onSaved?.()
   }
 
-  // Historia-osio
-  const histSaved = loadWorkout(histWeek, histDay)
-  const histRows = histSaved
-    ? buildRows(program, histWeek, histDay, histSaved.results, bodyweight)
+  // Historia-osio: hae valitun viikon/päivän data Sheets-historiasta
+  const histKey = `v${histWeek + 1}_Day${histDay + 1}`
+  const histEntry = sheetsHistory?.data?.[histKey]
+  const histRows = histEntry
+    ? buildRowsFromSheets(program, histEntry.tulokset, histEntry.viikko, histEntry.paiva, bodyweight)
     : null
 
   return (
@@ -88,11 +107,9 @@ export default function SummaryScreen({ program, workout, bodyweight, onSaved })
           <div className="screen-sub">
             Päivä {workout.day + 1} · Viikko {workout.week + 1} · RIR {program.weeks[workout.week].rir}
           </div>
-
           <SummaryRows
-            rows={buildRows(program, workout.week, workout.day, workout.results, bodyweight)}
+            rows={buildRowsFromWorkout(program, workout.week, workout.day, workout.results, bodyweight)}
           />
-
           <button
             className={`save-btn${saved ? ' saved' : ''}`}
             onClick={handleSave}
@@ -117,7 +134,7 @@ export default function SummaryScreen({ program, workout, bodyweight, onSaved })
       <div className="hist-selector-row">
         <div className="hist-selector-label">Viikko</div>
         <div className="hist-grid">
-          {program.weeks.map((w, i) => (
+          {program.weeks.map((_, i) => (
             <button
               key={i}
               className={`hist-btn${histWeek === i ? ' selected' : ''}`}
@@ -142,7 +159,11 @@ export default function SummaryScreen({ program, workout, bodyweight, onSaved })
         </div>
       </div>
 
-      {histRows ? (
+      {sheetsHistory?.loading ? (
+        <div className="hist-empty">Ladataan historiaa...</div>
+      ) : sheetsHistory?.error ? (
+        <div className="hist-empty">Historian lataus epäonnistui</div>
+      ) : histRows ? (
         <SummaryRows rows={histRows} />
       ) : (
         <div className="hist-empty">Ei tuloksia tälle päivälle</div>

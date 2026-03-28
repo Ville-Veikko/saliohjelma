@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { Dumbbell, ClipboardList, TrendingUp, Settings } from 'lucide-react'
 import { useWorkout } from './hooks/useWorkout'
 import { useTimer } from './hooks/useTimer'
@@ -35,6 +35,25 @@ export default function App() {
   const [screen, setScreen] = useState('start')
 
   const [bodyweight, setBodyweight] = useState(() => loadBodyweight())
+
+  // Sheets-historia (haetaan kerran ohjelman latauksen jälkeen)
+  const [sheetsHistory, setSheetsHistory] = useState({ loading: true, data: null, error: null })
+
+  useEffect(() => {
+    if (!workoutHook.program) return
+    fetch(workoutHook.program.sheetsUrl)
+      .then(r => r.json())
+      .then(json => {
+        if (json.ok) {
+          setSheetsHistory({ loading: false, data: json.historia, error: null })
+        } else {
+          setSheetsHistory({ loading: false, data: null, error: json.error || 'Tuntematon virhe' })
+        }
+      })
+      .catch(err => {
+        setSheetsHistory({ loading: false, data: null, error: err.message })
+      })
+  }, [workoutHook.program])
 
   const handleStartWorkout = useCallback((week, day) => {
     workoutHook.startWorkout(week, day)
@@ -107,6 +126,7 @@ export default function App() {
             program={workoutHook.program}
             workout={workoutHook.workout}
             bodyweight={bodyweight}
+            sheetsHistory={sheetsHistory}
             onSaved={handleSaved}
           />
         )}
