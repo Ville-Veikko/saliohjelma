@@ -117,17 +117,19 @@ function EpleyChart({ liftName, historyData, sheetsEpley, bodyweight }) {
       if (mesoName === 'M3/26') {
         const sl = sheetsEpley?.data?.epley?.[liftName]
         if (!sl) { extraData.push(null); return null }
-        const kgNum = liftName === 'Leuat' ? sl.bestKg + (bodyweight ?? 0) : sl.bestKg
+        const isLeuat = liftName === 'Leuat'
+        const kgNum = isLeuat ? sl.bestKg + (bodyweight ?? 0) : sl.bestKg
         const e = epley(kgNum, sl.bestReps) ?? null
-        extraData.push(e ? { kg: kgNum, reps: sl.bestReps } : null)
+        extraData.push(e ? { kg: kgNum, reps: sl.bestReps, extraKg: isLeuat ? sl.bestKg : null } : null)
         return e
       }
       const liftData = historyData[mesoName]?.[liftKey]
       if (!liftData?.length) { extraData.push(null); return null }
       const best = liftData.reduce((b, e) => e.epley > (b?.epley ?? 0) ? e : b, null)
       if (!best) { extraData.push(null); return null }
-      const displayKg = liftName === 'Leuat' ? best.kg + (bodyweight ?? 0) : best.kg
-      extraData.push({ kg: displayKg, reps: best.reps })
+      const isLeuat = liftName === 'Leuat'
+      const displayKg = isLeuat ? best.kg + (bodyweight ?? 0) : best.kg
+      extraData.push({ kg: displayKg, reps: best.reps, extraKg: isLeuat ? best.kg : null })
       return best.epley
     })
 
@@ -161,7 +163,12 @@ function EpleyChart({ liftName, historyData, sheetsEpley, bodyweight }) {
               label: (ctx) => {
                 if (ctx.parsed.y == null) return ''
                 const extra = extraData[ctx.dataIndex]
-                if (extra) return `${ctx.parsed.y} kg — ${extra.kg} kg × ${extra.reps}`
+                if (extra) {
+                  const kgStr = extra.extraKg != null
+                    ? (extra.extraKg > 0 ? `bw + ${extra.extraKg} kg` : 'bw')
+                    : `${extra.kg} kg`
+                  return `${ctx.parsed.y} kg — ${kgStr} × ${extra.reps}`
+                }
                 return `${ctx.parsed.y} kg`
               },
             },
