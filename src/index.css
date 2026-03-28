@@ -482,6 +482,67 @@ body {
 .ep-down { color: #f87171; font-size: 12px; }
 .ep-dim  { color: #444; }
 
+/* ── Kehitys: välilehdet ── */
+.ep-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  background: #1a1a1a;
+  border-radius: 10px;
+  padding: 4px;
+  border: 1px solid #2a2a2a;
+}
+.ep-tab {
+  flex: 1;
+  padding: 8px 0;
+  background: none;
+  border: none;
+  border-radius: 7px;
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.ep-tab.active {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+/* ── Kehitys: liike-valintanapit (graafi) ── */
+.ep-lift-btns {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.ep-lift-btn {
+  flex: 1;
+  padding: 8px 0;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  color: #888;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.ep-lift-btn.active {
+  background: #2d1b4e;
+  border-color: #a855f7;
+  color: #c084fc;
+}
+
+/* ── Kehitys: graafi-container ── */
+.ep-chart-wrap {
+  position: relative;
+  height: 340px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #2a2a2a;
+  padding: 16px 12px 8px;
+}
+
 /* ── Asetukset ── */
 .settings-field { margin-bottom: 24px; }
 .settings-label { font-size: 13px; color: #888; margin-bottom: 8px; display: block; }
