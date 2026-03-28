@@ -2,6 +2,22 @@ import React, { useState } from 'react'
 import { epley } from '../utils/epley'
 import { getSetCount } from '../hooks/useWorkout'
 
+// kg-label joka huomioi leuat-lisäpainon + kehonpaino
+function kgDisplay(kgRaw, isLeuat, bodyweight) {
+  if (isLeuat) {
+    const bw = bodyweight ? String(bodyweight) : 'bw'
+    return `${kgRaw} + ${bw}`
+  }
+  return String(kgRaw)
+}
+
+// back-off kg -label
+function boKgDisplay(boKgRaw) {
+  if (boKgRaw == null) return null
+  if (boKgRaw === 'bw') return 'bw'
+  return `${boKgRaw} kg`
+}
+
 // Rakentaa rivit aktiivisesta treenistä (localStorage-results-rakenne)
 function buildRowsFromWorkout(program, week, day, results, bodyweight) {
   const exercises = program.days[day]
@@ -9,13 +25,18 @@ function buildRowsFromWorkout(program, week, day, results, bodyweight) {
     const r = results[i]
     if (!r) return { name: ex.name, detail: '—', best1rm: null }
     const kgRaw = ex.kg[week]
+    const isLeuat = ex.badge === 'leuat'
     const kgNum = kgRaw === 'bw' ? (bodyweight ?? 0) : parseFloat(kgRaw) || 0
+    const epleyKg = isLeuat ? kgNum + (bodyweight ?? 0) : kgNum
     const doneSets = r.sets.filter(v => typeof v === 'number')
-    const epleys = doneSets.map(v => epley(kgNum, v)).filter(Boolean)
+    const epleys = doneSets.map(v => epley(epleyKg, v)).filter(Boolean)
     const best1rm = epleys.length ? Math.max(...epleys) : null
     const setsStr = doneSets.length ? doneSets.join(' / ') : '—'
-    const boStr = typeof r.bo === 'number' ? ` · bo: ${r.bo}` : ''
-    return { name: ex.name, detail: `${kgRaw} kg · ${setsStr}${boStr}`, best1rm }
+    const boLabel = boKgDisplay(ex.boKg)
+    const boStr = typeof r.bo === 'number'
+      ? boLabel ? ` · bo ${boLabel}: ${r.bo}` : ` · bo: ${r.bo}`
+      : ''
+    return { name: ex.name, detail: `${kgDisplay(kgRaw, isLeuat, bodyweight)} kg · ${setsStr}${boStr}`, best1rm }
   })
 }
 
@@ -27,14 +48,19 @@ function buildRowsFromSheets(program, tulokset, viikko, paiva, bodyweight) {
   return tulokset.map(t => {
     const ex = exercises.find(e => e.name === t.liike)
     const kgRaw = ex ? ex.kg[week] : null
+    const isLeuat = ex?.badge === 'leuat'
     const kgNum = !kgRaw ? 0 : kgRaw === 'bw' ? (bodyweight ?? 0) : parseFloat(kgRaw) || 0
+    const epleyKg = isLeuat ? kgNum + (bodyweight ?? 0) : kgNum
     const doneSets = [t.set1, t.set2, t.set3, t.set4].filter(v => typeof v === 'number')
-    const epleys = kgNum ? doneSets.map(v => epley(kgNum, v)).filter(Boolean) : []
+    const epleys = epleyKg ? doneSets.map(v => epley(epleyKg, v)).filter(Boolean) : []
     const best1rm = epleys.length ? Math.max(...epleys) : null
     const setsStr = doneSets.length ? doneSets.join(' / ') : '—'
-    const boStr = typeof t.bo === 'number' ? ` · bo: ${t.bo}` : ''
+    const boLabel = ex ? boKgDisplay(ex.boKg) : null
+    const boStr = typeof t.bo === 'number'
+      ? boLabel ? ` · bo ${boLabel}: ${t.bo}` : ` · bo: ${t.bo}`
+      : ''
     const kgLabel = kgRaw ?? '?'
-    return { name: t.liike, detail: `${kgLabel} kg · ${setsStr}${boStr}`, best1rm }
+    return { name: t.liike, detail: `${kgDisplay(kgLabel, isLeuat, bodyweight)} kg · ${setsStr}${boStr}`, best1rm }
   })
 }
 

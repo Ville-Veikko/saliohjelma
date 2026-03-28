@@ -18,9 +18,11 @@ export default function StartScreen({
   const ready = selectedWeek >= 0 && selectedDay >= 0
   const histData = sheetsHistory?.data
 
-  // Sheets-pohjainen valmius
+  // Sheets-pohjainen valmius — tarkistetaan että päivällä on oikeita tuloksia
   function isDayInSheets(wi, di) {
-    return !!histData?.[`v${wi + 1}_Day${di + 1}`]
+    const entry = histData?.[`v${wi + 1}_Day${di + 1}`]
+    if (!entry?.tulokset) return false
+    return entry.tulokset.some(t => t.set1 != null)
   }
   function isWeekInSheets(wi) {
     return program.days.every((_, di) => isDayInSheets(wi, di))
