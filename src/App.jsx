@@ -38,7 +38,7 @@ export default function App() {
 
   // Sheets-historia (haetaan kerran ohjelman latauksen jälkeen)
   const [sheetsHistory, setSheetsHistory] = useState({ loading: true, data: null, error: null })
-  const [epleyData, setEpleyData] = useState({ loading: true, data: null, error: null })
+  const [sheetsEpley, setSheetsEpley] = useState({ loading: true, data: null, error: null })
 
   useEffect(() => {
     if (!workoutHook.program) return
@@ -60,13 +60,13 @@ export default function App() {
       .then(r => r.json())
       .then(json => {
         if (json.ok) {
-          setEpleyData({ loading: false, data: json, error: null })
+          setSheetsEpley({ loading: false, data: json, error: null })
         } else {
-          setEpleyData({ loading: false, data: null, error: json.error || 'Tuntematon virhe' })
+          setSheetsEpley({ loading: false, data: null, error: json.error || 'Tuntematon virhe' })
         }
       })
       .catch(err => {
-        setEpleyData({ loading: false, data: null, error: err.message })
+        setSheetsEpley({ loading: false, data: null, error: err.message })
       })
   }, [workoutHook.program])
 
@@ -168,9 +168,8 @@ export default function App() {
         {screen === 'progress' && (
           <ProgressScreen
             program={workoutHook.program}
-            workout={workoutHook.workout}
             bodyweight={bodyweight}
-            epleyData={epleyData}
+            sheetsEpley={sheetsEpley}
           />
         )}
 
