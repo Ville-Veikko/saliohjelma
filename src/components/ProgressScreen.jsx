@@ -32,8 +32,8 @@ function calcCurrentMesoBest(program, workout, bodyweight, liftName) {
         if (!kgNum) return
 
         const numSets = getSetCount(program, w, ex)
-        const allReps = [...res.sets.slice(0, numSets)]
-        if (ex.boKg !== null && res.bo != null) {
+        const allReps = res.sets.slice(0, numSets).filter(v => typeof v === 'number')
+        if (ex.boKg !== null && typeof res.bo === 'number') {
           const boKgNum = ex.boKg === 'bw' ? (bodyweight ?? 0) : parseFloat(ex.boKg) || 0
           const boEp = epley(boKgNum, res.bo)
           if (boEp && (!best1rm || boEp > best1rm)) {

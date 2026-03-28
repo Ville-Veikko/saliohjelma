@@ -16,12 +16,14 @@ export default function ExerciseCard({
   weekIndex,
   dayIndex,
   exerciseIndex,
-  result,         // { sets: [null|reps, ...], bo: null|reps }
+  result,         // { sets: [null|reps|'skip', ...], bo: null|reps|'skip' }
   bodyweight,     // kg tai null — tarvitaan bw-liikkeille
   onDoneSet,      // (setIndex, reps) => void
   onUndoSet,      // (setIndex) => void
+  onSkipSet,      // (setIndex) => void
   onDoneBo,       // (reps) => void
   onUndoBo,       // () => void
+  onSkipBo,       // () => void
   onTimerStart,   // () => void
 }) {
   const exercise = program.days[dayIndex][exerciseIndex]
@@ -112,30 +114,32 @@ export default function ExerciseCard({
             kgNum={kgNum}
             rMin={rMin}
             rMax={rMax}
-            isDone={result.sets[i] != null}
-            savedReps={result.sets[i]}
+            isDone={typeof result.sets[i] === 'number'}
+            isSkipped={result.sets[i] === 'skip'}
+            savedReps={typeof result.sets[i] === 'number' ? result.sets[i] : null}
             onDone={reps => onDoneSet(i, reps)}
             onUndo={() => onUndoSet(i)}
+            onSkip={() => onSkipSet(i)}
             onTimerStart={onTimerStart}
           />
         ))}
 
         {/* Back-off */}
         {hasBo && (
-          <>
-            <SetRow
-              type="bo"
-              kgLabel={boKgLabel}
-              kgNum={boKgNum}
-              rMin={effectiveBoTarget}
-              rMax={effectiveBoTarget}
-              isDone={result.bo != null}
-              savedReps={result.bo}
-              onDone={reps => onDoneBo(reps)}
-              onUndo={() => onUndoBo()}
-              onTimerStart={onTimerStart}
-            />
-          </>
+          <SetRow
+            type="bo"
+            kgLabel={boKgLabel}
+            kgNum={boKgNum}
+            rMin={effectiveBoTarget}
+            rMax={effectiveBoTarget}
+            isDone={typeof result.bo === 'number'}
+            isSkipped={result.bo === 'skip'}
+            savedReps={typeof result.bo === 'number' ? result.bo : null}
+            onDone={reps => onDoneBo(reps)}
+            onUndo={() => onUndoBo()}
+            onSkip={() => onSkipBo()}
+            onTimerStart={onTimerStart}
+          />
         )}
       </div>
     </div>

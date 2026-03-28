@@ -10,11 +10,11 @@ function buildRows(program, week, day, results, bodyweight) {
     if (!r) return { name: ex.name, detail: '—', best1rm: null }
     const kgRaw = ex.kg[week]
     const kgNum = kgRaw === 'bw' ? (bodyweight ?? 0) : parseFloat(kgRaw) || 0
-    const doneSets = r.sets.filter(v => v != null)
+    const doneSets = r.sets.filter(v => typeof v === 'number')
     const epleys = doneSets.map(v => epley(kgNum, v)).filter(Boolean)
     const best1rm = epleys.length ? Math.max(...epleys) : null
     const setsStr = doneSets.length ? doneSets.join(' / ') : '—'
-    const boStr = r.bo != null ? ` · bo: ${r.bo}` : ''
+    const boStr = typeof r.bo === 'number' ? ` · bo: ${r.bo}` : ''
     const detail = `${kgRaw} kg · ${setsStr}${boStr}`
     return { name: ex.name, detail, best1rm }
   })
@@ -51,11 +51,11 @@ export default function SummaryScreen({ program, workout, bodyweight, onSaved })
       const numSets = getSetCount(program, week, ex)
       return {
         liike: ex.name,
-        set1: r.sets[0] ?? null,
-        set2: r.sets[1] ?? null,
-        set3: numSets >= 3 ? (r.sets[2] ?? null) : null,
-        set4: numSets >= 4 ? (r.sets[3] ?? null) : null,
-        bo:   r.bo ?? null,
+        set1: typeof r.sets[0] === 'number' ? r.sets[0] : null,
+        set2: typeof r.sets[1] === 'number' ? r.sets[1] : null,
+        set3: numSets >= 3 ? (typeof r.sets[2] === 'number' ? r.sets[2] : null) : null,
+        set4: numSets >= 4 ? (typeof r.sets[3] === 'number' ? r.sets[3] : null) : null,
+        bo:   typeof r.bo === 'number' ? r.bo : null,
       }
     })
     return { viikko: week + 1, paiva: `Day ${day + 1}`, tulokset }

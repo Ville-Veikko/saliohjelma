@@ -8,6 +8,7 @@ import WorkoutScreen from './components/WorkoutScreen'
 import SummaryScreen from './components/SummaryScreen'
 import ProgressScreen from './components/ProgressScreen'
 import SettingsScreen from './components/SettingsScreen'
+import TimerBar from './components/TimerBar'
 
 function LoadingScreen() {
   return (
@@ -59,9 +60,17 @@ export default function App() {
   if (workoutHook.loading) return <LoadingScreen />
   if (workoutHook.error) return <ErrorScreen message={workoutHook.error} />
 
+  // Kun taimeri on näkyvissä, MiniHeader offsettaa sen alle
+  const timerOffset = timer.visible ? '61px' : '0px'
+
   return (
     <>
-      <div className="main-content">
+      <div
+        className="main-content"
+        style={{ '--mini-top': timerOffset }}
+      >
+        <TimerBar timer={timer} />
+
         {screen === 'start' && (
           <StartScreen
             program={workoutHook.program}
@@ -78,12 +87,14 @@ export default function App() {
           <WorkoutScreen
             program={workoutHook.program}
             workout={workoutHook.workout}
-            timer={timer}
+            timerStart={timer.start}
             bodyweight={bodyweight}
             onDoneSet={workoutHook.doneSet}
             onUndoSet={workoutHook.undoSet}
+            onSkipSet={workoutHook.skipSet}
             onDoneBo={workoutHook.doneBo}
             onUndoBo={workoutHook.undoBo}
+            onSkipBo={workoutHook.skipBo}
             onNext={handleNext}
             onPrev={workoutHook.prevExercise}
             onBack={() => setScreen('start')}

@@ -104,6 +104,17 @@ export function useWorkout() {
     applyResults(newResults, workout.week, workout.day)
   }, [workout, applyResults])
 
+  const skipSet = useCallback((exerciseIndex, setIndex) => {
+    if (!workout) return
+    const newResults = workout.results.map((r, i) => {
+      if (i !== exerciseIndex) return r
+      const newSets = [...r.sets]
+      newSets[setIndex] = 'skip'
+      return { ...r, sets: newSets }
+    })
+    applyResults(newResults, workout.week, workout.day)
+  }, [workout, applyResults])
+
   const doneBo = useCallback((exerciseIndex, reps) => {
     if (!workout) return
     const newResults = workout.results.map((r, i) =>
@@ -116,6 +127,14 @@ export function useWorkout() {
     if (!workout) return
     const newResults = workout.results.map((r, i) =>
       i === exerciseIndex ? { ...r, bo: null } : r
+    )
+    applyResults(newResults, workout.week, workout.day)
+  }, [workout, applyResults])
+
+  const skipBo = useCallback((exerciseIndex) => {
+    if (!workout) return
+    const newResults = workout.results.map((r, i) =>
+      i === exerciseIndex ? { ...r, bo: 'skip' } : r
     )
     applyResults(newResults, workout.week, workout.day)
   }, [workout, applyResults])
@@ -171,8 +190,10 @@ export function useWorkout() {
     startWorkout,
     doneSet,
     undoSet,
+    skipSet,
     doneBo,
     undoBo,
+    skipBo,
     goToExercise,
     nextExercise,
     prevExercise,
