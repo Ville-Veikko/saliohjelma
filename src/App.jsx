@@ -41,9 +41,15 @@ export default function App() {
 
   useEffect(() => {
     if (!workoutHook.program) return
-    fetch(workoutHook.program.sheetsUrl)
-      .then(r => r.json())
+    const url = workoutHook.program.sheetsUrl
+    console.log('[historia] fetch →', url)
+    fetch(url)
+      .then(r => {
+        console.log('[historia] status:', r.status, 'ok:', r.ok)
+        return r.json()
+      })
       .then(json => {
+        console.log('[historia] data:', JSON.stringify(json).slice(0, 300))
         if (json.ok) {
           setSheetsHistory({ loading: false, data: json.historia, error: null })
         } else {
@@ -51,6 +57,7 @@ export default function App() {
         }
       })
       .catch(err => {
+        console.error('[historia] fetch error:', err.message)
         setSheetsHistory({ loading: false, data: null, error: err.message })
       })
   }, [workoutHook.program])
