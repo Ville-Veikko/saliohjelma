@@ -38,18 +38,14 @@ export default function App() {
 
   // Sheets-historia (haetaan kerran ohjelman latauksen jälkeen)
   const [sheetsHistory, setSheetsHistory] = useState({ loading: true, data: null, error: null })
+  const [epleyData, setEpleyData] = useState({ loading: true, data: null, error: null })
 
   useEffect(() => {
     if (!workoutHook.program) return
     const url = workoutHook.program.sheetsUrl
-    console.log('[historia] fetch →', url)
     fetch(url)
-      .then(r => {
-        console.log('[historia] status:', r.status, 'ok:', r.ok)
-        return r.json()
-      })
+      .then(r => r.json())
       .then(json => {
-        console.log('[historia] data:', JSON.stringify(json).slice(0, 300))
         if (json.ok) {
           setSheetsHistory({ loading: false, data: json.historia, error: null })
         } else {
@@ -57,8 +53,20 @@ export default function App() {
         }
       })
       .catch(err => {
-        console.error('[historia] fetch error:', err.message)
         setSheetsHistory({ loading: false, data: null, error: err.message })
+      })
+
+    fetch(url + '?action=epley')
+      .then(r => r.json())
+      .then(json => {
+        if (json.ok) {
+          setEpleyData({ loading: false, data: json, error: null })
+        } else {
+          setEpleyData({ loading: false, data: null, error: json.error || 'Tuntematon virhe' })
+        }
+      })
+      .catch(err => {
+        setEpleyData({ loading: false, data: null, error: err.message })
       })
   }, [workoutHook.program])
 
@@ -162,6 +170,7 @@ export default function App() {
             program={workoutHook.program}
             workout={workoutHook.workout}
             bodyweight={bodyweight}
+            epleyData={epleyData}
           />
         )}
 

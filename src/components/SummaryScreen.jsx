@@ -118,10 +118,6 @@ export default function SummaryScreen({ program, workout, bodyweight, sheetsHist
 
   // Historia-osio: hae valitun viikon/päivän data Sheets-historiasta
   const histKey = `v${histWeek + 1}_Day${histDay + 1}`
-  if (sheetsHistory?.data) {
-    console.log('[historia] avaimet:', Object.keys(sheetsHistory.data))
-  }
-  console.log('[historia] haetaan avaimella:', histKey)
   const histEntry = sheetsHistory?.data?.[histKey]
   const histRows = histEntry
     ? buildRowsFromSheets(program, histEntry.tulokset, histEntry.viikko, histEntry.paiva, bodyweight)

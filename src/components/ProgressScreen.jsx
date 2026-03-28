@@ -57,10 +57,24 @@ function calcCurrentMesoBest(program, workout, bodyweight, liftName) {
   return best1rm ? { best1rm, bestSet } : null
 }
 
-function LiftTable({ liftName, program, workout, bodyweight }) {
+function LiftTable({ liftName, program, workout, bodyweight, epleyData }) {
   const history = program.epleyProgress?.[liftName] ?? []
   const currentMeso = program.meso.replace('Meso ', 'M').replace(' / ', '/')  // "M3/26"
-  const currentBest = calcCurrentMesoBest(program, workout, bodyweight, liftName)
+
+  // Sheets-data nykyiselle mesolle (haettu ?action=epley)
+  let currentBest = null
+  const sheetsLift = epleyData?.data?.epley?.[liftName]
+  if (sheetsLift) {
+    const isLeuat = liftName === 'Leuat'
+    const kgNum = isLeuat ? sheetsLift.bestKg + (bodyweight ?? 0) : sheetsLift.bestKg
+    const best1rm = epley(kgNum, sheetsLift.bestReps)
+    currentBest = best1rm
+      ? { best1rm, bestSet: `${sheetsLift.bestKg}×${sheetsLift.bestReps}` }
+      : null
+  } else if (!epleyData?.loading) {
+    // Sheets-haku valmis mutta ei dataa — fallback nykyiseen treeniin
+    currentBest = calcCurrentMesoBest(program, workout, bodyweight, liftName)
+  }
 
   // Rakennetaan rivit: historialliset + nykyinen meso
   const allRows = [
@@ -68,7 +82,11 @@ function LiftTable({ liftName, program, workout, bodyweight }) {
     {
       meso: currentMeso,
       best1rm: currentBest?.best1rm ?? null,
-      bestSet: currentBest?.bestSet ?? 'ei dataa',
+      bestSet: currentBest
+        ? currentBest.bestSet
+        : epleyData?.loading
+          ? 'ladataan…'
+          : 'ei dataa',
       delta: (() => {
         if (!currentBest || !history.length) return null
         const prev = history[history.length - 1]?.best1rm
@@ -112,7 +130,7 @@ function LiftTable({ liftName, program, workout, bodyweight }) {
   )
 }
 
-export default function ProgressScreen({ program, workout, bodyweight }) {
+export default function ProgressScreen({ program, workout, bodyweight, epleyData }) {
   return (
     <div className="screen">
       <div className="screen-title">Voimakehitys</div>
@@ -126,6 +144,7 @@ export default function ProgressScreen({ program, workout, bodyweight }) {
             program={program}
             workout={workout}
             bodyweight={bodyweight}
+            epleyData={epleyData}
           />
         </React.Fragment>
       ))}
