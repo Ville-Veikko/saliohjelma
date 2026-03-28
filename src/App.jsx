@@ -36,6 +36,16 @@ export default function App() {
 
   const [bodyweight, setBodyweight] = useState(() => loadBodyweight())
 
+  // Staattinen harjoitushistoria (history.json)
+  const [historyData, setHistoryData] = useState(null)
+
+  useEffect(() => {
+    fetch(`${import.meta.env.BASE_URL}history.json`)
+      .then(r => r.json())
+      .then(data => setHistoryData(data))
+      .catch(() => {})
+  }, [])
+
   // Sheets-historia (haetaan kerran ohjelman latauksen jälkeen)
   const [sheetsHistory, setSheetsHistory] = useState({ loading: true, data: null, error: null })
   const [sheetsEpley, setSheetsEpley] = useState({ loading: true, data: null, error: null })
@@ -170,6 +180,7 @@ export default function App() {
             program={workoutHook.program}
             bodyweight={bodyweight}
             sheetsEpley={sheetsEpley}
+            historyData={historyData}
           />
         )}
 

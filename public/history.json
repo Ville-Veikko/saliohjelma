@@ -1,0 +1,422 @@
+{
+  "M4/24": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 70,
+        "reps": 8,
+        "epley": 88.7
+      },
+      {
+        "viikko": "V2",
+        "kg": 70,
+        "reps": 9,
+        "epley": 91.0
+      },
+      {
+        "viikko": "V3",
+        "kg": 70,
+        "reps": 10,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V4",
+        "kg": 70,
+        "reps": 10,
+        "epley": 93.3
+      }
+    ]
+  },
+  "M5/24": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 70,
+        "reps": 8,
+        "epley": 88.7
+      },
+      {
+        "viikko": "V2",
+        "kg": 70,
+        "reps": 9,
+        "epley": 91.0
+      },
+      {
+        "viikko": "V3",
+        "kg": 70,
+        "reps": 10,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V4",
+        "kg": 70,
+        "reps": 11,
+        "epley": 95.7
+      }
+    ]
+  },
+  "M6/24": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 80,
+        "reps": 5,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V2",
+        "kg": 75,
+        "reps": 8,
+        "epley": 95.0
+      },
+      {
+        "viikko": "V3",
+        "kg": 77.5,
+        "reps": 7,
+        "epley": 95.6
+      },
+      {
+        "viikko": "V4",
+        "kg": 80,
+        "reps": 7,
+        "epley": 98.7
+      }
+    ]
+  },
+  "M1/25": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 80,
+        "reps": 5,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V2",
+        "kg": 75,
+        "reps": 8,
+        "epley": 95.0
+      },
+      {
+        "viikko": "V3",
+        "kg": 80,
+        "reps": 9,
+        "epley": 104.0
+      }
+    ]
+  },
+  "M2/25": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 80,
+        "reps": 5,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V2",
+        "kg": 75,
+        "reps": 8,
+        "epley": 95.0
+      },
+      {
+        "viikko": "V3",
+        "kg": 70,
+        "reps": 12,
+        "epley": 98.0
+      }
+    ]
+  },
+  "M3/25": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 80,
+        "reps": 5,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V2",
+        "kg": 75,
+        "reps": 8,
+        "epley": 95.0
+      },
+      {
+        "viikko": "V3",
+        "kg": 85,
+        "reps": 6,
+        "epley": 102.0
+      }
+    ]
+  },
+  "M4/25": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 80,
+        "reps": 5,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V2",
+        "kg": 75,
+        "reps": 8,
+        "epley": 95.0
+      },
+      {
+        "viikko": "V3",
+        "kg": 80,
+        "reps": 6,
+        "epley": 96.0
+      }
+    ]
+  },
+  "M5/25": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 80,
+        "reps": 5,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V2",
+        "kg": 80,
+        "reps": 5,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V3",
+        "kg": 80,
+        "reps": 6,
+        "epley": 96.0
+      }
+    ]
+  },
+  "M6/25": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 85,
+        "reps": 4,
+        "epley": 96.3
+      },
+      {
+        "viikko": "V2",
+        "kg": 85,
+        "reps": 6,
+        "epley": 102.0
+      },
+      {
+        "viikko": "V3",
+        "kg": 85,
+        "reps": 6,
+        "epley": 102.0
+      }
+    ]
+  },
+  "M7/25": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 80,
+        "reps": 5,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V2",
+        "kg": 80,
+        "reps": 6,
+        "epley": 96.0
+      },
+      {
+        "viikko": "V3",
+        "kg": 85,
+        "reps": 6,
+        "epley": 102.0
+      }
+    ],
+    "kyykky": [
+      {
+        "viikko": "V1",
+        "kg": 75,
+        "reps": 4,
+        "epley": 85.0
+      },
+      {
+        "viikko": "V2",
+        "kg": 80,
+        "reps": 6,
+        "epley": 96.0
+      },
+      {
+        "viikko": "V3",
+        "kg": 85,
+        "reps": 6,
+        "epley": 102.0
+      }
+    ],
+    "leuat": [
+      {
+        "viikko": "V1",
+        "kg": 0,
+        "reps": 8,
+        "epley": 106.4
+      },
+      {
+        "viikko": "V2",
+        "kg": 5,
+        "reps": 5,
+        "epley": 103.8
+      },
+      {
+        "viikko": "V3",
+        "kg": 7.5,
+        "reps": 5,
+        "epley": 106.8
+      }
+    ]
+  },
+  "M1/26": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 80,
+        "reps": 5,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V2",
+        "kg": 85,
+        "reps": 7,
+        "epley": 104.8
+      },
+      {
+        "viikko": "V3",
+        "kg": 90,
+        "reps": 6,
+        "epley": 108.0
+      }
+    ],
+    "kyykky": [
+      {
+        "viikko": "V1",
+        "kg": 75,
+        "reps": 4,
+        "epley": 85.0
+      },
+      {
+        "viikko": "V2",
+        "kg": 85,
+        "reps": 7,
+        "epley": 104.8
+      },
+      {
+        "viikko": "V3",
+        "kg": 90,
+        "reps": 6,
+        "epley": 108.0
+      }
+    ],
+    "leuat": [
+      {
+        "viikko": "V1",
+        "kg": 0,
+        "reps": 8,
+        "epley": 106.4
+      },
+      {
+        "viikko": "V2",
+        "kg": 5,
+        "reps": 7,
+        "epley": 109.8
+      },
+      {
+        "viikko": "V3",
+        "kg": 10,
+        "reps": 6,
+        "epley": 112.8
+      }
+    ]
+  },
+  "M2/26": {
+    "penkki": [
+      {
+        "viikko": "V1",
+        "kg": 80,
+        "reps": 5,
+        "epley": 93.3
+      },
+      {
+        "viikko": "V3",
+        "kg": 90,
+        "reps": 8,
+        "epley": 114.0
+      },
+      {
+        "viikko": "V4",
+        "kg": 95,
+        "reps": 5,
+        "epley": 110.8
+      },
+      {
+        "viikko": "V5",
+        "kg": 100,
+        "reps": 3,
+        "epley": 110.0
+      }
+    ],
+    "kyykky": [
+      {
+        "viikko": "V1",
+        "kg": 75,
+        "reps": 4,
+        "epley": 85.0
+      },
+      {
+        "viikko": "V3",
+        "kg": 90,
+        "reps": 8,
+        "epley": 114.0
+      },
+      {
+        "viikko": "V4",
+        "kg": 95,
+        "reps": 7,
+        "epley": 117.2
+      },
+      {
+        "viikko": "V5",
+        "kg": 100,
+        "reps": 4,
+        "epley": 113.3
+      }
+    ],
+    "leuat": [
+      {
+        "viikko": "V1",
+        "kg": 0,
+        "reps": 8,
+        "epley": 106.4
+      },
+      {
+        "viikko": "V3",
+        "kg": 10,
+        "reps": 8,
+        "epley": 119.1
+      },
+      {
+        "viikko": "V4",
+        "kg": 15,
+        "reps": 6,
+        "epley": 118.8
+      },
+      {
+        "viikko": "V5",
+        "kg": 20,
+        "reps": 4,
+        "epley": 117.9
+      }
+    ]
+  }
+}

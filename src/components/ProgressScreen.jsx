@@ -3,8 +3,42 @@ import { epley } from '../utils/epley'
 
 const MAIN_LIFTS = ['Penkki', 'Kyykky', 'Leuat']
 
+/**
+ * Rakentaa per-liike historiarivit history.json-datasta.
+ * Palauttaa [{ meso, best1rm, bestSet, delta }, ...] järjestyksessä.
+ * Leuat: epley-arvo on jo laskettu kehonpaino mukaan (historyData:ssa).
+ */
+function buildLiftHistory(historyData, liftName) {
+  if (!historyData) return []
+  const liftKey = liftName.toLowerCase()
+  const rows = []
+  let prevBest1rm = null
+
+  for (const mesoName of Object.keys(historyData)) {
+    const liftData = historyData[mesoName]?.[liftKey]
+    if (!liftData?.length) continue
+
+    const best = liftData.reduce((b, e) => e.epley > (b?.epley ?? 0) ? e : b, null)
+    if (!best) continue
+
+    const delta = prevBest1rm !== null
+      ? Math.round((best.epley - prevBest1rm) * 10) / 10
+      : null
+
+    rows.push({
+      meso: mesoName,
+      best1rm: best.epley,
+      bestSet: `${best.kg}×${best.reps}`,
+      delta,
+    })
+    prevBest1rm = best.epley
+  }
+
+  return rows
+}
+
 function LiftTable({ liftName, history, currentMeso, sheetsEpley, bodyweight }) {
-  // Nykyisen meson data Sheetsistä
+  // Nykyisen meson data Sheetsistä (?action=epley)
   const sheetsLift = sheetsEpley?.data?.epley?.[liftName]
   let currentBest = null
   if (sheetsLift) {
@@ -16,18 +50,16 @@ function LiftTable({ liftName, history, currentMeso, sheetsEpley, bodyweight }) 
       : null
   }
 
+  const prevBest1rm = history.length ? history[history.length - 1].best1rm : null
   const currentRow = {
     meso: currentMeso,
     best1rm: currentBest?.best1rm ?? null,
     bestSet: currentBest
       ? currentBest.bestSet
       : sheetsEpley?.loading ? 'ladataan…' : '—',
-    delta: (() => {
-      if (!currentBest || !history.length) return null
-      const prev = history[history.length - 1]?.best1rm
-      if (!prev) return null
-      return Math.round((currentBest.best1rm - prev) * 10) / 10
-    })(),
+    delta: (currentBest && prevBest1rm)
+      ? Math.round((currentBest.best1rm - prevBest1rm) * 10) / 10
+      : null,
   }
 
   const allRows = [...history, currentRow]
@@ -64,7 +96,7 @@ function LiftTable({ liftName, history, currentMeso, sheetsEpley, bodyweight }) 
   )
 }
 
-export default function ProgressScreen({ program, bodyweight, sheetsEpley }) {
+export default function ProgressScreen({ program, bodyweight, sheetsEpley, historyData }) {
   const currentMeso = program.meso.replace('Meso ', 'M').replace(' / ', '/')
 
   return (
@@ -77,7 +109,7 @@ export default function ProgressScreen({ program, bodyweight, sheetsEpley }) {
           <div className="section-label">{lift === 'Penkki' ? 'Penkkipunnerrus' : lift}</div>
           <LiftTable
             liftName={lift}
-            history={program.epleyProgress?.[lift] ?? []}
+            history={buildLiftHistory(historyData, lift)}
             currentMeso={currentMeso}
             sheetsEpley={sheetsEpley}
             bodyweight={bodyweight}
