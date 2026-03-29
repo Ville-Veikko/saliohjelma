@@ -172,6 +172,7 @@ export default function App() {
             initialHistWeek={summaryHistSeed?.week ?? 0}
             initialHistDay={summaryHistSeed?.day ?? 0}
             onSaved={handleSaved}
+            onBackToWorkout={() => setScreen('workout')}
           />
         )}
 

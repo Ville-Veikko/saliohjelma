@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { epley } from '../utils/epley'
 import { getSetCount } from '../hooks/useWorkout'
 
@@ -217,10 +217,22 @@ function AuxCard({ program, day, sheetsData }) {
 
 // ── Pääkomponentti ────────────────────────────────────────────────────────
 
-export default function SummaryScreen({ program, workout, bodyweight, sheetsHistory, initialHistWeek, initialHistDay, onSaved }) {
+export default function SummaryScreen({ program, workout, bodyweight, sheetsHistory, initialHistWeek, initialHistDay, onSaved, onBackToWorkout }) {
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
   const [histWeek, setHistWeek] = useState(initialHistWeek ?? 0)
+
+  const swipeStartRef = useRef(null)
+  function handleSwipeStart(e) { swipeStartRef.current = { x: e.clientX, y: e.clientY } }
+  function handleSwipeEnd(e) {
+    if (!swipeStartRef.current) return
+    const dx = e.clientX - swipeStartRef.current.x
+    const dy = e.clientY - swipeStartRef.current.y
+    swipeStartRef.current = null
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 2) return
+    if (dx > 0 && workout && onBackToWorkout) onBackToWorkout()
+  }
+  function handleSwipeCancel() { swipeStartRef.current = null }
 
   const hasWorkout = !!workout
 
@@ -257,7 +269,13 @@ export default function SummaryScreen({ program, workout, bodyweight, sheetsHist
   const sheetsData = sheetsHistory?.data ?? null
 
   return (
-    <div className="screen">
+    <div
+      className="screen"
+      onPointerDown={handleSwipeStart}
+      onPointerUp={handleSwipeEnd}
+      onPointerCancel={handleSwipeCancel}
+      style={{ touchAction: 'pan-y' }}
+    >
 
       {/* ── Meneillään oleva treeni ── */}
       {hasWorkout ? (
