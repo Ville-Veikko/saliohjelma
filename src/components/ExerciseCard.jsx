@@ -32,17 +32,25 @@ export default function ExerciseCard({
   const hasBo = exercise.boKg !== null
   const isAux = exercise.badge === 'apu'
 
-  // Progressiiviset toistotavoitteet
+  // Tuki sekä skalaari- että taulukkomuotoisille arvoille
+  const pw = (val) => Array.isArray(val) ? val[weekIndex] : val
+
+  // Progressiiviset toistotavoitteet (apuliikkeet)
+  const boTargetBase = Array.isArray(exercise.boTarget) ? exercise.boTarget[0] : exercise.boTarget
+  const rMinBase = Array.isArray(exercise.rMin) ? exercise.rMin[0] : exercise.rMin
+
   const effectiveBoTarget = hasBo
-    ? getProgressionTarget(exercise.boTarget, weekIndex, dayIndex, exerciseIndex, 'bo')
+    ? (isAux
+        ? getProgressionTarget(boTargetBase, weekIndex, dayIndex, exerciseIndex, 'bo')
+        : pw(exercise.boTarget))
     : null
   const effectiveRepsTarget = isAux
-    ? getProgressionTarget(exercise.rMin, weekIndex, dayIndex, exerciseIndex, 'aux')
+    ? getProgressionTarget(rMinBase, weekIndex, dayIndex, exerciseIndex, 'aux')
     : null
 
   // Käytettävät rMin/rMax SetRow'lle
-  const rMin = isAux ? effectiveRepsTarget : exercise.rMin
-  const rMax = isAux ? effectiveRepsTarget : exercise.rMax
+  const rMin = isAux ? effectiveRepsTarget : pw(exercise.rMin)
+  const rMax = isAux ? effectiveRepsTarget : pw(exercise.rMax)
 
   // kg-arvot
   const kgRaw = exercise.kg[weekIndex]
@@ -78,7 +86,7 @@ export default function ExerciseCard({
             <div className="info-label">Raskas</div>
             <div className="info-val">{kgRaw === 'bw' ? 'bw' : `${kgRaw} kg`}</div>
             <div className="info-sub">
-              {isAux ? `${effectiveRepsTarget} toistoa` : `${exercise.rMin}–${exercise.rMax} toistoa`}
+              {isAux ? `${effectiveRepsTarget} toistoa` : `${pw(exercise.rMin)}–${pw(exercise.rMax)} toistoa`}
             </div>
           </div>
 
