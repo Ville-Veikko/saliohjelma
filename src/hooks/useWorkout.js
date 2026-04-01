@@ -4,6 +4,8 @@ import {
   loadWorkout,
   findSavedWorkout,
   clearWorkout,
+  saveActiveExercise,
+  clearActiveExercise,
 } from '../utils/storage'
 
 /**
@@ -74,10 +76,10 @@ export function useWorkout() {
    * Aloittaa uuden treenin. Jos samalle viikolle/päivälle on tallennettu
    * data, ladataan se automaattisesti (resume-toiminto).
    */
-  const startWorkout = useCallback((week, day) => {
+  const startWorkout = useCallback((week, day, initialExerciseIndex = 0) => {
     const saved = loadWorkout(week, day)
     const results = saved?.results ?? initResults(program, week, day)
-    setWorkout({ week, day, exerciseIndex: 0, results })
+    setWorkout({ week, day, exerciseIndex: initialExerciseIndex, results })
   }, [program])
 
   // ── Settien kirjaaminen ──────────────────────────────────────────────────
@@ -141,6 +143,13 @@ export function useWorkout() {
 
   // ── Navigointi ───────────────────────────────────────────────────────────
 
+  // Tallenna aktiivinen liike-indeksi aina kun se muuttuu
+  useEffect(() => {
+    if (workout?.exerciseIndex != null) {
+      saveActiveExercise(workout.exerciseIndex)
+    }
+  }, [workout?.exerciseIndex])
+
   const goToExercise = useCallback((index) => {
     setWorkout(prev => ({ ...prev, exerciseIndex: index }))
   }, [])
@@ -167,6 +176,7 @@ export function useWorkout() {
   const markSaved = useCallback(() => {
     if (!workout) return
     clearWorkout(workout.week, workout.day)
+    clearActiveExercise()
     setSavedInfo(null)
   }, [workout])
 

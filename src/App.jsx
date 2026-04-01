@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { Dumbbell, ClipboardList, TrendingUp, Settings } from 'lucide-react'
 import { useWorkout } from './hooks/useWorkout'
 import { useTimer } from './hooks/useTimer'
-import { loadBodyweight, loadTimerDuration, clearWorkout } from './utils/storage'
+import { loadBodyweight, loadTimerDuration, loadActiveExercise, clearWorkout } from './utils/storage'
 import StartScreen from './components/StartScreen'
 import WorkoutScreen from './components/WorkoutScreen'
 import SummaryScreen from './components/SummaryScreen'
@@ -79,6 +79,15 @@ export default function App() {
         setSheetsEpley({ loading: false, data: null, error: err.message })
       })
   }, [workoutHook.program])
+
+  // Auto-paluu kesken olevaan treeniin käynnistyksen yhteydessä
+  useEffect(() => {
+    if (!workoutHook.savedInfo || workoutHook.workout || screen !== 'start') return
+    const { week, day } = workoutHook.savedInfo
+    const exerciseIndex = loadActiveExercise()
+    workoutHook.startWorkout(week, day, exerciseIndex)
+    setScreen('workout')
+  }, [workoutHook.savedInfo])  // eslint-disable-line
 
   // Seed yhteenveto-näkymän historia-valinnalle (asetetaan "Katso tulokset" -napista)
   const [summaryHistSeed, setSummaryHistSeed] = useState(null)

@@ -2,6 +2,7 @@ const WORKOUT_PREFIX = 'saliohjelma_treeni'
 const BODYWEIGHT_KEY = 'saliohjelma_kehonpaino'
 const TIMER_KEY = 'saliohjelma_timer_kesto'
 const TIMER_DEFAULT = 120
+const ACTIVE_EXERCISE_KEY = 'saliohjelma_aktiivinen_liike'
 
 // ── Kehonpaino ──────────────────────────────────────────────────────────────
 
@@ -21,6 +22,21 @@ export function loadTimerDuration() {
 
 export function saveTimerDuration(seconds) {
   localStorage.setItem(TIMER_KEY, String(seconds))
+}
+
+// ── Aktiivinen liike ────────────────────────────────────────────────────────
+
+export function saveActiveExercise(index) {
+  localStorage.setItem(ACTIVE_EXERCISE_KEY, String(index))
+}
+
+export function loadActiveExercise() {
+  const raw = localStorage.getItem(ACTIVE_EXERCISE_KEY)
+  return raw !== null ? parseInt(raw, 10) : 0
+}
+
+export function clearActiveExercise() {
+  localStorage.removeItem(ACTIVE_EXERCISE_KEY)
 }
 
 // ── Treeni ──────────────────────────────────────────────────────────────────

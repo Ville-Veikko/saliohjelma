@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 
+const TIMER_START_KEY = 'saliohjelma_timer_alku'
+
 function pingAudio(audioCtx) {
   if (!audioCtx) return
   try {
@@ -28,15 +30,31 @@ function sendNotification() {
   }
 }
 
+function startInterval(intervalRef, audioCtxRef, setRemaining, setRunning, setDone) {
+  intervalRef.current = setInterval(() => {
+    setRemaining(prev => {
+      if (prev <= 1) {
+        clearInterval(intervalRef.current)
+        setRunning(false)
+        setDone(true)
+        localStorage.removeItem(TIMER_START_KEY)
+        pingAudio(audioCtxRef.current)
+        sendNotification()
+        return 0
+      }
+      return prev - 1
+    })
+  }, 1000)
+}
+
 export function useTimer(totalSeconds) {
   const [remaining, setRemaining] = useState(0)
   const [running, setRunning] = useState(false)
   const [done, setDone] = useState(false)
   const intervalRef = useRef(null)
-  // AudioContext luodaan start()-kutsussa (käyttäjän interaktio) ja säilytetään ref:ssä
   const audioCtxRef = useRef(null)
 
-  // Pyydä notifikaatiolupa heti käynnistyksessä
+  // Pyydä notifikaatiolupa
   useEffect(() => {
     try {
       if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
@@ -47,6 +65,29 @@ export function useTimer(totalSeconds) {
     }
   }, [])
 
+  // Palauta taimerin tila uudelleenlatauksen jälkeen
+  useEffect(() => {
+    const raw = localStorage.getItem(TIMER_START_KEY)
+    if (!raw) return
+    try {
+      const { startAt, totalSecs } = JSON.parse(raw)
+      const elapsed = (Date.now() - startAt) / 1000
+      const rem = Math.ceil(totalSecs - elapsed)
+      if (rem <= 0) {
+        // Aika on kulunut — näytä "Lepo ohi" suoraan
+        localStorage.removeItem(TIMER_START_KEY)
+        setDone(true)
+      } else {
+        // Taimeri vielä käynnissä — jatka laskentaa
+        setRemaining(rem)
+        setRunning(true)
+        startInterval(intervalRef, audioCtxRef, setRemaining, setRunning, setDone)
+      }
+    } catch {
+      localStorage.removeItem(TIMER_START_KEY)
+    }
+  }, []) // vain mount
+
   // Siivotaan intervalli unmountissa
   useEffect(() => () => clearInterval(intervalRef.current), [])
 
@@ -56,7 +97,13 @@ export function useTimer(totalSeconds) {
     setRunning(true)
     setDone(false)
 
-    // Luo AudioContext käyttäjän interaktion aikana (selaimen vaatimus)
+    // Tallenna käynnistysaika
+    localStorage.setItem(TIMER_START_KEY, JSON.stringify({
+      startAt: Date.now(),
+      totalSecs: totalSeconds,
+    }))
+
+    // Luo AudioContext käyttäjän interaktion aikana
     try {
       if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
         audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()
@@ -69,19 +116,7 @@ export function useTimer(totalSeconds) {
       audioCtxRef.current = null
     }
 
-    intervalRef.current = setInterval(() => {
-      setRemaining(prev => {
-        if (prev <= 1) {
-          clearInterval(intervalRef.current)
-          setRunning(false)
-          setDone(true)
-          pingAudio(audioCtxRef.current)
-          sendNotification()
-          return 0
-        }
-        return prev - 1
-      })
-    }, 1000)
+    startInterval(intervalRef, audioCtxRef, setRemaining, setRunning, setDone)
   }, [totalSeconds])
 
   const skip = useCallback(() => {
@@ -89,10 +124,12 @@ export function useTimer(totalSeconds) {
     setRunning(false)
     setDone(false)
     setRemaining(0)
+    localStorage.removeItem(TIMER_START_KEY)
   }, [])
 
   const dismiss = useCallback(() => {
     setDone(false)
+    localStorage.removeItem(TIMER_START_KEY)
   }, [])
 
   const visible = running || done
