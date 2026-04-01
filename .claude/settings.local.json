@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/saliohjelma/)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote:*)",
+      "Bash(git push:*)",
+      "Bash(npm list:*)",
+      "Bash(xxd)",
+      "Bash(sed -i '' \"s/import { Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend } from ''chart.js''/import { Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend, Filler } from ''chart.js''/\" /Users/villevm/saliohjelma/src/components/ProgressScreen.jsx)",
+      "Bash(sed -i '' \"s/Chart.register\\(LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend\\)/Chart.register\\(LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend, Filler\\)/\" /Users/villevm/saliohjelma/src/components/ProgressScreen.jsx)",
+      "Bash(python3 -c \":*)"
+    ]
+  }
+}

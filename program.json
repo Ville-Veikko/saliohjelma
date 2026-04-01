@@ -1,0 +1,527 @@
+{
+  "meso": "Meso 3/26",
+  "sheetsUrl": "https://script.google.com/macros/s/AKfycbxZG_4VmrwoJkSc4L3zk-rgF5oBlEG_5FSoWGw0BOgUF5oPg9E0FabysRprXovcFeA/exec",
+  "weeks": [
+    {
+      "rir": 2,
+      "sets": 3
+    },
+    {
+      "rir": 1,
+      "sets": 3
+    },
+    {
+      "rir": 0,
+      "sets": 4
+    }
+  ],
+  "days": [
+    [
+      {
+        "name": "Penkki",
+        "badge": "penkki",
+        "kg": [
+          92.5,
+          97.5,
+          102.5
+        ],
+        "boKg": 80,
+        "rMin": [
+          4,
+          3,
+          3
+        ],
+        "rMax": [
+          5,
+          5,
+          5
+        ],
+        "boTarget": [
+          8,
+          10,
+          10
+        ]
+      },
+      {
+        "name": "Kyykky",
+        "badge": "kyykky",
+        "kg": [
+          92.5,
+          97.5,
+          102.5
+        ],
+        "boKg": 80,
+        "rMin": [
+          6,
+          3,
+          3
+        ],
+        "rMax": [
+          7,
+          5,
+          5
+        ],
+        "boTarget": [
+          10,
+          12,
+          12
+        ]
+      },
+      {
+        "name": "Leuat",
+        "badge": "leuat",
+        "kg": [
+          12.5,
+          17.5,
+          22.5
+        ],
+        "boKg": "bw",
+        "rMin": [
+          6,
+          3,
+          3
+        ],
+        "rMax": [
+          7,
+          5,
+          5
+        ],
+        "boTarget": [
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "name": "Olkapäät",
+        "badge": "apu",
+        "kg": [
+          12,
+          12,
+          12
+        ],
+        "boKg": null,
+        "rMin": 21,
+        "rMax": 21,
+        "boTarget": null
+      },
+      {
+        "name": "Crunch",
+        "badge": "apu",
+        "kg": [
+          "bw",
+          "bw",
+          "bw"
+        ],
+        "boKg": null,
+        "rMin": 28,
+        "rMax": 28,
+        "boTarget": null
+      }
+    ],
+    [
+      {
+        "name": "Penkki",
+        "badge": "penkki",
+        "kg": [
+          92.5,
+          97.5,
+          102.5
+        ],
+        "boKg": 80,
+        "rMin": [
+          4,
+          3,
+          3
+        ],
+        "rMax": [
+          5,
+          5,
+          5
+        ],
+        "boTarget": [
+          8,
+          10,
+          10
+        ]
+      },
+      {
+        "name": "Kyykky",
+        "badge": "kyykky",
+        "kg": [
+          92.5,
+          97.5,
+          102.5
+        ],
+        "boKg": 80,
+        "rMin": [
+          6,
+          3,
+          3
+        ],
+        "rMax": [
+          7,
+          5,
+          5
+        ],
+        "boTarget": [
+          10,
+          12,
+          12
+        ]
+      },
+      {
+        "name": "Leuat",
+        "badge": "leuat",
+        "kg": [
+          12.5,
+          17.5,
+          22.5
+        ],
+        "boKg": "bw",
+        "rMin": [
+          6,
+          3,
+          3
+        ],
+        "rMax": [
+          7,
+          5,
+          5
+        ],
+        "boTarget": [
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "name": "Olkapääkaapeli",
+        "badge": "apu",
+        "kg": [
+          7.5,
+          7.5,
+          7.5
+        ],
+        "boKg": null,
+        "rMin": 22,
+        "rMax": 22,
+        "boTarget": null
+      },
+      {
+        "name": "Ojentajat",
+        "badge": "apu",
+        "kg": [
+          22.5,
+          22.5,
+          22.5
+        ],
+        "boKg": null,
+        "rMin": 22,
+        "rMax": 22,
+        "boTarget": null
+      }
+    ],
+    [
+      {
+        "name": "Penkki",
+        "badge": "penkki",
+        "kg": [
+          92.5,
+          97.5,
+          102.5
+        ],
+        "boKg": 80,
+        "rMin": [
+          4,
+          3,
+          3
+        ],
+        "rMax": [
+          5,
+          5,
+          5
+        ],
+        "boTarget": [
+          8,
+          10,
+          10
+        ]
+      },
+      {
+        "name": "Kyykky",
+        "badge": "kyykky",
+        "kg": [
+          92.5,
+          97.5,
+          102.5
+        ],
+        "boKg": 80,
+        "rMin": [
+          6,
+          3,
+          3
+        ],
+        "rMax": [
+          7,
+          5,
+          5
+        ],
+        "boTarget": [
+          10,
+          12,
+          12
+        ]
+      },
+      {
+        "name": "Leuat",
+        "badge": "leuat",
+        "kg": [
+          12.5,
+          17.5,
+          22.5
+        ],
+        "boKg": "bw",
+        "rMin": [
+          6,
+          3,
+          3
+        ],
+        "rMax": [
+          7,
+          5,
+          5
+        ],
+        "boTarget": [
+          10,
+          10,
+          10
+        ],
+        "setsOverride": 2
+      },
+      {
+        "name": "Olkapääkaapeli",
+        "badge": "apu",
+        "kg": [
+          7.5,
+          7.5,
+          7.5
+        ],
+        "boKg": null,
+        "rMin": 22,
+        "rMax": 22,
+        "boTarget": null
+      },
+      {
+        "name": "Hauiskäännöt",
+        "badge": "apu",
+        "kg": [
+          25,
+          25,
+          25
+        ],
+        "boKg": null,
+        "rMin": 18,
+        "rMax": 18,
+        "boTarget": null
+      }
+    ]
+  ],
+  "history": [
+    {
+      "name": "Penkki",
+      "kg": 88.5,
+      "reps": 6
+    },
+    {
+      "name": "Penkki",
+      "kg": 90,
+      "reps": 4
+    },
+    {
+      "name": "Penkki",
+      "kg": 92.5,
+      "reps": 5
+    },
+    {
+      "name": "Penkki",
+      "kg": 95,
+      "reps": 4
+    },
+    {
+      "name": "Penkki",
+      "kg": 97.5,
+      "reps": 3
+    },
+    {
+      "name": "Penkki",
+      "kg": 100,
+      "reps": 3
+    },
+    {
+      "name": "Kyykky",
+      "kg": 88.5,
+      "reps": 6
+    },
+    {
+      "name": "Kyykky",
+      "kg": 90,
+      "reps": 7
+    },
+    {
+      "name": "Kyykky",
+      "kg": 92.5,
+      "reps": 6
+    },
+    {
+      "name": "Kyykky",
+      "kg": 95,
+      "reps": 5
+    },
+    {
+      "name": "Kyykky",
+      "kg": 97.5,
+      "reps": 3
+    },
+    {
+      "name": "Kyykky",
+      "kg": 100,
+      "reps": 4
+    },
+    {
+      "name": "Leuat",
+      "kg": 10,
+      "reps": 5
+    },
+    {
+      "name": "Leuat",
+      "kg": 12.5,
+      "reps": 4
+    },
+    {
+      "name": "Leuat",
+      "kg": 15,
+      "reps": 4
+    },
+    {
+      "name": "Leuat",
+      "kg": 17.5,
+      "reps": 3
+    },
+    {
+      "name": "Leuat",
+      "kg": 20,
+      "reps": 3
+    },
+    {
+      "name": "Olkapäät",
+      "kg": 12,
+      "reps": 18
+    },
+    {
+      "name": "Crunch",
+      "kg": 0,
+      "reps": 26
+    },
+    {
+      "name": "Olkapääkaapeli",
+      "kg": 7.5,
+      "reps": 20
+    },
+    {
+      "name": "Olkapääkaapeli",
+      "kg": 14,
+      "reps": 17
+    },
+    {
+      "name": "Ojentajat",
+      "kg": 22.5,
+      "reps": 18
+    },
+    {
+      "name": "Hauiskäännöt",
+      "kg": 25,
+      "reps": 15
+    }
+  ],
+  "epleyProgress": {
+    "Penkki": [
+      {
+        "meso": "M5/25",
+        "best1rm": 100.3,
+        "bestSet": "88.5×6",
+        "delta": null
+      },
+      {
+        "meso": "M6/25",
+        "best1rm": 101.7,
+        "bestSet": "85×6",
+        "delta": 1.4
+      },
+      {
+        "meso": "M7/25",
+        "best1rm": 104.2,
+        "bestSet": "95×4",
+        "delta": 2.5
+      },
+      {
+        "meso": "M1/26",
+        "best1rm": 106.8,
+        "bestSet": "92.5×5",
+        "delta": 2.6
+      },
+      {
+        "meso": "M2/26",
+        "best1rm": 109.5,
+        "bestSet": "100×3",
+        "delta": 2.7
+      }
+    ],
+    "Kyykky": [
+      {
+        "meso": "M5/25",
+        "best1rm": 100.3,
+        "bestSet": "88.5×6",
+        "delta": null
+      },
+      {
+        "meso": "M6/25",
+        "best1rm": 100.8,
+        "bestSet": "85×6",
+        "delta": 0.5
+      },
+      {
+        "meso": "M7/25",
+        "best1rm": 109.5,
+        "bestSet": "90×7",
+        "delta": 8.7
+      },
+      {
+        "meso": "M1/26",
+        "best1rm": 110.2,
+        "bestSet": "92.5×6",
+        "delta": 0.7
+      },
+      {
+        "meso": "M2/26",
+        "best1rm": 114.3,
+        "bestSet": "100×4",
+        "delta": 4.1
+      }
+    ],
+    "Leuat": [
+      {
+        "meso": "M1/26",
+        "best1rm": 104.1,
+        "bestSet": "bw+10×5",
+        "delta": null
+      },
+      {
+        "meso": "M2/26",
+        "best1rm": 107.3,
+        "bestSet": "bw+20×3",
+        "delta": 3.2
+      }
+    ]
+  }
+}
