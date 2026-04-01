@@ -129,12 +129,18 @@ function buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight) {
       }
 
       const raskasKg = weekData.raskas_kg
+      if (raskasKg == null) {
+        points.push(null)
+        extras.push(null)
+        continue
+      }
       const kgNum = isLeuat ? raskasKg + (bodyweight ?? 0) : raskasKg
 
       let bestEpley = null
       let bestReps = null
 
-      for (const dayData of Object.values(weekData.paivat)) {
+      for (const dayData of Object.values(weekData.paivat ?? {})) {
+        if (!dayData) continue
         for (const reps of (dayData.raskas ?? [])) {
           if (typeof reps === 'number') {
             const e = epley(kgNum, reps)
@@ -245,6 +251,10 @@ function EpleyChart({ liftName, workoutHistory, sheetsEpley, bodyweight }) {
 
     return () => chart.destroy()
   }, [liftName, workoutHistory, sheetsEpley, bodyweight])
+
+  if (!workoutHistory) {
+    return <div className="ep-chart-wrap ep-loading">Ladataan…</div>
+  }
 
   return (
     <div className="ep-chart-wrap">
