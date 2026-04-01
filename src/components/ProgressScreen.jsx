@@ -209,7 +209,7 @@ function EpleyChart({ liftName, workoutHistory, sheetsEpley, bodyweight }) {
           {
             label: liftName,
             data: points,
-            borderWidth: 0,
+            showLine: false,
             pointRadius: points.map(p => p != null ? 3 : 0),
             pointHoverRadius: 6,
             pointBackgroundColor: points.map(p => p != null ? LINE_COLOR : 'transparent'),
