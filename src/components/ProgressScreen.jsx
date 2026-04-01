@@ -100,54 +100,91 @@ function LiftTable({ liftName, history, currentMeso, sheetsEpley, bodyweight }) 
   )
 }
 
-function EpleyChart({ liftName, historyData, sheetsEpley, bodyweight }) {
+function buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight) {
+  const liftKey = liftName.toLowerCase()
+  const isLeuat = liftName === 'Leuat'
+  const labels = []
+  const points = []
+  const extras = []
+
+  for (const [mesoName, mesoData] of Object.entries(workoutHistory)) {
+    const liftData = mesoData[liftKey]
+    const weekCount = mesoData.viikot
+
+    for (let wi = 0; wi < weekCount; wi++) {
+      const weekKey = `V${wi + 1}`
+      labels.push(wi === 0 ? mesoName : '')
+
+      if (!liftData) {
+        points.push(null)
+        extras.push(null)
+        continue
+      }
+
+      const weekData = liftData[weekKey]
+      if (!weekData) {
+        points.push(null)
+        extras.push(null)
+        continue
+      }
+
+      const raskasKg = weekData.raskas_kg
+      const kgNum = isLeuat ? raskasKg + (bodyweight ?? 0) : raskasKg
+
+      let bestEpley = null
+      let bestReps = null
+
+      for (const dayData of Object.values(weekData.paivat)) {
+        for (const reps of (dayData.raskas ?? [])) {
+          if (typeof reps === 'number') {
+            const e = epley(kgNum, reps)
+            if (e && (!bestEpley || e > bestEpley)) {
+              bestEpley = e
+              bestReps = reps
+            }
+          }
+        }
+      }
+
+      points.push(bestEpley)
+      extras.push(bestEpley ? { kg: kgNum, reps: bestReps, extraKg: isLeuat ? raskasKg : null } : null)
+    }
+  }
+
+  // Lisää M3/26 sheetsEpley:stä
+  const sl = sheetsEpley?.data?.epley?.[liftName]
+  if (sl) {
+    const kgNum = isLeuat ? sl.bestKg + (bodyweight ?? 0) : sl.bestKg
+    const e = epley(kgNum, sl.bestReps) ?? null
+    labels.push('M3/26')
+    points.push(e)
+    extras.push(e ? { kg: kgNum, reps: sl.bestReps, extraKg: isLeuat ? sl.bestKg : null } : null)
+  }
+
+  return { labels, points, extras }
+}
+
+function EpleyChart({ liftName, workoutHistory, sheetsEpley, bodyweight }) {
   const canvasRef = useRef(null)
 
   useEffect(() => {
-    if (!canvasRef.current || !historyData) return
+    if (!canvasRef.current || !workoutHistory) return
 
-    const liftKey = liftName.toLowerCase()
-
-    // Rakennetaan x-akseli: kaikki historyData-mesot + M3/26
-    const mesoLabels = [...Object.keys(historyData), 'M3/26']
-
-    // Yksi arvo per meso: paras epley siitä mesosta
-    const extraData = [] // { kg, reps } tooltip-näyttöä varten
-    const dataPoints = mesoLabels.map(mesoName => {
-      if (mesoName === 'M3/26') {
-        const sl = sheetsEpley?.data?.epley?.[liftName]
-        if (!sl) { extraData.push(null); return null }
-        const isLeuat = liftName === 'Leuat'
-        const kgNum = isLeuat ? sl.bestKg + (bodyweight ?? 0) : sl.bestKg
-        const e = epley(kgNum, sl.bestReps) ?? null
-        extraData.push(e ? { kg: kgNum, reps: sl.bestReps, extraKg: isLeuat ? sl.bestKg : null } : null)
-        return e
-      }
-      const liftData = historyData[mesoName]?.[liftKey]
-      if (!liftData?.length) { extraData.push(null); return null }
-      const best = liftData.reduce((b, e) => e.epley > (b?.epley ?? 0) ? e : b, null)
-      if (!best) { extraData.push(null); return null }
-      const isLeuat = liftName === 'Leuat'
-      const displayKg = isLeuat ? best.kg + (bodyweight ?? 0) : best.kg
-      extraData.push({ kg: displayKg, reps: best.reps, extraKg: isLeuat ? best.kg : null })
-      return best.epley
-    })
+    const { labels, points, extras } = buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight)
 
     const chart = new Chart(canvasRef.current, {
       type: 'line',
       data: {
-        labels: mesoLabels,
+        labels,
         datasets: [{
           label: liftName,
-          data: dataPoints,
+          data: points,
           borderColor: LINE_COLOR,
           backgroundColor: LINE_COLOR_DIM,
           borderWidth: 2,
-          pointRadius: 5,
-          pointHoverRadius: 7,
-          pointBackgroundColor: mesoLabels.map((m, i) =>
-            dataPoints[i] != null ? LINE_COLOR : 'transparent'
-          ),
+          pointRadius: points.map(p => p != null ? 4 : 0),
+          pointHoverRadius: 6,
+          pointBackgroundColor: points.map(p => p != null ? LINE_COLOR : 'transparent'),
           tension: 0.3,
           spanGaps: false,
           fill: true,
@@ -162,7 +199,7 @@ function EpleyChart({ liftName, historyData, sheetsEpley, bodyweight }) {
             callbacks: {
               label: (ctx) => {
                 if (ctx.parsed.y == null) return ''
-                const extra = extraData[ctx.dataIndex]
+                const extra = extras[ctx.dataIndex]
                 if (extra) {
                   const kgStr = extra.extraKg != null
                     ? (extra.extraKg > 0 ? `bw + ${extra.extraKg} kg` : 'bw')
@@ -171,12 +208,29 @@ function EpleyChart({ liftName, historyData, sheetsEpley, bodyweight }) {
                 }
                 return `${ctx.parsed.y} kg`
               },
+              title: (items) => {
+                // Näytä tooltip-otsikossa viikkonumero jos label on tyhjä
+                const idx = items[0]?.dataIndex ?? 0
+                // Löydä edellinen ei-tyhjä label (meso nimi) ja viikkonumero
+                let mesoName = ''
+                let weekNum = 1
+                for (let i = idx; i >= 0; i--) {
+                  if (labels[i]) { mesoName = labels[i]; weekNum = idx - i + 1; break }
+                }
+                return `${mesoName} V${weekNum}`
+              },
             },
           },
         },
         scales: {
           x: {
-            ticks: { color: '#aaa', font: { size: 10 }, maxRotation: 45 },
+            ticks: {
+              color: '#aaa',
+              font: { size: 9 },
+              maxRotation: 45,
+              autoSkip: false,
+              callback: (_, index) => labels[index],
+            },
             grid: { color: '#2a2a2a' },
             border: { color: '#333' },
           },
@@ -190,7 +244,7 @@ function EpleyChart({ liftName, historyData, sheetsEpley, bodyweight }) {
     })
 
     return () => chart.destroy()
-  }, [liftName, historyData, sheetsEpley, bodyweight])
+  }, [liftName, workoutHistory, sheetsEpley, bodyweight])
 
   return (
     <div className="ep-chart-wrap">
@@ -199,7 +253,7 @@ function EpleyChart({ liftName, historyData, sheetsEpley, bodyweight }) {
   )
 }
 
-export default function ProgressScreen({ program, bodyweight, sheetsEpley, historyData }) {
+export default function ProgressScreen({ program, bodyweight, sheetsEpley, historyData, workoutHistory }) {
   const [tab, setTab] = useState('taulukko')
   const [selectedLift, setSelectedLift] = useState('Penkki')
   const currentMeso = program.meso.replace('Meso ', 'M').replace(' / ', '/')
@@ -251,7 +305,7 @@ export default function ProgressScreen({ program, bodyweight, sheetsEpley, histo
           </div>
           <EpleyChart
             liftName={selectedLift}
-            historyData={historyData}
+            workoutHistory={workoutHistory}
             sheetsEpley={sheetsEpley}
             bodyweight={bodyweight}
           />

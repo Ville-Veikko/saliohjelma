@@ -38,11 +38,16 @@ export default function App() {
 
   // Staattinen harjoitushistoria (history.json)
   const [historyData, setHistoryData] = useState(null)
+  const [workoutHistory, setWorkoutHistory] = useState(null)
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}history.json`)
       .then(r => r.json())
       .then(data => setHistoryData(data))
+      .catch(() => {})
+    fetch(`${import.meta.env.BASE_URL}workout-history.json`)
+      .then(r => r.json())
+      .then(data => setWorkoutHistory(data))
       .catch(() => {})
   }, [])
 
@@ -191,6 +196,7 @@ export default function App() {
             bodyweight={bodyweight}
             sheetsEpley={sheetsEpley}
             historyData={historyData}
+            workoutHistory={workoutHistory}
           />
         )}
 

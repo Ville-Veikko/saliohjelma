@@ -1,0 +1,3450 @@
+{
+  "M3/24": {
+    "viikot": 6,
+    "penkki": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 85,
+        "bo_kg": 71,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": [
+              8,
+              8
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 87,
+        "bo_kg": 71,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": [
+              10,
+              10
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 2,
+        "raskas_kg": 92,
+        "bo_kg": 71,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              4
+            ],
+            "bo": [
+              11,
+              11,
+              11
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 92,
+        "bo_kg": 71,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": [
+              12,
+              12
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 1,
+        "raskas_kg": 95,
+        "bo_kg": 71,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              null
+            ],
+            "bo": [
+              12,
+              11,
+              9
+            ]
+          }
+        }
+      },
+      "V6": {
+        "rir": 0,
+        "raskas_kg": 98,
+        "bo_kg": 71,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              2,
+              1
+            ],
+            "bo": [
+              13,
+              11
+            ]
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 70,
+        "bo_kg": 61,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              4
+            ],
+            "bo": [
+              8
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 70,
+        "bo_kg": 61,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": [
+              10,
+              10
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 2,
+        "raskas_kg": 74,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": [
+              7,
+              7
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 74,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              4
+            ],
+            "bo": [
+              8,
+              8
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 1,
+        "raskas_kg": 78,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": [
+              9,
+              9
+            ]
+          }
+        }
+      },
+      "V6": {
+        "rir": 0,
+        "raskas_kg": 78,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              4
+            ],
+            "bo": [
+              10
+            ]
+          }
+        }
+      }
+    },
+    "leuat": null
+  },
+  "M4/24": {
+    "viikot": 5,
+    "penkki": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              8,
+              8,
+              7
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              9,
+              9,
+              8,
+              7
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              10,
+              10,
+              9,
+              8
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              10,
+              10,
+              10,
+              8
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              11,
+              8,
+              8,
+              7
+            ],
+            "bo": null
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 60,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              8,
+              8,
+              8
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 60,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              9,
+              9,
+              9
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 60,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              10,
+              10,
+              10
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 60,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              11,
+              10,
+              11
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 60,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              12,
+              12,
+              12
+            ],
+            "bo": null
+          }
+        }
+      }
+    },
+    "leuat": null
+  },
+  "M5/24": {
+    "viikot": 5,
+    "penkki": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              8,
+              8,
+              7
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              9,
+              9,
+              9
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              10,
+              10,
+              10
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              11,
+              10,
+              7,
+              8
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              12,
+              11,
+              9,
+              8
+            ],
+            "bo": null
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 65,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              8,
+              8,
+              8
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 65,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              9,
+              9,
+              9
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 65,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              10,
+              10,
+              10
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 65,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              10,
+              10,
+              10,
+              10
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 65,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              11,
+              11,
+              11,
+              10
+            ],
+            "bo": null
+          }
+        }
+      }
+    },
+    "leuat": null
+  },
+  "M6/24": {
+    "viikot": 7,
+    "penkki": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 80,
+        "bo_kg": 60,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": [
+              13,
+              10
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 75,
+        "bo_kg": 60,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              8
+            ],
+            "bo": [
+              14,
+              10
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 2,
+        "raskas_kg": 77.5,
+        "bo_kg": 60,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              7
+            ],
+            "bo": [
+              15,
+              12
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 80,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": [
+              16,
+              12
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 1,
+        "raskas_kg": 82.5,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": [
+              12,
+              12
+            ]
+          }
+        }
+      },
+      "V6": {
+        "rir": 0,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              5
+            ],
+            "bo": [
+              13,
+              11
+            ]
+          }
+        }
+      },
+      "V7": {
+        "rir": 0,
+        "raskas_kg": 87.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              null
+            ],
+            "bo": [
+              12,
+              9
+            ]
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 75,
+        "bo_kg": 60,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              4
+            ],
+            "bo": [
+              11,
+              null
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 70,
+        "bo_kg": 60,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": [
+              12,
+              11
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 2,
+        "raskas_kg": 72.5,
+        "bo_kg": 60,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": [
+              13,
+              11
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 75,
+        "bo_kg": 60,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": [
+              14,
+              12
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 1,
+        "raskas_kg": 77.5,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              5
+            ],
+            "bo": [
+              14,
+              12
+            ]
+          }
+        }
+      },
+      "V6": {
+        "rir": 0,
+        "raskas_kg": 77.5,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              7
+            ],
+            "bo": [
+              15,
+              12
+            ]
+          }
+        }
+      },
+      "V7": {
+        "rir": 0,
+        "raskas_kg": 80,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              5
+            ],
+            "bo": [
+              15,
+              12
+            ]
+          }
+        }
+      }
+    },
+    "leuat": null
+  },
+  "M2/24": {
+    "viikot": 6,
+    "penkki": {
+      "V1": {
+        "raskas_kg": 74,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              4
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V2": {
+        "raskas_kg": 84,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              7,
+              5
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V3": {
+        "raskas_kg": 95,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              2,
+              3
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V4": {
+        "raskas_kg": 79,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "skippattu": true
+          },
+          "D3": {
+            "skippattu": true
+          }
+        }
+      },
+      "V5": {
+        "raskas_kg": 89.7,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              3,
+              4
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              5,
+              4
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              6,
+              4
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V6": {
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas_kg": [
+              97.5,
+              100,
+              100
+            ],
+            "raskas": [
+              2,
+              2,
+              1
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas_kg": 100.2,
+            "raskas": [
+              2,
+              1
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas_kg": 100.2,
+            "raskas": [
+              2,
+              1
+            ],
+            "bo": null
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "raskas_kg": 60,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              7,
+              8
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V2": {
+        "raskas_kg": 64,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "skippattu": true
+          },
+          "D3": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V3": {
+        "raskas_kg": 68,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D3": {
+            "skippattu": true
+          }
+        }
+      },
+      "V4": {
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas_kg": 64,
+            "raskas": [
+              7,
+              7
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas_kg": 64,
+            "raskas": [
+              11,
+              10,
+              9
+            ],
+            "bo": null
+          },
+          "D3": {
+            "skippattu": true
+          }
+        }
+      },
+      "V5": {
+        "raskas_kg": 64,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": null
+          },
+          "D2": {
+            "skippattu": true
+          },
+          "D3": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V6": {
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas_kg": 70,
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "skippattu": true
+          },
+          "D3": null
+        }
+      }
+    },
+    "leuat": null
+  },
+  "M1/25": {
+    "viikot": 4,
+    "penkki": {
+      "V1": {
+        "rir": 2,
+        "raskas_kg": 80,
+        "bo_kg": 70,
+        "raskas": [
+          9,
+          8
+        ],
+        "bo": [
+          10,
+          9
+        ]
+      },
+      "V2": {
+        "rir": 1,
+        "raskas_kg": 82.5,
+        "bo_kg": 70,
+        "raskas": [
+          8,
+          7
+        ],
+        "bo": [
+          11,
+          9
+        ]
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "raskas": [
+          7,
+          6
+        ],
+        "bo": [
+          11,
+          9
+        ]
+      },
+      "V4": {
+        "rir": 0,
+        "raskas_kg": 87.5,
+        "bo_kg": 70,
+        "raskas": [
+          7,
+          6
+        ],
+        "bo": [
+          12,
+          9
+        ]
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 2,
+        "raskas_kg": 75,
+        "bo_kg": 60,
+        "raskas": [
+          9,
+          8
+        ],
+        "bo": [
+          15,
+          12
+        ]
+      },
+      "V2": {
+        "rir": 1,
+        "raskas_kg": 77.5,
+        "bo_kg": 65,
+        "raskas": [
+          9,
+          7
+        ],
+        "bo": [
+          12,
+          10
+        ]
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 80,
+        "bo_kg": 65,
+        "raskas": [
+          8,
+          7
+        ],
+        "bo": [
+          15,
+          10
+        ]
+      },
+      "V4": {
+        "rir": 0,
+        "raskas_kg": 82.5,
+        "bo_kg": 65,
+        "raskas": null,
+        "bo": null
+      }
+    },
+    "leuat": null
+  },
+  "M2/25": {
+    "viikot": 5,
+    "penkki": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              null,
+              null
+            ],
+            "bo": [
+              9,
+              8
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              11,
+              10,
+              9
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              12,
+              10,
+              10
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              13,
+              10,
+              10
+            ],
+            "bo": [
+              7
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 70,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              17,
+              12,
+              11
+            ],
+            "bo": [
+              9
+            ]
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 80,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              null
+            ],
+            "bo": [
+              11,
+              8
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 82.5,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": [
+              14,
+              12
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 85,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": [
+              15,
+              12
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 87.5,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": [
+              15,
+              13
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 90,
+        "bo_kg": 65,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": [
+              16,
+              9
+            ]
+          }
+        }
+      }
+    },
+    "leuat": null
+  },
+  "M4/25": {
+    "viikot": 4,
+    "penkki": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 80,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              null
+            ],
+            "bo": [
+              9,
+              7
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 82.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": [
+              10,
+              9
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": [
+              11,
+              9
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 0,
+        "raskas_kg": 88.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              4
+            ],
+            "bo": [
+              13,
+              9
+            ]
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 87.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": [
+              10,
+              null
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 90,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": [
+              11,
+              8
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 92.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              2
+            ],
+            "bo": [
+              12,
+              10
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 0,
+        "raskas_kg": 95,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              2,
+              2
+            ],
+            "bo": [
+              14,
+              11
+            ]
+          }
+        }
+      }
+    },
+    "leuat": null
+  },
+  "M5/25": {
+    "viikot": 5,
+    "penkki": {
+      "V1": {
+        "rir": 4,
+        "raskas_kg": 80,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              null
+            ],
+            "bo": [
+              9,
+              6
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 3,
+        "raskas_kg": 80,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              null
+            ],
+            "bo": [
+              10,
+              8
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 2,
+        "raskas_kg": 82.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": [
+              11,
+              8
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": [
+              12,
+              8
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 88.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              4
+            ],
+            "bo": [
+              12,
+              8
+            ]
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 4,
+        "raskas_kg": 80,
+        "bo_kg": 60,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              null
+            ],
+            "bo": [
+              10,
+              7
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 3,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": [
+              10,
+              null
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 2,
+        "raskas_kg": 90,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              2,
+              2
+            ],
+            "bo": [
+              11,
+              8
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 90,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              2
+            ],
+            "bo": [
+              12,
+              9
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 92.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": [
+              13,
+              10
+            ]
+          }
+        }
+      }
+    },
+    "leuat": null
+  },
+  "M6/25": {
+    "viikot": 6,
+    "penkki": {
+      "V1": {
+        "rir": 5,
+        "raskas_kg": 82.5,
+        "bo_kg": 60,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              null,
+              null
+            ],
+            "bo": [
+              11,
+              12
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": [
+              10,
+              8
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              4
+            ],
+            "bo": [
+              11,
+              9
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 88.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": [
+              12,
+              9
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 90,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": [
+              13,
+              10
+            ]
+          }
+        }
+      },
+      "V6": {
+        "rir": -1,
+        "raskas_kg": 92.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              2,
+              1
+            ],
+            "bo": [
+              11,
+              9
+            ]
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 5,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": [
+              7,
+              null
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 85,
+        "bo_kg": 75,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": [
+              7,
+              6
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 88.5,
+        "bo_kg": 75,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": [
+              8,
+              6
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 90,
+        "bo_kg": 75,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              2
+            ],
+            "bo": [
+              8,
+              6
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 92.5,
+        "bo_kg": 75,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              2
+            ],
+            "bo": [
+              10,
+              7
+            ]
+          }
+        }
+      }
+    },
+    "leuat": null
+  },
+  "M7/25": {
+    "viikot": 6,
+    "penkki": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 80,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              6,
+              5
+            ],
+            "bo": [
+              8
+            ]
+          },
+          "D2": {
+            "raskas": [
+              6,
+              6,
+              6
+            ],
+            "bo": [
+              8
+            ]
+          },
+          "D3": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              4,
+              4
+            ],
+            "bo": [
+              9
+            ]
+          },
+          "D2": {
+            "raskas": [
+              5,
+              4,
+              4
+            ],
+            "bo": [
+              9
+            ]
+          },
+          "D3": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 90,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3,
+              3
+            ],
+            "bo": [
+              10
+            ]
+          },
+          "D2": {
+            "raskas": [
+              3,
+              2,
+              3
+            ],
+            "bo": [
+              10
+            ]
+          },
+          "D3": {
+            "raskas": [
+              2,
+              1
+            ],
+            "bo": [
+              10
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 82.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              8,
+              6,
+              5
+            ],
+            "bo": [
+              10
+            ]
+          },
+          "D2": {
+            "raskas": [
+              8,
+              7,
+              7
+            ],
+            "bo": [
+              11
+            ]
+          },
+          "D3": {
+            "raskas": [
+              9,
+              7
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 87.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              4,
+              5
+            ],
+            "bo": [
+              12
+            ]
+          },
+          "D2": {
+            "raskas": [
+              6,
+              5,
+              5
+            ],
+            "bo": [
+              12
+            ]
+          },
+          "D3": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": [
+              12
+            ]
+          }
+        }
+      },
+      "V6": {
+        "rir": -1,
+        "raskas_kg": 95,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              4,
+              2
+            ],
+            "bo": [
+              13
+            ]
+          },
+          "D2": {
+            "raskas": [
+              4,
+              3,
+              3
+            ],
+            "bo": [
+              16
+            ]
+          },
+          "D3": {
+            "raskas": [
+              3,
+              null
+            ],
+            "bo": [
+              12
+            ]
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 80,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              4,
+              4
+            ],
+            "bo": [
+              8
+            ]
+          },
+          "D2": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              6,
+              6,
+              5
+            ],
+            "bo": [
+              8
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              4,
+              4
+            ],
+            "bo": [
+              9
+            ]
+          },
+          "D2": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              6,
+              5,
+              4
+            ],
+            "bo": [
+              10
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 90,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3,
+              3
+            ],
+            "bo": [
+              10
+            ]
+          },
+          "D2": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              4,
+              3,
+              4
+            ],
+            "bo": [
+              10
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 82.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              8,
+              7,
+              6
+            ],
+            "bo": [
+              10
+            ]
+          },
+          "D2": {
+            "raskas": [
+              8,
+              7
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              9,
+              8,
+              7
+            ],
+            "bo": [
+              12
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 87.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5,
+              5
+            ],
+            "bo": [
+              12
+            ]
+          },
+          "D2": {
+            "raskas": [
+              6,
+              6,
+              6
+            ],
+            "bo": [
+              12
+            ]
+          },
+          "D3": {
+            "raskas": [
+              7,
+              7,
+              6
+            ],
+            "bo": [
+              12
+            ]
+          }
+        }
+      },
+      "V6": {
+        "rir": -1,
+        "raskas_kg": 95,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3,
+              3
+            ],
+            "bo": [
+              14
+            ]
+          },
+          "D2": {
+            "skippattu": true
+          },
+          "D3": {
+            "raskas": [
+              4,
+              3,
+              3
+            ],
+            "bo": [
+              16
+            ]
+          }
+        }
+      }
+    },
+    "leuat": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 5,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              5,
+              5,
+              5
+            ],
+            "bo": [
+              16
+            ]
+          },
+          "D3": {
+            "raskas": [
+              5,
+              5,
+              5
+            ],
+            "bo": [
+              16
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 7.5,
+        "bo_kg": null,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              5,
+              5,
+              5
+            ],
+            "bo": [
+              17
+            ]
+          },
+          "D3": {
+            "raskas": [
+              5,
+              5,
+              4
+            ],
+            "bo": [
+              17
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 10,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              4,
+              4,
+              4
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              6,
+              5,
+              6,
+              5
+            ],
+            "bo": [
+              18
+            ]
+          },
+          "D3": {
+            "raskas": [
+              7,
+              6,
+              5,
+              4
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 7.5,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              6,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              7,
+              7,
+              6
+            ],
+            "bo": [
+              9
+            ]
+          },
+          "D3": {
+            "raskas": [
+              7,
+              6,
+              5
+            ],
+            "bo": [
+              9
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 12.5,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              5,
+              5,
+              4
+            ],
+            "bo": [
+              10
+            ]
+          },
+          "D3": {
+            "raskas": [
+              5,
+              5,
+              5
+            ],
+            "bo": [
+              10
+            ]
+          }
+        }
+      },
+      "V6": {
+        "rir": -1,
+        "raskas_kg": 15,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3,
+              3,
+              3
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              4,
+              3,
+              3,
+              3
+            ],
+            "bo": [
+              11
+            ]
+          },
+          "D3": {
+            "raskas": [
+              4,
+              4,
+              4,
+              2
+            ],
+            "bo": [
+              11
+            ]
+          }
+        }
+      }
+    }
+  },
+  "M1/26": {
+    "viikot": 6,
+    "penkki": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": [
+              10,
+              10
+            ]
+          },
+          "D2": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": [
+              10,
+              10
+            ]
+          },
+          "D3": {
+            "raskas": [
+              6,
+              null
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 90,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": [
+              4,
+              11
+            ]
+          },
+          "D2": {
+            "raskas": [
+              5,
+              4
+            ],
+            "bo": [
+              5,
+              11
+            ]
+          },
+          "D3": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 95,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": [
+              2,
+              12
+            ]
+          },
+          "D2": {
+            "raskas": [
+              3,
+              2
+            ],
+            "bo": [
+              2,
+              12
+            ]
+          },
+          "D3": {
+            "raskas": [
+              4,
+              4
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 87.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": [
+              6,
+              12
+            ]
+          },
+          "D2": {
+            "raskas": [
+              7,
+              8
+            ],
+            "bo": [
+              6,
+              13
+            ]
+          },
+          "D3": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 92.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": [
+              4,
+              13
+            ]
+          },
+          "D2": {
+            "raskas": [
+              5,
+              4
+            ],
+            "bo": [
+              5,
+              13
+            ]
+          },
+          "D3": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V6": {
+        "rir": -1,
+        "raskas_kg": 97.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              2
+            ],
+            "bo": [
+              2,
+              14
+            ]
+          },
+          "D2": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": [
+              2,
+              14
+            ]
+          },
+          "D3": {
+            "raskas": [
+              3,
+              2
+            ],
+            "bo": null
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 85,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": [
+              11,
+              null
+            ]
+          },
+          "D2": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": [
+              11,
+              null
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 90,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": [
+              5,
+              13
+            ]
+          },
+          "D2": {
+            "skipatttu": true
+          },
+          "D3": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": [
+              6,
+              13
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 95,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": [
+              3,
+              14
+            ]
+          },
+          "D2": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              4,
+              4
+            ],
+            "bo": [
+              3,
+              14
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 87.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": [
+              7,
+              14
+            ]
+          },
+          "D2": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              6,
+              7
+            ],
+            "bo": [
+              7,
+              15
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 92.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": [
+              5,
+              15
+            ]
+          },
+          "D2": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              5,
+              6
+            ],
+            "bo": [
+              6,
+              16
+            ]
+          }
+        }
+      },
+      "V6": {
+        "rir": -1,
+        "raskas_kg": 97.5,
+        "bo_kg": 70,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              2
+            ],
+            "bo": [
+              3,
+              16
+            ]
+          },
+          "D2": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": [
+              3,
+              17
+            ]
+          }
+        }
+      }
+    },
+    "leuat": {
+      "V1": {
+        "rir": 3,
+        "raskas_kg": 5,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              6
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              7,
+              7
+            ],
+            "bo": [
+              5,
+              8
+            ]
+          },
+          "D3": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": [
+              7,
+              8
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 2,
+        "raskas_kg": 10,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              5,
+              5
+            ],
+            "bo": [
+              5,
+              9
+            ]
+          },
+          "D3": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": [
+              5,
+              9
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": 1,
+        "raskas_kg": 15,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              5,
+              4
+            ],
+            "bo": [
+              3,
+              10
+            ]
+          },
+          "D3": {
+            "raskas": [
+              6,
+              4
+            ],
+            "bo": [
+              4,
+              10
+            ]
+          }
+        }
+      },
+      "V4": {
+        "rir": 1,
+        "raskas_kg": 7.5,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              8,
+              6
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              8,
+              7
+            ],
+            "bo": [
+              6,
+              11
+            ]
+          },
+          "D3": {
+            "raskas": [
+              8,
+              7
+            ],
+            "bo": [
+              5,
+              8
+            ]
+          }
+        }
+      },
+      "V5": {
+        "rir": 0,
+        "raskas_kg": 12.5,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              7,
+              5
+            ],
+            "bo": [
+              5,
+              10
+            ]
+          },
+          "D3": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": [
+              5,
+              8
+            ]
+          }
+        }
+      },
+      "V6": {
+        "rir": -1,
+        "raskas_kg": 17.5,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              4,
+              3
+            ],
+            "bo": [
+              3,
+              10
+            ]
+          },
+          "D3": {
+            "raskas": [
+              5,
+              4
+            ],
+            "bo": [
+              4,
+              11
+            ]
+          }
+        }
+      }
+    }
+  },
+  "M2/26": {
+    "viikot": 3,
+    "penkki": {
+      "V1": {
+        "rir": 1,
+        "raskas_kg": 90,
+        "bo_kg": 75,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              5,
+              5
+            ],
+            "bo": [
+              11
+            ]
+          },
+          "D2": {
+            "raskas": [
+              7,
+              6,
+              5
+            ],
+            "bo": [
+              11
+            ]
+          },
+          "D3": {
+            "raskas": [
+              8,
+              5
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V2": {
+        "rir": 0,
+        "raskas_kg": 95,
+        "bo_kg": 75,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              4,
+              4,
+              2
+            ],
+            "bo": [
+              12
+            ]
+          },
+          "D2": {
+            "raskas": [
+              5,
+              4,
+              3
+            ],
+            "bo": [
+              13
+            ]
+          },
+          "D3": {
+            "raskas": [
+              5,
+              4
+            ],
+            "bo": null
+          }
+        }
+      },
+      "V3": {
+        "rir": -1,
+        "raskas_kg": 100,
+        "bo_kg": 75,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              2,
+              3,
+              2
+            ],
+            "bo": [
+              14
+            ]
+          },
+          "D2": {
+            "raskas": [
+              3,
+              3,
+              1
+            ],
+            "bo": [
+              12
+            ]
+          },
+          "D3": {
+            "raskas": [
+              2,
+              2,
+              1
+            ],
+            "bo": null
+          }
+        }
+      }
+    },
+    "kyykky": {
+      "V1": {
+        "rir": 1,
+        "raskas_kg": 90,
+        "bo_kg": 75,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              8,
+              8,
+              7
+            ],
+            "bo": [
+              13
+            ]
+          },
+          "D2": {
+            "raskas": [
+              8,
+              8
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              8,
+              7,
+              7
+            ],
+            "bo": [
+              13
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 0,
+        "raskas_kg": 95,
+        "bo_kg": 75,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              5,
+              4
+            ],
+            "bo": [
+              14
+            ]
+          },
+          "D2": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              7,
+              5,
+              5
+            ],
+            "bo": [
+              15
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": -1,
+        "raskas_kg": 100,
+        "bo_kg": 75,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              2,
+              2
+            ],
+            "bo": [
+              15
+            ]
+          },
+          "D2": {
+            "raskas": [
+              4,
+              3,
+              3
+            ],
+            "bo": null
+          },
+          "D3": {
+            "raskas": [
+              3,
+              3,
+              2
+            ],
+            "bo": [
+              15
+            ]
+          }
+        }
+      }
+    },
+    "leuat": {
+      "V1": {
+        "rir": 1,
+        "raskas_kg": 10,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              7,
+              6,
+              5
+            ],
+            "bo": [
+              10
+            ]
+          },
+          "D3": {
+            "raskas": [
+              8,
+              6,
+              6
+            ],
+            "bo": [
+              9
+            ]
+          }
+        }
+      },
+      "V2": {
+        "rir": 0,
+        "raskas_kg": 15,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              6,
+              5
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              6,
+              4,
+              4
+            ],
+            "bo": [
+              10
+            ]
+          },
+          "D3": {
+            "raskas": [
+              6,
+              5,
+              4
+            ],
+            "bo": [
+              10
+            ]
+          }
+        }
+      },
+      "V3": {
+        "rir": -1,
+        "raskas_kg": 20,
+        "bo_kg": 0,
+        "paivat": {
+          "D1": {
+            "raskas": [
+              3,
+              3,
+              3
+            ],
+            "bo": null
+          },
+          "D2": {
+            "raskas": [
+              4,
+              3,
+              3
+            ],
+            "bo": [
+              11
+            ]
+          },
+          "D3": {
+            "raskas": [
+              4,
+              3,
+              3
+            ],
+            "bo": [
+              11
+            ]
+          }
+        }
+      }
+    }
+  }
+}
