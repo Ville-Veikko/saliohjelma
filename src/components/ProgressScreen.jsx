@@ -139,9 +139,22 @@ function buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight) {
       let bestEpley = null
       let bestReps = null
 
-      for (const dayData of Object.values(weekData.paivat ?? {})) {
-        if (!dayData) continue
-        for (const reps of (dayData.raskas ?? [])) {
+      const paivatVals = Object.values(weekData.paivat ?? {})
+      if (paivatVals.length > 0) {
+        for (const dayData of paivatVals) {
+          if (!dayData) continue
+          for (const reps of (dayData.raskas ?? [])) {
+            if (typeof reps === 'number') {
+              const e = epley(kgNum, reps)
+              if (e && (!bestEpley || e > bestEpley)) {
+                bestEpley = e
+                bestReps = reps
+              }
+            }
+          }
+        }
+      } else if (weekData.raskas) {
+        for (const reps of weekData.raskas) {
           if (typeof reps === 'number') {
             const e = epley(kgNum, reps)
             if (e && (!bestEpley || e > bestEpley)) {
@@ -167,7 +180,17 @@ function buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight) {
     extras.push(e ? { kg: kgNum, reps: sl.bestReps, extraKg: isLeuat ? sl.bestKg : null } : null)
   }
 
-  return { labels, points, extras }
+  // Laske EMA (alpha=0.3) — vain ei-null pisteisiin, spanGaps hoitaa välit
+  const ema = new Array(points.length).fill(null)
+  let lastEma = null
+  for (let i = 0; i < points.length; i++) {
+    if (points[i] != null) {
+      lastEma = lastEma == null ? points[i] : 0.3 * points[i] + 0.7 * lastEma
+      ema[i] = Math.round(lastEma * 10) / 10
+    }
+  }
+
+  return { labels, points, extras, ema }
 }
 
 function EpleyChart({ liftName, workoutHistory, sheetsEpley, bodyweight }) {
@@ -176,25 +199,36 @@ function EpleyChart({ liftName, workoutHistory, sheetsEpley, bodyweight }) {
   useEffect(() => {
     if (!canvasRef.current || !workoutHistory) return
 
-    const { labels, points, extras } = buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight)
+    const { labels, points, extras, ema } = buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight)
 
     const chart = new Chart(canvasRef.current, {
       type: 'line',
       data: {
         labels,
-        datasets: [{
-          label: liftName,
-          data: points,
-          borderColor: LINE_COLOR,
-          backgroundColor: LINE_COLOR_DIM,
-          borderWidth: 2,
-          pointRadius: points.map(p => p != null ? 4 : 0),
-          pointHoverRadius: 6,
-          pointBackgroundColor: points.map(p => p != null ? LINE_COLOR : 'transparent'),
-          tension: 0.3,
-          spanGaps: false,
-          fill: true,
-        }],
+        datasets: [
+          {
+            label: liftName,
+            data: points,
+            borderWidth: 0,
+            pointRadius: points.map(p => p != null ? 3 : 0),
+            pointHoverRadius: 6,
+            pointBackgroundColor: points.map(p => p != null ? LINE_COLOR : 'transparent'),
+            spanGaps: false,
+            fill: false,
+          },
+          {
+            label: 'EMA',
+            data: ema,
+            borderColor: LINE_COLOR,
+            backgroundColor: LINE_COLOR_DIM,
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            tension: 0.3,
+            spanGaps: true,
+            fill: true,
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -202,6 +236,7 @@ function EpleyChart({ liftName, workoutHistory, sheetsEpley, bodyweight }) {
         plugins: {
           legend: { display: false },
           tooltip: {
+            filter: (item) => item.datasetIndex === 0,
             callbacks: {
               label: (ctx) => {
                 if (ctx.parsed.y == null) return ''
