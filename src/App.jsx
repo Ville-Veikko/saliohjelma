@@ -86,13 +86,18 @@ export default function App() {
   }, [workoutHook.program])
 
   // Auto-paluu kesken olevaan treeniin käynnistyksen yhteydessä
+  // Odota Sheets-datan lataus: jos tallennettu treeni on jo Sheetsissä, älä auto-jatka
   useEffect(() => {
     if (!workoutHook.savedInfo || workoutHook.workout || screen !== 'start') return
+    if (sheetsHistory.loading) return  // odota Sheets-lataus
     const { week, day } = workoutHook.savedInfo
+    const entry = sheetsHistory.data?.[`v${week + 1}_Day${day + 1}`]
+    const isInSheets = entry?.tulokset?.some(t => t.set1 != null)
+    if (isInSheets) return  // treeni jo Sheetsissä — älä auto-jatka
     const exerciseIndex = loadActiveExercise()
     workoutHook.startWorkout(week, day, exerciseIndex)
     setScreen('workout')
-  }, [workoutHook.savedInfo])  // eslint-disable-line
+  }, [workoutHook.savedInfo, sheetsHistory.loading, sheetsHistory.data])  // eslint-disable-line
 
   // Seed yhteenveto-näkymän historia-valinnalle (asetetaan "Katso tulokset" -napista)
   const [summaryHistSeed, setSummaryHistSeed] = useState(null)
