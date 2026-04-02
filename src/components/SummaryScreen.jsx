@@ -92,7 +92,7 @@ function fmtSets(t, numSets) {
   return vals.map(v => (typeof v === 'number' ? v : '?')).join('/')
 }
 
-/** Pääliikekortit: Penkki / Kyykky / Leuat — kaikki päivät valitulta viikolta */
+/** Pääliikekortit: Penkki / Kyykky / Leuat — päivät riveillä, kg sarakeotsikkoina */
 function MainLiftCard({ liftName, program, histWeek, sheetsData, bodyweight }) {
   const ex = program.days[0].find(e => e.name === liftName)
   if (!ex) return null
@@ -100,17 +100,7 @@ function MainLiftCard({ liftName, program, histWeek, sheetsData, bodyweight }) {
   const mainKg = ex.kg[histWeek]
   const boKg = ex.boKg
   const isLeuat = ex.badge === 'leuat'
-
-  const dayCount = program.days.length
-  const setsByDay = program.days.map((_, di) => {
-    const t = getTulokset(sheetsData, histWeek, di, liftName)
-    return fmtSets(t, numSets)
-  })
-  const boByDay = program.days.map((_, di) => {
-    const t = getTulokset(sheetsData, histWeek, di, liftName)
-    if (!t || typeof t.bo !== 'number') return '—'
-    return String(t.bo)
-  })
+  const hasBo = boKg != null
 
   // Paras 1RM kaikista seteistä valitulta viikolta
   const mainKgNum = parseFloat(mainKg) || 0
@@ -137,21 +127,22 @@ function MainLiftCard({ liftName, program, histWeek, sheetsData, bodyweight }) {
         {liftName}
         {best1rm && <span className="hist-best1rm">{best1rm} kg</span>}
       </div>
-      <div className="hist-lift-grid" style={{ gridTemplateColumns: `68px repeat(${dayCount}, 1fr)` }}>
+      <div className="hist-main-grid" style={{ gridTemplateColumns: hasBo ? '28px 1fr 1fr' : '28px 1fr' }}>
+        {/* Otsikkorivi: tyhjä | raskas kg | bo kg */}
         <span />
-        {program.days.map((_, di) => (
-          <span key={di} className="hist-col-hdr">P{di + 1}</span>
-        ))}
-        <span className="hist-lift-kg">{mainKg} kg</span>
-        {setsByDay.map((s, di) => (
-          <span key={di} className="hist-lift-sets">{s}</span>
-        ))}
-        {boKg != null && <>
-          <span className="hist-lift-kg hist-bo-kg">{boKg === 'bw' ? 'bw' : `${boKg} kg`}</span>
-          {boByDay.map((b, di) => (
-            <span key={di} className="hist-lift-sets hist-bo-sets">{b}</span>
-          ))}
-        </>}
+        <span className="hist-col-hdr">{mainKg} kg</span>
+        {hasBo && <span className="hist-col-hdr hist-bo-kg">{boKg === 'bw' ? 'bw' : `${boKg} kg`}</span>}
+        {/* Päivärivit */}
+        {program.days.map((_, di) => {
+          const t = getTulokset(sheetsData, histWeek, di, liftName)
+          return (
+            <React.Fragment key={di}>
+              <span className="hist-day-label">D{di + 1}</span>
+              <span className="hist-lift-sets">{fmtSets(t, numSets)}</span>
+              {hasBo && <span className="hist-bo-sets">{t && typeof t.bo === 'number' ? String(t.bo) : '—'}</span>}
+            </React.Fragment>
+          )
+        })}
       </div>
     </div>
   )

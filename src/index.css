@@ -467,38 +467,34 @@ body {
   letter-spacing: 0;
   text-transform: none;
 }
-/* Pääliikkeiden ruudukko: kg-sarake + P1/P2/P3 */
-.hist-lift-grid {
+/* Pääliikkeet: D1/D2/D3 riveillä, kg sarakeotsikkoina */
+.hist-main-grid {
   display: grid;
-  gap: 2px 8px;
+  gap: 4px 10px;
   align-items: center;
+}
+.hist-day-label {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
 }
 .hist-col-hdr {
   font-size: 11px;
-  color: #555;
-  text-align: center;
-  padding-bottom: 4px;
-}
-.hist-lift-kg {
-  font-size: 13px;
-  color: #ccc;
-  white-space: nowrap;
+  color: #888;
+  padding-bottom: 2px;
 }
 .hist-bo-kg {
-  color: #888;
-  font-size: 12px;
-  padding-top: 2px;
+  color: #666;
 }
 .hist-lift-sets {
   font-size: 13px;
-  text-align: center;
   color: #fff;
   font-variant-numeric: tabular-nums;
 }
 .hist-bo-sets {
   color: #aaa;
-  font-size: 12px;
-  padding-top: 2px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
 }
 /* Olkapää + erilliset kortit */
 .hist-aux-row {
