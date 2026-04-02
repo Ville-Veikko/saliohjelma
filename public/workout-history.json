@@ -1086,53 +1086,69 @@
         "rir": 2,
         "raskas_kg": 80,
         "bo_kg": 70,
-        "raskas": [
-          9,
-          8
-        ],
-        "bo": [
-          10,
-          9
-        ]
+        "paivat": {
+          "D1": {
+            "raskas": [
+              9,
+              8
+            ],
+            "bo": [
+              10,
+              9
+            ]
+          }
+        }
       },
       "V2": {
         "rir": 1,
         "raskas_kg": 82.5,
         "bo_kg": 70,
-        "raskas": [
-          8,
-          7
-        ],
-        "bo": [
-          11,
-          9
-        ]
+        "paivat": {
+          "D1": {
+            "raskas": [
+              8,
+              7
+            ],
+            "bo": [
+              11,
+              9
+            ]
+          }
+        }
       },
       "V3": {
         "rir": 1,
         "raskas_kg": 85,
         "bo_kg": 70,
-        "raskas": [
-          7,
-          6
-        ],
-        "bo": [
-          11,
-          9
-        ]
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": [
+              11,
+              9
+            ]
+          }
+        }
       },
       "V4": {
         "rir": 0,
         "raskas_kg": 87.5,
         "bo_kg": 70,
-        "raskas": [
-          7,
-          6
-        ],
-        "bo": [
-          12,
-          9
-        ]
+        "paivat": {
+          "D1": {
+            "raskas": [
+              7,
+              6
+            ],
+            "bo": [
+              12,
+              9
+            ]
+          }
+        }
       }
     },
     "kyykky": {
@@ -1140,47 +1156,63 @@
         "rir": 2,
         "raskas_kg": 75,
         "bo_kg": 60,
-        "raskas": [
-          9,
-          8
-        ],
-        "bo": [
-          15,
-          12
-        ]
+        "paivat": {
+          "D1": {
+            "raskas": [
+              9,
+              8
+            ],
+            "bo": [
+              15,
+              12
+            ]
+          }
+        }
       },
       "V2": {
         "rir": 1,
         "raskas_kg": 77.5,
         "bo_kg": 65,
-        "raskas": [
-          9,
-          7
-        ],
-        "bo": [
-          12,
-          10
-        ]
+        "paivat": {
+          "D1": {
+            "raskas": [
+              9,
+              7
+            ],
+            "bo": [
+              12,
+              10
+            ]
+          }
+        }
       },
       "V3": {
         "rir": 1,
         "raskas_kg": 80,
         "bo_kg": 65,
-        "raskas": [
-          8,
-          7
-        ],
-        "bo": [
-          15,
-          10
-        ]
+        "paivat": {
+          "D1": {
+            "raskas": [
+              8,
+              7
+            ],
+            "bo": [
+              15,
+              10
+            ]
+          }
+        }
       },
       "V4": {
         "rir": 0,
         "raskas_kg": 82.5,
         "bo_kg": 65,
-        "raskas": null,
-        "bo": null
+        "paivat": {
+          "D1": {
+            "raskas": null,
+            "bo": null
+          }
+        }
       }
     },
     "leuat": null
@@ -1194,10 +1226,7 @@
         "bo_kg": 70,
         "paivat": {
           "D1": {
-            "raskas": [
-              null,
-              null
-            ],
+            "raskas": null,
             "bo": [
               9,
               8

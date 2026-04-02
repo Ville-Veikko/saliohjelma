@@ -9,6 +9,12 @@ const MAIN_LIFTS = ['Penkki', 'Kyykky', 'Leuat']
 const LINE_COLOR = '#a855f7'
 const LINE_COLOR_DIM = '#7c3aed44'
 
+const MESO_COLORS = [
+  '#60a5fa', '#34d399', '#fbbf24', '#f87171', '#38bdf8',
+  '#a78bfa', '#4ade80', '#fb923c', '#e879f9', '#2dd4bf',
+  '#facc15', '#f472b6', '#818cf8', '#a855f7',
+]
+
 /**
  * Rakentaa per-liike historiarivit history.json-datasta.
  * Palauttaa [{ meso, best1rm, bestSet, delta }, ...] järjestyksessä.
@@ -103,84 +109,65 @@ function LiftTable({ liftName, history, currentMeso, sheetsEpley, bodyweight }) 
 function buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight) {
   const liftKey = liftName.toLowerCase()
   const isLeuat = liftName === 'Leuat'
-  const labels = []
-  const points = []
-  const extras = []
+  const bw = bodyweight ?? 84
+  const labels = [], points = [], extras = [], mesoIndices = []
+  let mesoIdx = 0
 
   for (const [mesoName, mesoData] of Object.entries(workoutHistory)) {
+    if (!mesoData) { mesoIdx++; continue }
     const liftData = mesoData[liftKey]
     const weekCount = mesoData.viikot
 
     for (let wi = 0; wi < weekCount; wi++) {
       const weekKey = `V${wi + 1}`
       labels.push(wi === 0 ? mesoName : '')
+      mesoIndices.push(mesoIdx)
 
-      if (!liftData) {
-        points.push(null)
-        extras.push(null)
-        continue
-      }
-
+      if (!liftData) { points.push(null); extras.push(null); continue }
       const weekData = liftData[weekKey]
-      if (!weekData) {
-        points.push(null)
-        extras.push(null)
-        continue
-      }
-
+      if (!weekData) { points.push(null); extras.push(null); continue }
       const raskasKg = weekData.raskas_kg
-      if (raskasKg == null) {
-        points.push(null)
-        extras.push(null)
-        continue
-      }
-      const kgNum = isLeuat ? raskasKg + (bodyweight ?? 0) : raskasKg
+      if (raskasKg == null) { points.push(null); extras.push(null); continue }
 
-      let bestEpley = null
-      let bestReps = null
+      const kgNum = isLeuat ? raskasKg + bw : raskasKg
+      let bestEpley = null, bestReps = null
 
-      const paivatVals = Object.values(weekData.paivat ?? {})
-      if (paivatVals.length > 0) {
-        for (const dayData of paivatVals) {
-          if (!dayData) continue
-          for (const reps of (dayData.raskas ?? [])) {
-            if (typeof reps === 'number') {
-              const e = epley(kgNum, reps)
-              if (e && (!bestEpley || e > bestEpley)) {
-                bestEpley = e
-                bestReps = reps
-              }
-            }
-          }
-        }
-      } else if (weekData.raskas) {
-        for (const reps of weekData.raskas) {
+      for (const dayData of Object.values(weekData.paivat ?? {})) {
+        if (!dayData) continue
+        for (const reps of (dayData.raskas ?? [])) {
           if (typeof reps === 'number') {
             const e = epley(kgNum, reps)
-            if (e && (!bestEpley || e > bestEpley)) {
-              bestEpley = e
-              bestReps = reps
-            }
+            if (e && (!bestEpley || e > bestEpley)) { bestEpley = e; bestReps = reps }
           }
         }
       }
-
       points.push(bestEpley)
       extras.push(bestEpley ? { kg: kgNum, reps: bestReps, extraKg: isLeuat ? raskasKg : null } : null)
     }
+    mesoIdx++
   }
 
-  // Lisää M3/26 sheetsEpley:stä
+  // Leikkaa tyhjä alku (esim. leuat M3/24–M6/25)
+  const firstIdx = points.findIndex(p => p != null)
+  if (firstIdx > 0) {
+    labels.splice(0, firstIdx)
+    points.splice(0, firstIdx)
+    extras.splice(0, firstIdx)
+    mesoIndices.splice(0, firstIdx)
+  }
+
+  // Lisää M3/26 sheetsEpley:stä (triimin jälkeen)
   const sl = sheetsEpley?.data?.epley?.[liftName]
   if (sl) {
-    const kgNum = isLeuat ? sl.bestKg + (bodyweight ?? 0) : sl.bestKg
+    const kgNum = isLeuat ? sl.bestKg + bw : sl.bestKg
     const e = epley(kgNum, sl.bestReps) ?? null
     labels.push('M3/26')
     points.push(e)
     extras.push(e ? { kg: kgNum, reps: sl.bestReps, extraKg: isLeuat ? sl.bestKg : null } : null)
+    mesoIndices.push(13)
   }
 
-  // Laske EMA (alpha=0.3) — vain ei-null pisteisiin, spanGaps hoitaa välit
+  // Laske EMA (alpha=0.3)
   const ema = new Array(points.length).fill(null)
   let lastEma = null
   for (let i = 0; i < points.length; i++) {
@@ -190,7 +177,7 @@ function buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight) {
     }
   }
 
-  return { labels, points, extras, ema }
+  return { labels, points, extras, ema, mesoIndices }
 }
 
 function EpleyChart({ liftName, workoutHistory, sheetsEpley, bodyweight }) {
@@ -199,7 +186,7 @@ function EpleyChart({ liftName, workoutHistory, sheetsEpley, bodyweight }) {
   useEffect(() => {
     if (!canvasRef.current || !workoutHistory) return
 
-    const { labels, points, extras, ema } = buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight)
+    const { labels, points, extras, ema, mesoIndices } = buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight)
 
     const chart = new Chart(canvasRef.current, {
       type: 'line',
@@ -212,7 +199,9 @@ function EpleyChart({ liftName, workoutHistory, sheetsEpley, bodyweight }) {
             showLine: false,
             pointRadius: points.map(p => p != null ? 3 : 0),
             pointHoverRadius: 6,
-            pointBackgroundColor: points.map(p => p != null ? LINE_COLOR : 'transparent'),
+            pointBackgroundColor: points.map((p, i) =>
+              p != null ? MESO_COLORS[mesoIndices[i] % MESO_COLORS.length] : 'transparent'
+            ),
             spanGaps: false,
             fill: false,
           },
