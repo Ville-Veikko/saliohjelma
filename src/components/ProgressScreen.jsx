@@ -9,6 +9,25 @@ const MAIN_LIFTS = ['Penkki', 'Kyykky', 'Leuat']
 const LINE_COLOR = '#a855f7'
 const LINE_COLOR_DIM = '#7c3aed44'
 
+/** Gaussinen kernel-tasoitus: symmetrinen painotettu keskiarvo, ei EMA-viive */
+function gaussianSmooth(points, sigma) {
+  const n = points.length
+  const result = new Array(n).fill(null)
+  const valid = []
+  for (let i = 0; i < n; i++) if (points[i] != null) valid.push({ v: points[i], i })
+  if (!valid.length) return result
+  for (let i = 0; i < n; i++) {
+    let wSum = 0, wTotal = 0
+    for (const { v, i: j } of valid) {
+      const w = Math.exp(-((i - j) ** 2) / (2 * sigma * sigma))
+      wSum += v * w
+      wTotal += w
+    }
+    if (wTotal > 1e-6) result[i] = Math.round(wSum / wTotal * 10) / 10
+  }
+  return result
+}
+
 const MESO_COLORS = [
   '#60a5fa', '#34d399', '#fbbf24', '#f87171', '#38bdf8',
   '#a78bfa', '#4ade80', '#fb923c', '#e879f9', '#2dd4bf',
@@ -167,15 +186,7 @@ function buildChartData(workoutHistory, liftName, sheetsEpley, bodyweight) {
     mesoIndices.push(13)
   }
 
-  // Laske EMA (alpha=0.3)
-  const ema = new Array(points.length).fill(null)
-  let lastEma = null
-  for (let i = 0; i < points.length; i++) {
-    if (points[i] != null) {
-      lastEma = lastEma == null ? points[i] : 0.3 * points[i] + 0.7 * lastEma
-      ema[i] = Math.round(lastEma * 10) / 10
-    }
-  }
+  const ema = gaussianSmooth(points, 8)
 
   return { labels, points, extras, ema, mesoIndices }
 }
@@ -304,14 +315,7 @@ function BodyChart({ data, field, label, unit }) {
     const labels = data.map(d => d.pvm)
     const points = data.map(d => d[field] ?? null)
 
-    const ema = new Array(points.length).fill(null)
-    let lastEma = null
-    for (let i = 0; i < points.length; i++) {
-      if (points[i] != null) {
-        lastEma = lastEma == null ? points[i] : 0.2 * points[i] + 0.8 * lastEma
-        ema[i] = Math.round(lastEma * 10) / 10
-      }
-    }
+    const ema = gaussianSmooth(points, 5)
 
     const chart = new Chart(canvasRef.current, {
       type: 'line',
