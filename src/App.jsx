@@ -54,6 +54,7 @@ export default function App() {
   // Sheets-historia (haetaan kerran ohjelman latauksen jälkeen)
   const [sheetsHistory, setSheetsHistory] = useState({ loading: true, data: null, error: null })
   const [sheetsEpley, setSheetsEpley] = useState({ loading: true, data: null, error: null })
+  const [sheetsKeho, setSheetsKeho] = useState({ loading: true, data: null, error: null })
 
   useEffect(() => {
     if (!workoutHook.program) return
@@ -82,6 +83,19 @@ export default function App() {
       })
       .catch(err => {
         setSheetsEpley({ loading: false, data: null, error: err.message })
+      })
+
+    fetch(url + '?action=kehonkoostumus')
+      .then(r => r.json())
+      .then(json => {
+        if (json.ok) {
+          setSheetsKeho({ loading: false, data: json, error: null })
+        } else {
+          setSheetsKeho({ loading: false, data: null, error: json.error || 'Tuntematon virhe' })
+        }
+      })
+      .catch(err => {
+        setSheetsKeho({ loading: false, data: null, error: err.message })
       })
   }, [workoutHook.program])
 
@@ -200,6 +214,7 @@ export default function App() {
             program={workoutHook.program}
             bodyweight={bodyweight}
             sheetsEpley={sheetsEpley}
+            sheetsKeho={sheetsKeho}
             historyData={historyData}
             workoutHistory={workoutHistory}
           />

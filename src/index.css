@@ -634,6 +634,10 @@ body {
   color: #666;
   font-size: 14px;
 }
+.ep-keho-chart {
+  height: 220px;
+  margin-bottom: 16px;
+}
 
 /* ── Asetukset ── */
 .settings-field { margin-bottom: 24px; }

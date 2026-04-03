@@ -287,7 +287,110 @@ function EpleyChart({ liftName, workoutHistory, sheetsEpley, bodyweight }) {
   )
 }
 
-export default function ProgressScreen({ program, bodyweight, sheetsEpley, historyData, workoutHistory }) {
+const FI_MONTHS = ['tammikuu','helmikuu','maaliskuu','huhtikuu','toukokuu','kesäkuu',
+  'heinäkuu','elokuu','syyskuu','lokakuu','marraskuu','joulukuu']
+
+function BodyChart({ data, field, label, unit }) {
+  const canvasRef = useRef(null)
+
+  useEffect(() => {
+    if (!canvasRef.current || !data?.length) return
+
+    const labels = data.map(d => d.pvm)
+    const points = data.map(d => d[field] ?? null)
+
+    const ema = new Array(points.length).fill(null)
+    let lastEma = null
+    for (let i = 0; i < points.length; i++) {
+      if (points[i] != null) {
+        lastEma = lastEma == null ? points[i] : 0.2 * points[i] + 0.8 * lastEma
+        ema[i] = Math.round(lastEma * 10) / 10
+      }
+    }
+
+    const chart = new Chart(canvasRef.current, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label,
+            data: points,
+            showLine: false,
+            pointRadius: points.map(p => p != null ? 3 : 0),
+            pointHoverRadius: 6,
+            pointBackgroundColor: points.map(p => p != null ? LINE_COLOR : 'transparent'),
+            spanGaps: false,
+            fill: false,
+          },
+          {
+            label: 'EMA',
+            data: ema,
+            borderColor: LINE_COLOR,
+            backgroundColor: LINE_COLOR_DIM,
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            tension: 0.3,
+            spanGaps: true,
+            fill: true,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            filter: (item) => item.datasetIndex === 0,
+            callbacks: {
+              label: (ctx) => `${ctx.parsed.y} ${unit}`,
+              title: (items) => {
+                const pvm = labels[items[0]?.dataIndex ?? 0]
+                if (!pvm) return ''
+                const [y, m] = pvm.split('-')
+                return `${FI_MONTHS[parseInt(m, 10) - 1]} ${y}`
+              },
+            },
+          },
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: '#aaa',
+              font: { size: 9 },
+              maxRotation: 0,
+              autoSkip: false,
+              callback: (_, index) => {
+                const pvm = labels[index]
+                if (!pvm) return ''
+                const [y, m] = pvm.split('-')
+                if (index === 0 || m === '01') return y
+                return ''
+              },
+            },
+            grid: { color: '#2a2a2a' },
+            border: { color: '#333' },
+          },
+          y: {
+            ticks: { color: '#aaa', font: { size: 11 } },
+            grid: { color: '#2a2a2a' },
+            border: { color: '#333' },
+          },
+        },
+      },
+    })
+
+    return () => chart.destroy()
+  }, [data, field, label, unit])
+
+  if (!data) return <div className="ep-chart-wrap ep-keho-chart ep-loading">Ladataan…</div>
+  if (!data.length) return <div className="ep-chart-wrap ep-keho-chart ep-loading">Ei dataa</div>
+  return <div className="ep-chart-wrap ep-keho-chart"><canvas ref={canvasRef} /></div>
+}
+
+export default function ProgressScreen({ program, bodyweight, sheetsEpley, sheetsKeho, historyData, workoutHistory }) {
   const [tab, setTab] = useState('taulukko')
   const [selectedLift, setSelectedLift] = useState('Penkki')
   const currentMeso = program.meso.replace('Meso ', 'M').replace(' / ', '/')
@@ -308,6 +411,12 @@ export default function ProgressScreen({ program, bodyweight, sheetsEpley, histo
           onClick={() => setTab('graafi')}
         >
           Graafi
+        </button>
+        <button
+          className={`ep-tab${tab === 'keho' ? ' active' : ''}`}
+          onClick={() => setTab('keho')}
+        >
+          Keho
         </button>
       </div>
 
@@ -344,6 +453,32 @@ export default function ProgressScreen({ program, bodyweight, sheetsEpley, histo
             bodyweight={bodyweight}
           />
         </>
+      )}
+
+      {tab === 'keho' && (
+        sheetsKeho?.loading ? (
+          <div className="hist-empty">Ladataan kehon dataa…</div>
+        ) : sheetsKeho?.error ? (
+          <div className="hist-empty">Datan lataus epäonnistui</div>
+        ) : (
+          <>
+            {[
+              { field: 'paino', label: 'Paino', unit: 'kg' },
+              { field: 'rasva', label: 'Rasvaprosentti', unit: '%' },
+              { field: 'lihas', label: 'Lihasmassa', unit: 'kg' },
+            ].map(({ field, label, unit }) => (
+              <React.Fragment key={field}>
+                <div className="section-label">{label} ({unit})</div>
+                <BodyChart
+                  data={sheetsKeho?.data?.data ?? []}
+                  field={field}
+                  label={label}
+                  unit={unit}
+                />
+              </React.Fragment>
+            ))}
+          </>
+        )
       )}
     </div>
   )
