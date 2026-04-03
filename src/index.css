@@ -636,7 +636,19 @@ body {
 }
 .ep-keho-chart {
   height: 220px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+}
+.ep-year-legend {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.ep-year-badge {
+  font-size: 11px;
+  color: #fff;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
 }
 
 /* ── Asetukset ── */

@@ -290,8 +290,13 @@ function EpleyChart({ liftName, workoutHistory, sheetsEpley, bodyweight }) {
 const FI_MONTHS = ['tammikuu','helmikuu','maaliskuu','huhtikuu','toukokuu','kesäkuu',
   'heinäkuu','elokuu','syyskuu','lokakuu','marraskuu','joulukuu']
 
+const YEAR_COLORS = { '2024': '#1d9e75', '2025': '#3266ad', '2026': '#d4537e' }
+
 function BodyChart({ data, field, label, unit }) {
   const canvasRef = useRef(null)
+
+  const years = (data ?? []).map(d => String(d.pvm).split('-')[0])
+  const uniqueYears = [...new Set(years.filter(Boolean))]
 
   useEffect(() => {
     if (!canvasRef.current || !data?.length) return
@@ -319,7 +324,9 @@ function BodyChart({ data, field, label, unit }) {
             showLine: false,
             pointRadius: points.map(p => p != null ? 3 : 0),
             pointHoverRadius: 6,
-            pointBackgroundColor: points.map(p => p != null ? LINE_COLOR : 'transparent'),
+            pointBackgroundColor: points.map((p, i) =>
+              p != null ? (YEAR_COLORS[years[i]] ?? LINE_COLOR) : 'transparent'
+            ),
             spanGaps: false,
             fill: false,
           },
@@ -349,8 +356,8 @@ function BodyChart({ data, field, label, unit }) {
               title: (items) => {
                 const pvm = labels[items[0]?.dataIndex ?? 0]
                 if (!pvm) return ''
-                const [y, m] = pvm.split('-')
-                return `${FI_MONTHS[parseInt(m, 10) - 1]} ${y}`
+                const parts = pvm.split('-')
+                return `${FI_MONTHS[parseInt(parts[1], 10) - 1]} ${parts[0]}`
               },
             },
           },
@@ -363,10 +370,7 @@ function BodyChart({ data, field, label, unit }) {
               maxRotation: 0,
               autoSkip: false,
               callback: (_, index) => {
-                const pvm = labels[index]
-                if (!pvm) return ''
-                const [y, m] = pvm.split('-')
-                if (index === 0 || m === '01') return y
+                if (index === 0 || years[index] !== years[index - 1]) return years[index]
                 return ''
               },
             },
@@ -387,7 +391,16 @@ function BodyChart({ data, field, label, unit }) {
 
   if (!data) return <div className="ep-chart-wrap ep-keho-chart ep-loading">Ladataan…</div>
   if (!data.length) return <div className="ep-chart-wrap ep-keho-chart ep-loading">Ei dataa</div>
-  return <div className="ep-chart-wrap ep-keho-chart"><canvas ref={canvasRef} /></div>
+  return (
+    <>
+      <div className="ep-chart-wrap ep-keho-chart"><canvas ref={canvasRef} /></div>
+      <div className="ep-year-legend">
+        {uniqueYears.map(y => (
+          <span key={y} className="ep-year-badge" style={{ background: YEAR_COLORS[y] ?? LINE_COLOR }}>{y}</span>
+        ))}
+      </div>
+    </>
+  )
 }
 
 export default function ProgressScreen({ program, bodyweight, sheetsEpley, sheetsKeho, historyData, workoutHistory }) {
