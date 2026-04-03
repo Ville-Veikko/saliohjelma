@@ -62,7 +62,6 @@ export default function ExerciseCard({
   // "Paras ±2.5kg" -haku
   const prev = kgNum ? getBestPrev(program.history, exercise.name, kgNum) : null
   const prevText = prev ? `${prev.kg} kg × ${prev.reps}` : '—'
-  const prevSub  = prev ? `≈${epley(prev.kg, prev.reps) ?? '—'} kg 1RM` : ''
 
   return (
     <div className="exercise-wrap">
@@ -105,9 +104,8 @@ export default function ExerciseCard({
           )}
 
           <div className="info-box">
-            <div className="info-label">Paras ±2.5kg</div>
+            <div className="info-label">PR</div>
             <div className="info-val" style={{ fontSize: 13, color: '#fbbf24' }}>{prevText}</div>
-            <div className="info-sub">{prevSub}</div>
           </div>
         </div>
 
