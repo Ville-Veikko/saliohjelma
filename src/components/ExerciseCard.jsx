@@ -40,9 +40,7 @@ export default function ExerciseCard({
   const rMinBase = Array.isArray(exercise.rMin) ? exercise.rMin[0] : exercise.rMin
 
   const effectiveBoTarget = hasBo
-    ? (isAux
-        ? getProgressionTarget(boTargetBase, weekIndex, dayIndex, exerciseIndex, 'bo')
-        : pw(exercise.boTarget))
+    ? getProgressionTarget(boTargetBase, weekIndex, dayIndex, exerciseIndex, 'bo')
     : null
   const effectiveRepsTarget = isAux
     ? getProgressionTarget(rMinBase, weekIndex, dayIndex, exerciseIndex, 'aux')
