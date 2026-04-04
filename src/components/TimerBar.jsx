@@ -14,12 +14,15 @@ export default function TimerBar({ timer }) {
       className={`timer-bar${done ? ' done' : ''}`}
       onClick={done ? dismiss : undefined}
     >
-      {/* Liila täyttöpalkki: oikealle tasattu, kutistuu vasemmalta */}
+      {/* Degradee-täyttöpalkki: oikealle tasattu, kutistuu vasemmalta */}
       {!done && <div className="timer-fill" style={{ width: `${pct}%` }} />}
 
-      {/* Sisältö palkin päällä */}
+      {/* Sisältö — numero keskitetty, skip absoluuttisesti oikealla */}
       <div className="timer-content">
-        <div className="timer-time">{timeStr}</div>
+        <div className="timer-center">
+          <div className="timer-time">{timeStr}</div>
+          {!done && <div className="timer-label">LEPO</div>}
+        </div>
         {running && (
           <button className="timer-skip" onClick={e => { e.stopPropagation(); skip() }}>
             Ohita

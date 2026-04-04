@@ -162,7 +162,7 @@ body {
 .timer-fill {
   position: absolute;
   top: 0; right: 0; bottom: 0;
-  background: #a855f7;
+  background: linear-gradient(to right, #7c3aed, #c084fc);
   transition: width 1s linear;
 }
 .timer-content {
@@ -171,18 +171,32 @@ body {
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0 20px;
-  gap: 12px;
+}
+.timer-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
 }
 .timer-time {
-  flex: 1;
   font-size: 38px;
   font-weight: 700;
   color: #fff;
   font-variant-numeric: tabular-nums;
   letter-spacing: -1px;
 }
+.timer-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 3px;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
 .timer-skip {
+  position: absolute;
+  right: 20px;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: #fff;
@@ -191,12 +205,12 @@ body {
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
-  flex-shrink: 0;
 }
 .timer-done-hint {
+  position: absolute;
+  right: 20px;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.85);
-  flex-shrink: 0;
 }
 
 /* ── Progress ── */
