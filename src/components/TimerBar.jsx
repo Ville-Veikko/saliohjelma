@@ -14,21 +14,21 @@ export default function TimerBar({ timer }) {
       className={`timer-bar${done ? ' done' : ''}`}
       onClick={done ? dismiss : undefined}
     >
-      {/* Degradee-täyttöpalkki: oikealle tasattu, kutistuu vasemmalta */}
       {!done && <div className="timer-fill" style={{ width: `${pct}%` }} />}
 
-      {/* Sisältö — numero keskitetty, skip absoluuttisesti oikealla */}
       <div className="timer-content">
-        <div className="timer-center">
-          <div className="timer-time">{timeStr}</div>
-          {!done && <div className="timer-label">LEPO</div>}
-        </div>
+        {/* Numero on ainoa flex-child → pysyy täsmälleen keskellä */}
+        <div className="timer-time">{timeStr}</div>
+
+        {/* Label ja hint absoluuttisesti numeron alapuolella */}
+        {!done && <div className="timer-label">LEPO</div>}
+        {done && <div className="timer-done-hint">Napauta sulkeaksesi</div>}
+
         {running && (
           <button className="timer-skip" onClick={e => { e.stopPropagation(); skip() }}>
             Ohita
           </button>
         )}
-        {done && <div className="timer-done-hint">Napauta sulkeaksesi</div>}
       </div>
     </div>
   )

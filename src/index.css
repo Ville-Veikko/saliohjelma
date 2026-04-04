@@ -174,25 +174,32 @@ body {
   justify-content: center;
   padding: 0 20px;
 }
-.timer-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 1;
-}
 .timer-time {
   font-size: 38px;
   font-weight: 700;
   color: #fff;
   font-variant-numeric: tabular-nums;
   letter-spacing: -1px;
+  line-height: 1;
+}
+/* Label ja hint: absoluuttisesti numeron alapuolelle, ei häiritse numeron keskitystä */
+.timer-label,
+.timer-done-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 22px);
+  white-space: nowrap;
 }
 .timer-label {
   font-size: 10px;
   color: rgba(255, 255, 255, 0.45);
   letter-spacing: 3px;
-  margin-top: 4px;
   text-transform: uppercase;
+}
+.timer-done-hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
 }
 .timer-skip {
   position: absolute;
@@ -205,12 +212,6 @@ body {
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
-}
-.timer-done-hint {
-  position: absolute;
-  right: 20px;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.85);
 }
 
 /* ── Progress ── */
