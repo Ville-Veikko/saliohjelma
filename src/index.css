@@ -144,42 +144,58 @@ body {
 .mini-title { font-size: 15px; font-weight: 600; color: #fff; }
 .mini-rir { font-size: 12px; color: #fbbf24; }
 
-/* ── Timer ── */
+/* ── Timer: leveä täyttöpalkki ── */
 .timer-bar {
-  background: #1a1a1a;
-  border-bottom: 1px solid #2a2a2a;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
   position: sticky;
   top: 0;
   z-index: 19;
-  transition: background 0.3s;
+  height: 76px;
+  background: #1a1a1a;
+  border-bottom: 1px solid #2a2a2a;
+  overflow: hidden;
+  transition: background 0.4s;
 }
 .timer-bar.done {
+  background: #22c55e;
   cursor: pointer;
-  background: #0f1f0f;
-  border-color: #166534;
 }
-.timer-ring-wrap { position: relative; width: 40px; height: 40px; flex-shrink: 0; }
-.timer-ring-wrap svg { transform: rotate(-90deg); }
-.timer-bg { fill: none; stroke: #2a2a2a; stroke-width: 3; }
-.timer-fg { fill: none; stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.3s; }
-.timer-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
-.timer-info { flex: 1; }
-.timer-text { font-size: 13px; color: #aaa; }
-.timer-text.done-text { color: #4ade80; }
-.timer-subtext { font-size: 11px; color: #555; margin-top: 1px; }
-.timer-subtext.done-sub { color: #4ade80; }
+.timer-fill {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  background: #a855f7;
+  transition: width 1s linear;
+}
+.timer-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+}
+.timer-time {
+  flex: 1;
+  font-size: 38px;
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+}
 .timer-skip {
-  background: #2a2a2a;
-  border: none;
-  color: #888;
-  font-size: 12px;
-  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
+  flex-shrink: 0;
+}
+.timer-done-hint {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
   flex-shrink: 0;
 }
 

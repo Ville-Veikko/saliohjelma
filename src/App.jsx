@@ -153,7 +153,7 @@ export default function App() {
   if (workoutHook.error) return <ErrorScreen message={workoutHook.error} />
 
   // Kun taimeri on näkyvissä, MiniHeader offsettaa sen alle
-  const timerOffset = timer.visible ? '61px' : '0px'
+  const timerOffset = timer.visible ? '76px' : '0px'
 
   return (
     <>
