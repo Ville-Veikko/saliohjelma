@@ -41,7 +41,7 @@ export default function StartScreen({
     <div className="start-screen">
       <div className="start-hero">
         <img
-          src={`${import.meta.env.BASE_URL}sali-icon.svg`}
+          src={`${import.meta.env.BASE_URL}icon-192-v2.png`}
           alt="Saliohjelma"
           className="start-logo"
         />

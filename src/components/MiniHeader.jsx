@@ -11,7 +11,7 @@ export default function MiniHeader({ program, weekIndex, dayIndex, onBack }) {
         <div className="mini-title">Viikko {weekIndex + 1} · Päivä {dayIndex + 1}</div>
       </div>
       <img
-        src={`${import.meta.env.BASE_URL}sali-icon.svg`}
+        src={`${import.meta.env.BASE_URL}icon-192-v2.png`}
         alt=""
         className="mini-header-icon"
       />
