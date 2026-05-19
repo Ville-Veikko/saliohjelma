@@ -77,7 +77,7 @@ export default function StartScreen({
                 {done && <span className="done-check">✓ </span>}
                 Viikko {i + 1}
               </div>
-              <div className="start-btn-sub">RIR {w.rir} · {w.sets}+1</div>
+              <div className="start-btn-sub">RIR {w.rir}</div>
             </div>
           )
         })}

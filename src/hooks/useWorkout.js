@@ -7,6 +7,7 @@ import {
   saveActiveExercise,
   clearActiveExercise,
 } from '../utils/storage'
+import { adaptProgram } from '../utils/programAdapter'
 
 /**
  * Laskee tietyn liikkeen settimäärän ottaen huomioon setsOverride-kentän.
@@ -39,7 +40,7 @@ export function useWorkout() {
         return r.json()
       })
       .then(data => {
-        setProgram(data)
+        setProgram(adaptProgram(data))
         setLoading(false)
       })
       .catch(err => {

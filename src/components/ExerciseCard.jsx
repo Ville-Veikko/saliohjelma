@@ -57,7 +57,7 @@ export default function ExerciseCard({
   const boKgRaw = exercise.boKg
   const boKgNum = boKgRaw === 'bw' ? (bodyweight ?? 0) : parseFloat(boKgRaw) || 0
   const boKgLabel = boKgRaw === 'bw' ? 'bw' : `${boKgRaw} kg`
-  const kgLabel = kgRaw === 'bw' ? 'bw' : `${kgRaw} kg`
+  const kgLabel = kgRaw === 'bw' ? 'bw' : kgRaw == null ? '—' : `${kgRaw} kg`
 
   // "Paras ±2.5kg" -haku
   const prev = kgNum ? getBestPrev(program.history, exercise.name, kgNum) : null
@@ -82,7 +82,7 @@ export default function ExerciseCard({
         <div className="info-row">
           <div className="info-box">
             <div className="info-label">Raskas</div>
-            <div className="info-val">{kgRaw === 'bw' ? 'bw' : `${kgRaw} kg`}</div>
+            <div className="info-val">{kgRaw === 'bw' ? 'bw' : kgRaw == null ? '—' : `${kgRaw} kg`}</div>
             <div className="info-sub">
               {isAux ? `${effectiveRepsTarget} toistoa` : `${pw(exercise.rMin)}–${pw(exercise.rMax)} toistoa`}
             </div>
