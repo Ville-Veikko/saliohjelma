@@ -3,173 +3,292 @@
   "viikot": 4,
   "paivat_per_viikko": 3,
   "rir_per_viikko": [3, 2, 1, 0],
+  "setteja_per_viikko": [3, 3, 4, 5],
   "paivat": {
     "D1": {
-      "nimi": "Päivä 1",
       "liikkeet": [
         {
           "id": "penkki",
           "nimi": "Penkki",
           "tyyppi": "paalliike",
           "raskas_kg": 80,
+          "lisapaino": false,
           "toistot_min": 6,
           "toistot_max": 8,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "leg_raise"
+        },
+        {
+          "id": "leg_raise",
+          "nimi": "Leg raise",
+          "tyyppi": "lisaliike",
+          "raskas_kg": null,
+          "lisapaino": false,
+          "toistot_min": 10,
+          "toistot_max": 15,
+          "setteja": 3,
+          "superset_pari": "penkki"
         },
         {
           "id": "leuat",
           "nimi": "Leuat",
           "tyyppi": "paalliike",
           "raskas_kg": 7.5,
+          "lisapaino": true,
           "toistot_min": 6,
           "toistot_max": 8,
           "setteja": 3,
-          "lisäpaino": true
+          "superset_pari": "selkapenkki"
+        },
+        {
+          "id": "selkapenkki",
+          "nimi": "Selkäpenkki",
+          "tyyppi": "lisaliike",
+          "raskas_kg": null,
+          "lisapaino": false,
+          "toistot_min": 10,
+          "toistot_max": 15,
+          "setteja": 3,
+          "superset_pari": "leuat"
         },
         {
           "id": "kyykky",
           "nimi": "Kyykky",
           "tyyppi": "paalliike",
           "raskas_kg": 82.5,
+          "lisapaino": false,
           "toistot_min": 6,
           "toistot_max": 8,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "sivunosto_d1"
         },
         {
-          "id": "flye",
-          "nimi": "Käsipainoflye",
+          "id": "sivunosto_d1",
+          "nimi": "Sivunosto",
           "tyyppi": "lisaliike",
+          "raskas_kg": 12,
+          "lisapaino": false,
           "toistot_min": 10,
           "toistot_max": 15,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "kyykky"
         },
         {
-          "id": "lat_pulldown",
-          "nimi": "Lat pulldown",
+          "id": "ojentajat",
+          "nimi": "Ojentajat kaapelilla",
           "tyyppi": "lisaliike",
+          "raskas_kg": 22.5,
+          "lisapaino": false,
           "toistot_min": 10,
           "toistot_max": 15,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "hauiskaannot_kp_d1"
         },
         {
-          "id": "crunch",
-          "nimi": "Crunch",
+          "id": "hauiskaannot_kp_d1",
+          "nimi": "Hauiskäännöt käsipainoilla",
           "tyyppi": "lisaliike",
-          "toistot_min": 15,
-          "toistot_max": 20,
-          "setteja": 3
+          "raskas_kg": 14,
+          "lisapaino": false,
+          "toistot_min": 10,
+          "toistot_max": 15,
+          "setteja": 3,
+          "superset_pari": "ojentajat"
+        },
+        {
+          "id": "olkaat_kaapeli_d1",
+          "nimi": "Olkapäät kaapelilla",
+          "tyyppi": "lisaliike",
+          "raskas_kg": 7.5,
+          "lisapaino": false,
+          "toistot_min": 10,
+          "toistot_max": 15,
+          "setteja": 3,
+          "superset_pari": null
         }
       ]
     },
     "D2": {
-      "nimi": "Päivä 2",
       "liikkeet": [
         {
-          "id": "incline_penkki",
+          "id": "incline",
           "nimi": "Yläviisto penkki",
           "tyyppi": "paalliike",
           "raskas_kg": 70,
+          "lisapaino": false,
           "toistot_min": 6,
           "toistot_max": 8,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "takaolkaat"
         },
         {
-          "id": "penkkisoutu",
-          "nimi": "Penkkisoutu",
+          "id": "takaolkaat",
+          "nimi": "Takaolkapäät käsipainoilla",
+          "tyyppi": "lisaliike",
+          "raskas_kg": 8,
+          "lisapaino": false,
+          "toistot_min": 10,
+          "toistot_max": 15,
+          "setteja": 3,
+          "superset_pari": "incline"
+        },
+        {
+          "id": "kaapelisoutu",
+          "nimi": "Kaapelisoutu",
           "tyyppi": "paalliike",
-          "raskas_kg": 80,
+          "raskas_kg": 67.5,
+          "lisapaino": false,
           "toistot_min": 6,
           "toistot_max": 8,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "sivunosto_d2"
+        },
+        {
+          "id": "sivunosto_d2",
+          "nimi": "Sivunosto käsipainoilla",
+          "tyyppi": "lisaliike",
+          "raskas_kg": 10,
+          "lisapaino": false,
+          "toistot_min": 10,
+          "toistot_max": 15,
+          "setteja": 3,
+          "superset_pari": "kaapelisoutu"
         },
         {
           "id": "maastaveto",
           "nimi": "Maastaveto",
           "tyyppi": "paalliike",
           "raskas_kg": 100,
+          "lisapaino": false,
           "toistot_min": 6,
           "toistot_max": 8,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": null
         },
         {
           "id": "olkapaaprassi",
           "nimi": "Olkapääprässi",
           "tyyppi": "lisaliike",
+          "raskas_kg": 18,
+          "lisapaino": false,
           "toistot_min": 10,
           "toistot_max": 15,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "hauiskaannot_kp_d2"
         },
         {
-          "id": "kaapelisoutu",
-          "nimi": "Kaapelisoutu",
+          "id": "hauiskaannot_kp_d2",
+          "nimi": "Hauiskäännöt käsipainolla",
           "tyyppi": "lisaliike",
+          "raskas_kg": 14,
+          "lisapaino": false,
           "toistot_min": 10,
           "toistot_max": 15,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "olkapaaprassi"
         },
         {
-          "id": "ojentajat",
-          "nimi": "Ojentajat kaapelilla",
+          "id": "pohkeet",
+          "nimi": "Pohkeet käsipainokädessä",
           "tyyppi": "lisaliike",
+          "raskas_kg": 18,
+          "lisapaino": false,
           "toistot_min": 10,
           "toistot_max": 15,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": null
         }
       ]
     },
     "D3": {
-      "nimi": "Päivä 3",
       "liikkeet": [
-        {
-          "id": "close_grip_penkki",
-          "nimi": "Penkki lähiotteella",
-          "tyyppi": "paalliike",
-          "raskas_kg": 75,
-          "toistot_min": 6,
-          "toistot_max": 8,
-          "setteja": 3
-        },
-        {
-          "id": "ylakaapelisoutu",
-          "nimi": "Yläkaapelisoutu",
-          "tyyppi": "paalliike",
-          "raskas_kg": null,
-          "toistot_min": 6,
-          "toistot_max": 8,
-          "setteja": 3
-        },
         {
           "id": "kyykky_d3",
           "nimi": "Kyykky",
           "tyyppi": "paalliike",
           "raskas_kg": 82.5,
+          "lisapaino": false,
           "toistot_min": 6,
           "toistot_max": 8,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "sivunosto_d3"
         },
         {
-          "id": "sivunosto",
+          "id": "sivunosto_d3",
           "nimi": "Sivunosto",
           "tyyppi": "lisaliike",
+          "raskas_kg": 12,
+          "lisapaino": false,
           "toistot_min": 10,
           "toistot_max": 15,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "kyykky_d3"
         },
         {
-          "id": "hauiskaannot",
-          "nimi": "Hauiskäännöt",
+          "id": "kp_penkki",
+          "nimi": "Käsipainopenkki",
+          "tyyppi": "paalliike",
+          "raskas_kg": 32,
+          "lisapaino": false,
+          "toistot_min": 6,
+          "toistot_max": 8,
+          "setteja": 3,
+          "superset_pari": "kasipainosoutu"
+        },
+        {
+          "id": "kasipainosoutu",
+          "nimi": "Käsipainosoutu",
           "tyyppi": "lisaliike",
+          "raskas_kg": 32,
+          "lisapaino": false,
           "toistot_min": 10,
           "toistot_max": 15,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "kp_penkki"
+        },
+        {
+          "id": "leuat_d3",
+          "nimi": "Leuat",
+          "tyyppi": "paalliike",
+          "raskas_kg": null,
+          "lisapaino": false,
+          "toistot_min": 6,
+          "toistot_max": 8,
+          "setteja": 3,
+          "superset_pari": "cable_fly"
         },
         {
           "id": "cable_fly",
           "nimi": "Cable fly",
           "tyyppi": "lisaliike",
+          "raskas_kg": 20,
+          "lisapaino": false,
           "toistot_min": 10,
           "toistot_max": 15,
-          "setteja": 3
+          "setteja": 3,
+          "superset_pari": "leuat_d3"
+        },
+        {
+          "id": "olkaat_kaapeli_d3",
+          "nimi": "Olkapäät kaapelilla",
+          "tyyppi": "lisaliike",
+          "raskas_kg": 7.5,
+          "lisapaino": false,
+          "toistot_min": 10,
+          "toistot_max": 15,
+          "setteja": 3,
+          "superset_pari": "ojentajat_d3"
+        },
+        {
+          "id": "ojentajat_d3",
+          "nimi": "Ojentajat kaapelilla",
+          "tyyppi": "lisaliike",
+          "raskas_kg": 22.5,
+          "lisapaino": false,
+          "toistot_min": 10,
+          "toistot_max": 15,
+          "setteja": 3,
+          "superset_pari": "olkaat_kaapeli_d3"
         }
       ]
     }

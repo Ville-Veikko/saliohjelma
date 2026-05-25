@@ -24,11 +24,21 @@ export function adaptProgram(raw) {
     : raw.meso
 
   const viikkomaara = raw.viikot
-  const weeks = raw.rir_per_viikko.map(rir => ({ rir, sets: 3 }))
+
+  // setteja_per_viikko ohjaa settimäärää viikkotasolla (esim. [3,3,4,5])
+  // Jos kenttä puuttuu, käytetään oletusta 3 kaikille viikoille.
+  const setteja_per_viikko = Array.isArray(raw.setteja_per_viikko)
+    ? raw.setteja_per_viikko
+    : null
+
+  const weeks = raw.rir_per_viikko.map((rir, i) => ({
+    rir,
+    sets: setteja_per_viikko ? setteja_per_viikko[i] : 3,
+  }))
 
   const dayKeys = Object.keys(raw.paivat).sort()
   const days = dayKeys.map(dk =>
-    raw.paivat[dk].liikkeet.map(ex => adaptExercise(ex, viikkomaara))
+    raw.paivat[dk].liikkeet.map(ex => adaptExercise(ex, viikkomaara, !!setteja_per_viikko))
   )
 
   return {
@@ -36,12 +46,13 @@ export function adaptProgram(raw) {
     sheetsUrl: SHEETS_URL,
     weeks,
     days,
-    history: [],
+    // Salli history-kenttä uudessa formaatissa (manuaalinen siemennys PReja varten)
+    history: raw.history ?? [],
     epleyProgress: {},
   }
 }
 
-function adaptExercise(ex, viikkomaara) {
+function adaptExercise(ex, viikkomaara, hasSetsPerWeek) {
   const repeat = (v) => Array(viikkomaara).fill(v)
   const isLisaliike = ex.tyyppi === 'lisaliike'
 
@@ -53,7 +64,11 @@ function adaptExercise(ex, viikkomaara) {
     rMin: isLisaliike ? ex.toistot_min : repeat(ex.toistot_min),
     rMax: isLisaliike ? ex.toistot_max : repeat(ex.toistot_max),
     boTarget: null,
-    setsOverride: ex.setteja,
+    // Kun setteja_per_viikko ohjaa settimäärää, ei käytetä liikekohtaista
+    // setsOverride-arvoa — getSetCount lukee silloin program.weeks[weekIndex].sets
+    setsOverride: hasSetsPerWeek ? null : ex.setteja,
+    // lisapaino = lisäpaino oman kehonpainon päälle (esim. +7.5 kg leuoissa)
+    lisapaino: ex.lisapaino ?? false,
   }
 }
 
