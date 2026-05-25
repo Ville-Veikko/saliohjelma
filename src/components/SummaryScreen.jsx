@@ -91,7 +91,7 @@ function buildRowsFromSheets(program, tulokset, viikko, paiva, bodyweight) {
     const isLeuat = ex?.badge === 'leuat'
     const kgNum = !kgRaw ? 0 : kgRaw === 'bw' ? (bodyweight ?? 0) : parseFloat(kgRaw) || 0
     const epleyKg = isLeuat ? kgNum + (bodyweight ?? 0) : kgNum
-    const doneSets = [t.set1, t.set2, t.set3, t.set4].filter(v => typeof v === 'number')
+    const doneSets = [t.set1, t.set2, t.set3, t.set4, t.set5].filter(v => typeof v === 'number')
     const epleys = epleyKg ? doneSets.map(v => epley(epleyKg, v)).filter(Boolean) : []
     const best1rm = epleys.length ? Math.max(...epleys) : null
     const setsStr = doneSets.length ? doneSets.join(' / ') : '—'
@@ -126,10 +126,12 @@ function getTulokset(sheetsData, week, day, exerciseName) {
   return entry?.tulokset?.find(t => t.liike === exerciseName) ?? null
 }
 
-/** Muotoilee setit yhden päivän datasta: "4/4/3" tai "—" */
+/** Muotoilee setit yhden päivän datasta: "4/4/3" tai "—" (tukee 1–5 settiä) */
 function fmtSets(t, numSets) {
   if (!t) return '—'
-  const vals = [t.set1, t.set2, t.set3, t.set4].slice(0, numSets)
+  const vals = ['set1', 'set2', 'set3', 'set4', 'set5']
+    .slice(0, numSets)
+    .map(k => t[k])
   if (vals.every(v => v == null)) return '—'
   return vals.map(v => (typeof v === 'number' ? v : '?')).join('/')
 }
@@ -152,7 +154,7 @@ function MainLiftCard({ liftName, program, histWeek, sheetsData, bodyweight }) {
   program.days.forEach((_, di) => {
     const t = getTulokset(sheetsData, histWeek, di, liftName)
     if (!t) return
-    ;[t.set1, t.set2, t.set3, t.set4].forEach(v => {
+    ;[t.set1, t.set2, t.set3, t.set4, t.set5].forEach(v => {
       if (typeof v !== 'number') return
       const e = epley(kgNum, v)
       if (e && (!best1rm || e > best1rm)) best1rm = e
@@ -273,25 +275,38 @@ export default function SummaryScreen({ program, workout, bodyweight, sheetsHist
     if (!workout) return null
     const { week, day, results } = workout
     const exercises = program.days[day]
+    const MAX_SETS = 5
+
     const tulokset = exercises.map((ex, i) => {
       const r = results[i]
       const numSets = getSetCount(program, week, ex)
+      const kgRaw = ex.kg[week]
+      // rMin on taulukko pääliikkeille, skalaari apuliikkeille
+      const suunToistot = Array.isArray(ex.rMin) ? ex.rMin[week] : ex.rMin
+
+      // Setit dynaamisesti — tukee 1–5 settiä
+      const setEntries = {}
+      for (let s = 1; s <= MAX_SETS; s++) {
+        setEntries[`set${s}`]    = s <= numSets ? getSetReps(r.sets[s - 1])      : null
+        setEntries[`set${s}_kg`] = s <= numSets ? getCustomKgOrNull(r.sets[s - 1]) : null
+      }
+
       return {
-        liike: ex.name,
-        // Toistot per setti (backward-compatible)
-        set1: getSetReps(r.sets[0]),
-        set2: getSetReps(r.sets[1]),
-        set3: numSets >= 3 ? getSetReps(r.sets[2]) : null,
-        set4: numSets >= 4 ? getSetReps(r.sets[3]) : null,
-        // Käytetty kg per setti (null jos sama kuin ohjelmassa)
-        set1_kg: getCustomKgOrNull(r.sets[0]),
-        set2_kg: getCustomKgOrNull(r.sets[1]),
-        set3_kg: numSets >= 3 ? getCustomKgOrNull(r.sets[2]) : null,
-        set4_kg: numSets >= 4 ? getCustomKgOrNull(r.sets[3]) : null,
+        liike:        ex.name,
+        raskas_kg:    kgRaw,
+        suun_toistot: suunToistot,
+        ...setEntries,
         bo: getSetReps(r.bo),
       }
     })
-    return { viikko: week + 1, paiva: `Day ${day + 1}`, tulokset }
+
+    return {
+      viikko: week + 1,
+      paiva:  `Day ${day + 1}`,
+      meso:   program.meso,
+      rir:    program.weeks[week].rir,
+      tulokset,
+    }
   }
 
   function handleSave() {
