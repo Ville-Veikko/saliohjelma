@@ -59,7 +59,9 @@ function adaptExercise(ex, viikkomaara, hasSetsPerWeek) {
   return {
     name: ex.nimi,
     badge: badgeFromExercise(ex),
-    kg: isLisaliike ? repeat(null) : repeat(ex.raskas_kg ?? null),
+    // Käytä raskas_kg:tä KAIKILLE liiketyypeille. Null vain jos JSONissa on
+    // null (aito bw-liike kuten Leg raise tai Selkäpenkki).
+    kg: repeat(ex.raskas_kg ?? null),
     boKg: null,
     rMin: isLisaliike ? ex.toistot_min : repeat(ex.toistot_min),
     rMax: isLisaliike ? ex.toistot_max : repeat(ex.toistot_max),
