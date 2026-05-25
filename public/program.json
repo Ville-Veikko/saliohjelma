@@ -149,8 +149,8 @@
           "tyyppi": "lisaliike",
           "raskas_kg": 10,
           "lisapaino": false,
-          "toistot_min": 10,
-          "toistot_max": 15,
+          "toistot_min": 20,
+          "toistot_max": 25,
           "setteja": 3,
           "superset_pari": "kaapelisoutu"
         },
@@ -171,8 +171,8 @@
           "tyyppi": "lisaliike",
           "raskas_kg": 18,
           "lisapaino": false,
-          "toistot_min": 10,
-          "toistot_max": 15,
+          "toistot_min": 15,
+          "toistot_max": 20,
           "setteja": 3,
           "superset_pari": "hauiskaannot_kp_d2"
         },

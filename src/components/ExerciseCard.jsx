@@ -2,7 +2,7 @@ import React from 'react'
 import SetRow from './SetRow'
 import { getBestPrev, epley } from '../utils/epley'
 import { getSetCount } from '../hooks/useWorkout'
-import { getProgressionTarget } from '../utils/progression'
+import { getSetTarget, getBoTarget, getDisplayRange } from '../utils/progression'
 
 const BADGE_LABELS = {
   penkki: 'Pääliike',
@@ -40,6 +40,7 @@ export default function ExerciseCard({
   exerciseIndex,
   result,         // { sets: [null|reps|'skip'|{reps,kg}, ...], bo: null|reps|'skip'|{reps,kg} }
   bodyweight,     // kg tai null — tarvitaan bw-liikkeille
+  sheetsData,     // Sheets-historia per-setti progressiota varten (voi olla null)
   onDoneSet,      // (setIndex, reps, kg) => void
   onUndoSet,      // (setIndex) => void
   onSkipSet,      // (setIndex) => void
@@ -54,25 +55,39 @@ export default function ExerciseCard({
   const week = program.weeks[weekIndex]
   const numSets = getSetCount(program, weekIndex, exercise)
   const hasBo = exercise.boKg !== null
-  const isAux = exercise.badge === 'apu'
 
   // Tuki sekä skalaari- että taulukkomuotoisille arvoille
   const pw = (val) => Array.isArray(val) ? val[weekIndex] : val
 
-  // Progressiiviset toistotavoitteet (apuliikkeet)
+  // ── RIR-progressio ─────────────────────────────────────────────────────
+  // V1 = baseline. V2+ = edellisen viikon saman setin actual + 1.
+  // Yleistavoite info-boxissa: koko range siirtyy +weekIndex per viikko.
+  const rMinBaseline = Array.isArray(exercise.rMin) ? exercise.rMin[0] : exercise.rMin
+  const rMaxBaseline = Array.isArray(exercise.rMax) ? exercise.rMax[0] : exercise.rMax
+  const displayRange = getDisplayRange(rMinBaseline, rMaxBaseline, weekIndex)
+
   const boTargetBase = Array.isArray(exercise.boTarget) ? exercise.boTarget[0] : exercise.boTarget
-  const rMinBase = Array.isArray(exercise.rMin) ? exercise.rMin[0] : exercise.rMin
-
   const effectiveBoTarget = hasBo
-    ? getProgressionTarget(boTargetBase, weekIndex, dayIndex, exerciseIndex, 'bo')
-    : null
-  const effectiveRepsTarget = isAux
-    ? getProgressionTarget(rMinBase, weekIndex, dayIndex, exerciseIndex, 'aux')
+    ? getBoTarget({
+        sheetsData,
+        exerciseName: exercise.name,
+        weekIndex,
+        dayIndex,
+        baseline: boTargetBase,
+      })
     : null
 
-  // Käytettävät rMin/rMax SetRow'lle
-  const rMin = isAux ? effectiveRepsTarget : pw(exercise.rMin)
-  const rMax = isAux ? effectiveRepsTarget : pw(exercise.rMax)
+  // Per-setti tavoite: kullekin setille oma luku
+  const perSetTargets = Array.from({ length: numSets }, (_, i) =>
+    getSetTarget({
+      sheetsData,
+      exerciseName: exercise.name,
+      weekIndex,
+      dayIndex,
+      setIndex: i,
+      baseline: rMinBaseline,
+    })
+  )
 
   // kg-arvot
   const kgRaw = exercise.kg[weekIndex]
@@ -86,6 +101,11 @@ export default function ExerciseCard({
     : kgRaw == null ? '—'
     : exercise.lisapaino ? `+${kgRaw} kg`
     : `${kgRaw} kg`
+
+  // Yleistavoiteen tekstimuoto info-boxiin
+  const rangeText = displayRange.min === displayRange.max
+    ? `${displayRange.min} toistoa`
+    : `${displayRange.min}–${displayRange.max} toistoa`
 
   // "Paras ±2.5kg" -haku
   const prev = kgNum ? getBestPrev(program.history, exercise.name, kgNum) : null
@@ -111,9 +131,7 @@ export default function ExerciseCard({
           <div className="info-box">
             <div className="info-label">Raskas</div>
             <div className="info-val">{kgLabel}</div>
-            <div className="info-sub">
-              {isAux ? `${effectiveRepsTarget} toistoa` : `${pw(exercise.rMin)}–${pw(exercise.rMax)} toistoa`}
-            </div>
+            <div className="info-sub">{rangeText}</div>
           </div>
 
           {hasBo ? (
@@ -141,6 +159,8 @@ export default function ExerciseCard({
 
         {Array.from({ length: numSets }, (_, i) => {
           const setVal = result.sets[i]
+          // Per-setti tavoite — V1: baseline, V2+: viime viikon actual+1
+          const setTarget = perSetTargets[i]
           return (
             <SetRow
               key={i}
@@ -149,8 +169,8 @@ export default function ExerciseCard({
               kgLabel={kgLabel}
               kgNum={kgNum}
               kgEditable={kgRaw !== 'bw'}
-              rMin={rMin}
-              rMax={rMax}
+              rMin={setTarget}
+              rMax={setTarget}
               isDone={isSetDone(setVal)}
               isSkipped={setVal === 'skip'}
               savedReps={getSetReps(setVal)}

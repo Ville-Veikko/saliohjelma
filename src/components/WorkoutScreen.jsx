@@ -26,6 +26,7 @@ export default function WorkoutScreen({
   workout,
   timerStart,
   bodyweight,
+  sheetsData,
   onDoneSet,
   onUndoSet,
   onSkipSet,
@@ -136,6 +137,7 @@ export default function WorkoutScreen({
           exerciseIndex={exerciseIndex}
           result={results[exerciseIndex]}
           bodyweight={bodyweight}
+          sheetsData={sheetsData}
           onDoneSet={(setIndex, reps, kg) => onDoneSet(exerciseIndex, setIndex, reps, kg)}
           onUndoSet={(setIndex) => onUndoSet(exerciseIndex, setIndex)}
           onSkipSet={(setIndex) => onSkipSet(exerciseIndex, setIndex)}

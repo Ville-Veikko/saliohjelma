@@ -185,6 +185,7 @@ export default function App() {
             workout={workoutHook.workout}
             timerStart={timer.start}
             bodyweight={bodyweight}
+            sheetsData={sheetsHistory?.data ?? null}
             onDoneSet={workoutHook.doneSet}
             onUndoSet={workoutHook.undoSet}
             onSkipSet={workoutHook.skipSet}
