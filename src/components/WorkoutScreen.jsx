@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import MiniHeader from './MiniHeader'
 import ExerciseCard from './ExerciseCard'
 import { getSetCount } from '../hooks/useWorkout'
+import { buildSupersetGroups, findGroupIndexContaining } from '../utils/supersets'
 
 function calcSetProgress(program, workout) {
   const { week, day, results } = workout
@@ -27,41 +28,63 @@ export default function WorkoutScreen({
   timerStart,
   bodyweight,
   sheetsData,
+  goToExercise,
+  onSummary,
+  onBack,
   onDoneSet,
   onUndoSet,
   onSkipSet,
   onDoneBo,
   onUndoBo,
   onSkipBo,
-  onNext,
-  onPrev,
-  onBack,
 }) {
   const { week, day, exerciseIndex, results } = workout
   const exercises = program.days[day]
-  const total = exercises.length
-  const isFirst = exerciseIndex === 0
-  const isLast = exerciseIndex === total - 1
+
+  // ── Superset-ryhmittely ─────────────────────────────────────────────────
+  const groups = buildSupersetGroups(exercises)
+  const currentGroupIdx = Math.max(0, findGroupIndexContaining(groups, exerciseIndex))
+  const currentGroup = groups[currentGroupIdx]
+  const isFirstGroup = currentGroupIdx === 0
+  const isLastGroup  = currentGroupIdx === groups.length - 1
+  const isSuperset   = currentGroup.length > 1
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [exerciseIndex])
+  }, [currentGroupIdx])
+
+  // ── Ryhmänavigaatio ─────────────────────────────────────────────────────
+  function goNext() {
+    if (isLastGroup) {
+      onSummary()
+    } else {
+      const next = groups[currentGroupIdx + 1]
+      goToExercise(next[0].index)
+    }
+  }
+
+  function goPrev() {
+    if (!isFirstGroup) {
+      const prev = groups[currentGroupIdx - 1]
+      goToExercise(prev[0].index)
+    }
+  }
 
   // ── Slide-animaatio ─────────────────────────────────────────────────────
   const lastSwipeDirRef = useRef(null)
-  const prevIndexRef = useRef(exerciseIndex)
+  const prevGroupRef = useRef(currentGroupIdx)
   const [cardClass, setCardClass] = useState('')
 
   useEffect(() => {
-    if (prevIndexRef.current === exerciseIndex) return
+    if (prevGroupRef.current === currentGroupIdx) return
     const dir = lastSwipeDirRef.current
     if (dir === 'left') setCardClass('slide-from-right')
     else if (dir === 'right') setCardClass('slide-from-left')
     lastSwipeDirRef.current = null
-    prevIndexRef.current = exerciseIndex
+    prevGroupRef.current = currentGroupIdx
     const t = setTimeout(() => setCardClass(''), 260)
     return () => clearTimeout(t)
-  }, [exerciseIndex])
+  }, [currentGroupIdx])
 
   // ── Swipe-tunnistus ──────────────────────────────────────────────────────
   const swipeStartRef = useRef(null)
@@ -84,13 +107,11 @@ export default function WorkoutScreen({
     setTimeout(() => { animatingRef.current = false }, 300)
 
     if (dx < 0) {
-      // vasemmalle → seuraava (tai yhteenveto)
       lastSwipeDirRef.current = 'left'
-      onNext()
-    } else if (!isFirst) {
-      // oikealle → edellinen
+      goNext()
+    } else if (!isFirstGroup) {
       lastSwipeDirRef.current = 'right'
-      onPrev()
+      goPrev()
     }
   }
 
@@ -105,10 +126,10 @@ export default function WorkoutScreen({
     <>
       <MiniHeader program={program} weekIndex={week} dayIndex={day} onBack={onBack} />
 
-      {/* Edistymispalkki */}
+      {/* Edistymispalkki — laskee ryhmiä, ei yksittäisiä liikkeitä */}
       <div className="progress-wrap">
         <div className="progress-label">
-          <span>Liike {exerciseIndex + 1}/{total}</span>
+          <span>Liike {currentGroupIdx + 1}/{groups.length}</span>
           <span>{setDone}/{setTotal} settiä · {pct}%</span>
         </div>
         <div className="progress-bar">
@@ -116,42 +137,60 @@ export default function WorkoutScreen({
         </div>
       </div>
 
-      {/* Pisteindikaattorit */}
+      {/* Pisteindikaattorit — yksi per ryhmä */}
       <div className="dot-indicators">
-        {exercises.map((_, i) => (
-          <div key={i} className={`dot${i === exerciseIndex ? ' active' : ''}`} />
+        {groups.map((_, i) => (
+          <div key={i} className={`dot${i === currentGroupIdx ? ' active' : ''}`} />
         ))}
       </div>
 
-      {/* Swipeable liike-kortti */}
+      {/* Swipeable ryhmäkortti */}
       <div
         className={`swipe-area${cardClass ? ` ${cardClass}` : ''}`}
         onPointerDown={handleSwipeStart}
         onPointerUp={handleSwipeEnd}
         onPointerCancel={handleSwipeCancel}
       >
-        <ExerciseCard
-          program={program}
-          weekIndex={week}
-          dayIndex={day}
-          exerciseIndex={exerciseIndex}
-          result={results[exerciseIndex]}
-          bodyweight={bodyweight}
-          sheetsData={sheetsData}
-          onDoneSet={(setIndex, reps, kg) => onDoneSet(exerciseIndex, setIndex, reps, kg)}
-          onUndoSet={(setIndex) => onUndoSet(exerciseIndex, setIndex)}
-          onSkipSet={(setIndex) => onSkipSet(exerciseIndex, setIndex)}
-          onDoneBo={(reps, kg) => onDoneBo(exerciseIndex, reps, kg)}
-          onUndoBo={() => onUndoBo(exerciseIndex)}
-          onSkipBo={() => onSkipBo(exerciseIndex)}
-          onTimerStart={timerStart}
-        />
+        {isSuperset && (
+          <div
+            style={{
+              textAlign: 'center',
+              fontSize: 11,
+              letterSpacing: 1.5,
+              fontWeight: 700,
+              color: '#fbbf24',
+              padding: '8px 0 4px',
+            }}
+          >
+            ⚡ SUPERSET — {currentGroup.map(g => g.exercise.name).join(' / ')}
+          </div>
+        )}
+
+        {currentGroup.map(({ exercise, index }) => (
+          <ExerciseCard
+            key={index}
+            program={program}
+            weekIndex={week}
+            dayIndex={day}
+            exerciseIndex={index}
+            result={results[index]}
+            bodyweight={bodyweight}
+            sheetsData={sheetsData}
+            onDoneSet={(setIndex, reps, kg) => onDoneSet(index, setIndex, reps, kg)}
+            onUndoSet={(setIndex) => onUndoSet(index, setIndex)}
+            onSkipSet={(setIndex) => onSkipSet(index, setIndex)}
+            onDoneBo={(reps, kg) => onDoneBo(index, reps, kg)}
+            onUndoBo={() => onUndoBo(index)}
+            onSkipBo={() => onSkipBo(index)}
+            onTimerStart={timerStart}
+          />
+        ))}
       </div>
 
-      {/* Yhteenveto-nappi vain viimeisellä liikkeellä */}
-      {isLast && (
+      {/* Yhteenveto-nappi vain viimeisellä ryhmällä */}
+      {isLastGroup && (
         <div className="nav-wrap">
-          <button className="nav-btn nav-btn-finish" onClick={onNext} style={{ flex: 1 }}>
+          <button className="nav-btn nav-btn-finish" onClick={goNext} style={{ flex: 1 }}>
             Yhteenveto →
           </button>
         </div>

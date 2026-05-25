@@ -57,6 +57,9 @@ function adaptExercise(ex, viikkomaara, hasSetsPerWeek) {
   const isLisaliike = ex.tyyppi === 'lisaliike'
 
   return {
+    // id ja supersetPari pidetään mukana ryhmittelyä varten (utils/supersets.js)
+    id: ex.id,
+    supersetPari: ex.superset_pari ?? null,
     name: ex.nimi,
     badge: badgeFromExercise(ex),
     // Käytä raskas_kg:tä KAIKILLE liiketyypeille. Null vain jos JSONissa on

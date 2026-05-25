@@ -133,10 +133,9 @@ export default function App() {
     setScreen('summary')
   }, [])
 
-  const handleNext = useCallback(() => {
-    const result = workoutHook.nextExercise()
-    if (result === 'summary') setScreen('summary')
-  }, [workoutHook])
+  const handleSummary = useCallback(() => {
+    setScreen('summary')
+  }, [])
 
   const handleSaved = useCallback(() => {
     workoutHook.markSaved()
@@ -186,15 +185,15 @@ export default function App() {
             timerStart={timer.start}
             bodyweight={bodyweight}
             sheetsData={sheetsHistory?.data ?? null}
+            goToExercise={workoutHook.goToExercise}
+            onSummary={handleSummary}
+            onBack={() => setScreen('start')}
             onDoneSet={workoutHook.doneSet}
             onUndoSet={workoutHook.undoSet}
             onSkipSet={workoutHook.skipSet}
             onDoneBo={workoutHook.doneBo}
             onUndoBo={workoutHook.undoBo}
             onSkipBo={workoutHook.skipBo}
-            onNext={handleNext}
-            onPrev={workoutHook.prevExercise}
-            onBack={() => setScreen('start')}
           />
         )}
 
