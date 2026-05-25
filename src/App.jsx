@@ -59,7 +59,8 @@ export default function App() {
   useEffect(() => {
     if (!workoutHook.program) return
     const url = workoutHook.program.sheetsUrl
-    fetch(url)
+    const mesoParam = '?meso=' + encodeURIComponent(workoutHook.program.meso)
+    fetch(url + mesoParam)
       .then(r => r.json())
       .then(json => {
         if (json.ok) {
