@@ -90,12 +90,12 @@ export function useWorkout() {
 
   // ── Settien kirjaaminen ──────────────────────────────────────────────────
 
-  const doneSet = useCallback((exerciseIndex, setIndex, reps) => {
+  const doneSet = useCallback((exerciseIndex, setIndex, reps, kg) => {
     if (!workout) return
     const newResults = workout.results.map((r, i) => {
       if (i !== exerciseIndex) return r
       const newSets = [...r.sets]
-      newSets[setIndex] = reps
+      newSets[setIndex] = { reps, kg }
       return { ...r, sets: newSets }
     })
     applyResults(newResults, workout.week, workout.day)
@@ -123,10 +123,10 @@ export function useWorkout() {
     applyResults(newResults, workout.week, workout.day)
   }, [workout, applyResults])
 
-  const doneBo = useCallback((exerciseIndex, reps) => {
+  const doneBo = useCallback((exerciseIndex, reps, kg) => {
     if (!workout) return
     const newResults = workout.results.map((r, i) =>
-      i === exerciseIndex ? { ...r, bo: reps } : r
+      i === exerciseIndex ? { ...r, bo: { reps, kg } } : r
     )
     applyResults(newResults, workout.week, workout.day)
   }, [workout, applyResults])

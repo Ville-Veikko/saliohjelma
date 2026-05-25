@@ -2,6 +2,28 @@ import React, { useState, useRef } from 'react'
 import { epley } from '../utils/epley'
 import { getSetCount } from '../hooks/useWorkout'
 
+// ── Result-formaatti-apufunktiot (legacy numero / uusi {reps,kg}) ─────────
+
+/** Palauttaa toistot molemmista formaateista */
+function getSetReps(v) {
+  if (v == null || v === 'skip') return null
+  if (typeof v === 'number') return v          // legacy
+  return v.reps ?? null
+}
+
+/** Palauttaa tallennetun kg:n jos se eroaa oletuksesta, muuten null */
+function getSetKgActual(v, defaultKgNum) {
+  if (v == null || v === 'skip') return defaultKgNum
+  if (typeof v === 'number') return defaultKgNum  // legacy: ei muutosta
+  return v.kg ?? defaultKgNum
+}
+
+/** Palauttaa tallennetun kg:n vain kun se on eri kuin ohjelma (payload-käyttö) */
+function getCustomKgOrNull(v) {
+  if (typeof v === 'object' && v !== null && v !== 'skip') return v.kg ?? null
+  return null
+}
+
 // ── Apufunktiot nykyiselle treenille ──────────────────────────────────────
 
 function kgDisplay(kgRaw, isLeuat, bodyweight) {
@@ -26,16 +48,36 @@ function buildRowsFromWorkout(program, week, day, results, bodyweight) {
     const kgRaw = ex.kg[week]
     const isLeuat = ex.badge === 'leuat'
     const kgNum = kgRaw === 'bw' ? (bodyweight ?? 0) : parseFloat(kgRaw) || 0
-    const epleyKg = isLeuat ? kgNum + (bodyweight ?? 0) : kgNum
-    const doneSets = r.sets.filter(v => typeof v === 'number')
-    const epleys = doneSets.map(v => epley(epleyKg, v)).filter(Boolean)
+
+    // Kerää tehdyt setit kg:n kanssa
+    const numSets = getSetCount(program, week, ex)
+    const doneSets = r.sets.slice(0, numSets)
+      .map(v => ({ reps: getSetReps(v), kg: getSetKgActual(v, kgNum) }))
+      .filter(e => e.reps != null)
+
+    // Lasketaan paras 1RM per-setti kg:llä
+    const epleys = doneSets.map(e => {
+      const actualKg = isLeuat ? e.kg + (bodyweight ?? 0) : e.kg
+      return epley(actualKg, e.reps)
+    }).filter(Boolean)
     const best1rm = epleys.length ? Math.max(...epleys) : null
-    const setsStr = doneSets.length ? doneSets.join(' / ') : '—'
+
+    // Näytetään setit: jos kg muutettu jossain setissä → "6@80 / 5@75"
+    const hasCustomKg = doneSets.some(e => e.kg !== kgNum)
+    const setsStr = doneSets.length
+      ? hasCustomKg
+        ? doneSets.map(e => `${e.reps}@${e.kg}`).join(' / ')
+        : doneSets.map(e => e.reps).join(' / ')
+      : '—'
+
     const boLabel = boKgDisplay(ex.boKg)
-    const boStr = typeof r.bo === 'number'
-      ? boLabel ? ` · bo ${boLabel}: ${r.bo}` : ` · bo: ${r.bo}`
+    const boReps = getSetReps(r.bo)
+    const boStr = boReps != null
+      ? boLabel ? ` · bo ${boLabel}: ${boReps}` : ` · bo: ${boReps}`
       : ''
-    return { name: ex.name, detail: `${kgDisplay(kgRaw, isLeuat, bodyweight)} kg · ${setsStr}${boStr}`, best1rm }
+
+    const kgPrefix = hasCustomKg ? '' : `${kgDisplay(kgRaw, isLeuat, bodyweight)} kg · `
+    return { name: ex.name, detail: `${kgPrefix}${setsStr}${boStr}`, best1rm }
   })
 }
 
@@ -236,11 +278,17 @@ export default function SummaryScreen({ program, workout, bodyweight, sheetsHist
       const numSets = getSetCount(program, week, ex)
       return {
         liike: ex.name,
-        set1: typeof r.sets[0] === 'number' ? r.sets[0] : null,
-        set2: typeof r.sets[1] === 'number' ? r.sets[1] : null,
-        set3: numSets >= 3 ? (typeof r.sets[2] === 'number' ? r.sets[2] : null) : null,
-        set4: numSets >= 4 ? (typeof r.sets[3] === 'number' ? r.sets[3] : null) : null,
-        bo:   typeof r.bo === 'number' ? r.bo : null,
+        // Toistot per setti (backward-compatible)
+        set1: getSetReps(r.sets[0]),
+        set2: getSetReps(r.sets[1]),
+        set3: numSets >= 3 ? getSetReps(r.sets[2]) : null,
+        set4: numSets >= 4 ? getSetReps(r.sets[3]) : null,
+        // Käytetty kg per setti (null jos sama kuin ohjelmassa)
+        set1_kg: getCustomKgOrNull(r.sets[0]),
+        set2_kg: getCustomKgOrNull(r.sets[1]),
+        set3_kg: numSets >= 3 ? getCustomKgOrNull(r.sets[2]) : null,
+        set4_kg: numSets >= 4 ? getCustomKgOrNull(r.sets[3]) : null,
+        bo: getSetReps(r.bo),
       }
     })
     return { viikko: week + 1, paiva: `Day ${day + 1}`, tulokset }

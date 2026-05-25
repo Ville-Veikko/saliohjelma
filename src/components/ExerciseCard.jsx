@@ -11,17 +11,39 @@ const BADGE_LABELS = {
   apu:    'Apuliike',
 }
 
+// ── Apufunktiot result-arvojen lukemiseen (tukee molempia formaatteja) ──────
+
+/** Onko setti tehty (uusi {reps,kg} tai vanha numero) */
+function isSetDone(v) {
+  if (v == null || v === 'skip') return false
+  if (typeof v === 'number') return true      // legacy
+  return typeof v === 'object'               // uusi: { reps, kg }
+}
+
+/** Palauttaa toistot riippumatta formaatista */
+function getSetReps(v) {
+  if (v == null || v === 'skip') return null
+  if (typeof v === 'number') return v          // legacy
+  return v.reps ?? null
+}
+
+/** Palauttaa tallennetun kg:n tai null jos ei muutettu (legacy tai sama kuin ohjelma) */
+function getSetKg(v) {
+  if (typeof v === 'object' && v !== null && v !== 'skip') return v.kg ?? null
+  return null  // legacy: ei kg-tietoa tallennettu
+}
+
 export default function ExerciseCard({
   program,
   weekIndex,
   dayIndex,
   exerciseIndex,
-  result,         // { sets: [null|reps|'skip', ...], bo: null|reps|'skip' }
+  result,         // { sets: [null|reps|'skip'|{reps,kg}, ...], bo: null|reps|'skip'|{reps,kg} }
   bodyweight,     // kg tai null — tarvitaan bw-liikkeille
-  onDoneSet,      // (setIndex, reps) => void
+  onDoneSet,      // (setIndex, reps, kg) => void
   onUndoSet,      // (setIndex) => void
   onSkipSet,      // (setIndex) => void
-  onDoneBo,       // (reps) => void
+  onDoneBo,       // (reps, kg) => void
   onUndoBo,       // () => void
   onSkipBo,       // () => void
   onTimerStart,   // () => void
@@ -113,24 +135,29 @@ export default function ExerciseCard({
           </div>
         </div>
 
-        {Array.from({ length: numSets }, (_, i) => (
-          <SetRow
-            key={i}
-            type="set"
-            index={i}
-            kgLabel={kgLabel}
-            kgNum={kgNum}
-            rMin={rMin}
-            rMax={rMax}
-            isDone={typeof result.sets[i] === 'number'}
-            isSkipped={result.sets[i] === 'skip'}
-            savedReps={typeof result.sets[i] === 'number' ? result.sets[i] : null}
-            onDone={reps => onDoneSet(i, reps)}
-            onUndo={() => onUndoSet(i)}
-            onSkip={() => onSkipSet(i)}
-            onTimerStart={onTimerStart}
-          />
-        ))}
+        {Array.from({ length: numSets }, (_, i) => {
+          const setVal = result.sets[i]
+          return (
+            <SetRow
+              key={i}
+              type="set"
+              index={i}
+              kgLabel={kgLabel}
+              kgNum={kgNum}
+              kgEditable={kgRaw !== 'bw'}
+              rMin={rMin}
+              rMax={rMax}
+              isDone={isSetDone(setVal)}
+              isSkipped={setVal === 'skip'}
+              savedReps={getSetReps(setVal)}
+              savedKg={getSetKg(setVal)}
+              onDone={(reps, kg) => onDoneSet(i, reps, kg)}
+              onUndo={() => onUndoSet(i)}
+              onSkip={() => onSkipSet(i)}
+              onTimerStart={onTimerStart}
+            />
+          )
+        })}
 
         {/* Back-off */}
         {hasBo && (
@@ -138,12 +165,14 @@ export default function ExerciseCard({
             type="bo"
             kgLabel={boKgLabel}
             kgNum={boKgNum}
+            kgEditable={boKgRaw !== 'bw'}
             rMin={effectiveBoTarget}
             rMax={effectiveBoTarget}
-            isDone={typeof result.bo === 'number'}
+            isDone={isSetDone(result.bo)}
             isSkipped={result.bo === 'skip'}
-            savedReps={typeof result.bo === 'number' ? result.bo : null}
-            onDone={reps => onDoneBo(reps)}
+            savedReps={getSetReps(result.bo)}
+            savedKg={getSetKg(result.bo)}
+            onDone={(reps, kg) => onDoneBo(reps, kg)}
             onUndo={() => onUndoBo()}
             onSkip={() => onSkipBo()}
             onTimerStart={onTimerStart}

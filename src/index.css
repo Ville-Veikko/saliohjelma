@@ -255,24 +255,64 @@ body {
 /* ── Set rows ── */
 .sets-group-label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
 .sets-group-label.bo-label { color: #4ade80; margin-top: 4px; }
+.set-row-wrap { margin-bottom: 8px; }
 .set-row {
   background: #252525;
   border-radius: 12px;
   padding: 10px 12px;
-  margin-bottom: 8px;
   display: flex;
   align-items: center;
   gap: 10px;
   border: 1.5px solid #333;
   transition: border-color 0.2s, background 0.2s;
 }
+.set-row.has-kg-edit {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-color: #7c3aed;
+}
 .set-row.is-done { border-color: #166534; background: #0f1a0f; }
 .set-row.is-bo { border-color: #1a3a1a; }
 .set-row.is-bo.is-done { border-color: #166534; }
 .set-num { font-size: 12px; color: #666; font-weight: 600; width: 24px; flex-shrink: 0; text-align: center; }
 .set-num.bo-num { color: #4ade80; font-size: 11px; }
-.set-kg-label { font-size: 13px; color: #666; flex-shrink: 0; min-width: 48px; }
+.set-kg-label {
+  font-size: 13px; color: #666; flex-shrink: 0; min-width: 48px;
+  background: none; border: none; padding: 0; text-align: left; cursor: default;
+  display: flex; align-items: center; gap: 3px;
+}
 .set-kg-label.active-kg { color: #e5e5e5; }
+.set-kg-label.kg-editable { cursor: pointer; color: #888; }
+.set-kg-label.kg-editing { color: #c084fc; }
+.set-kg-label.kg-custom { color: #fbbf24; }
+.kg-edit-icon { font-size: 9px; opacity: 0.6; }
+
+/* ── Kg-muokkausrivi ── */
+.kg-edit-row {
+  background: #1a1230;
+  border: 1.5px solid #7c3aed;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.kg-edit-btn {
+  width: 36px; height: 36px;
+  border-radius: 8px; border: none;
+  background: #333; color: #aaa;
+  font-size: 22px; font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  touch-action: manipulation;
+}
+.kg-edit-btn:active { background: #444; }
+.kg-edit-val {
+  font-size: 16px; font-weight: 700;
+  color: #c084fc; min-width: 64px; text-align: center;
+}
 
 /* ── Stepper ── */
 .stepper { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 2px 0; }

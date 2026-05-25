@@ -136,10 +136,10 @@ export default function WorkoutScreen({
           exerciseIndex={exerciseIndex}
           result={results[exerciseIndex]}
           bodyweight={bodyweight}
-          onDoneSet={(setIndex, reps) => onDoneSet(exerciseIndex, setIndex, reps)}
+          onDoneSet={(setIndex, reps, kg) => onDoneSet(exerciseIndex, setIndex, reps, kg)}
           onUndoSet={(setIndex) => onUndoSet(exerciseIndex, setIndex)}
           onSkipSet={(setIndex) => onSkipSet(exerciseIndex, setIndex)}
-          onDoneBo={(reps) => onDoneBo(exerciseIndex, reps)}
+          onDoneBo={(reps, kg) => onDoneBo(exerciseIndex, reps, kg)}
           onUndoBo={() => onUndoBo(exerciseIndex)}
           onSkipBo={() => onSkipBo(exerciseIndex)}
           onTimerStart={timerStart}
