@@ -27,6 +27,8 @@ export default function ExerciseCard({
   onTimerStart,   // () => void
 }) {
   const exercise = program.days[dayIndex][exerciseIndex]
+  // Defensiivinen guard: jos liike tai result puuttuu, ei renderöidä mitään
+  if (!exercise || !result) return null
   const week = program.weeks[weekIndex]
   const numSets = getSetCount(program, weekIndex, exercise)
   const hasBo = exercise.boKg !== null

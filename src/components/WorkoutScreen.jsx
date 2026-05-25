@@ -9,10 +9,13 @@ function calcSetProgress(program, workout) {
   program.days[day].forEach((ex, i) => {
     const numSets = getSetCount(program, week, ex)
     total += numSets
-    done += results[i].sets.slice(0, numSets).filter(v => v != null).length
+    const r = results[i]
+    if (r?.sets) {
+      done += r.sets.slice(0, numSets).filter(v => v != null).length
+    }
     if (ex.boKg !== null) {
       total += 1
-      if (results[i].bo != null) done += 1
+      if (r?.bo != null) done += 1
     }
   })
   return { total, done }

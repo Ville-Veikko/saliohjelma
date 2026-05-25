@@ -58,7 +58,7 @@ export function useWorkout() {
 
   useEffect(() => {
     if (!program) return
-    setSavedInfo(findSavedWorkout(program.weeks.length))
+    setSavedInfo(findSavedWorkout(program))
   }, [program])
 
   // ── Aktiivinen treeni ────────────────────────────────────────────────────
@@ -70,17 +70,22 @@ export function useWorkout() {
    */
   const applyResults = useCallback((newResults, week, day) => {
     setWorkout(prev => ({ ...prev, results: newResults }))
-    saveWorkout(week, day, newResults)
-  }, [])
+    saveWorkout(week, day, newResults, program?.meso)
+  }, [program])
 
   /**
    * Aloittaa uuden treenin. Jos samalle viikolle/päivälle on tallennettu
    * data, ladataan se automaattisesti (resume-toiminto).
    */
   const startWorkout = useCallback((week, day, initialExerciseIndex = 0) => {
-    const saved = loadWorkout(week, day)
-    const results = saved?.results ?? initResults(program, week, day)
-    setWorkout({ week, day, exerciseIndex: initialExerciseIndex, results })
+    const saved = loadWorkout(week, day, program.meso)
+    // Validointi: results-rakenteen on vastattava päivän liikkeiden määrää
+    const expectedLen = program.days[day].length
+    const validSaved = saved?.results?.length === expectedLen ? saved.results : null
+    const results = validSaved ?? initResults(program, week, day)
+    // Clampataan exerciseIndex valid-väliin
+    const safeIndex = Math.max(0, Math.min(initialExerciseIndex, expectedLen - 1))
+    setWorkout({ week, day, exerciseIndex: safeIndex, results })
   }, [program])
 
   // ── Settien kirjaaminen ──────────────────────────────────────────────────

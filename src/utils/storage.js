@@ -51,9 +51,11 @@ function workoutKey(week, day) {
  * @param {number} week    - 0-indeksoitu viikko
  * @param {number} day     - 0-indeksoitu päivä
  * @param {Array}  results - results[exerciseIndex] = { sets: [r|null, ...], bo: r|null }
+ * @param {string} meso    - ohjelman meso-nimi (esim. "Meso 4/26") schema-tunnistusta varten
  */
-export function saveWorkout(week, day, results) {
+export function saveWorkout(week, day, results, meso) {
   const payload = {
+    meso,
     week,
     day,
     timestamp: new Date().toISOString(),
@@ -63,35 +65,54 @@ export function saveWorkout(week, day, results) {
 }
 
 /**
- * Lataa tallennetun treenin. Palauttaa null jos ei löydy.
+ * Lataa tallennetun treenin. Palauttaa null jos ei löydy tai meso ei täsmää.
  *
- * @returns {{ week, day, timestamp, results } | null}
+ * @param {number} week
+ * @param {number} day
+ * @param {string} currentMeso - jos annettu, palauttaa null mikäli saved.meso eri
+ * @returns {{ meso, week, day, timestamp, results } | null}
  */
-export function loadWorkout(week, day) {
+export function loadWorkout(week, day, currentMeso) {
   const raw = localStorage.getItem(workoutKey(week, day))
   if (!raw) return null
   try {
-    return JSON.parse(raw)
+    const parsed = JSON.parse(raw)
+    // Hylkää eri mesojen data (uudet tallennukset sisältävät meso-kentän)
+    if (currentMeso && parsed.meso && parsed.meso !== currentMeso) return null
+    // Legacy-tallennukset ilman meso-kenttää: hyväksy, mutta startWorkout
+    // tarkistaa vielä results.length vastaavuuden ennen käyttöä
+    return parsed
   } catch {
     return null
   }
 }
 
 /**
- * Tarkistaa onko jollekin viikolle/päivälle tallennettu keskeneräinen treeni.
- * Palauttaa { week, day, timestamp } tai null.
+ * Tarkistaa onko jollekin viikolle/päivälle tallennettu keskeneräinen treeni
+ * NYKYISESSÄ ohjelmassa. Tarkistaa että meso täsmää ja results.length vastaa
+ * päivän liikkeiden määrää (suojaa skeemavaihdoksilta).
+ *
+ * @param {Object} program - { meso, weeks, days }
+ * @returns {{ week, day, timestamp } | null}
  */
-export function findSavedWorkout(maxWeeks = 12) {
-  for (let w = 0; w < maxWeeks; w++) {
-    for (let d = 0; d < 3; d++) {
+export function findSavedWorkout(program) {
+  if (!program?.weeks || !program?.days) return null
+  const currentMeso = program.meso
+
+  for (let w = 0; w < program.weeks.length; w++) {
+    for (let d = 0; d < program.days.length; d++) {
       const raw = localStorage.getItem(workoutKey(w, d))
-      if (raw) {
-        try {
-          const { week, day, timestamp } = JSON.parse(raw)
-          return { week, day, timestamp }
-        } catch {
-          // korruptoitunut data — ohitetaan
-        }
+      if (!raw) continue
+      try {
+        const parsed = JSON.parse(raw)
+        // Hylkää eri mesojen data jos meso-tieto on tallennettu
+        if (parsed.meso && parsed.meso !== currentMeso) continue
+        // Liike-lukumäärän on täsmättävä (turva-aita schema-vaihtoehdolle, kattaa myös legacy-entryt)
+        if (!Array.isArray(parsed.results)) continue
+        if (parsed.results.length !== program.days[d].length) continue
+        return { week: parsed.week, day: parsed.day, timestamp: parsed.timestamp }
+      } catch {
+        // korruptoitunut data — ohitetaan
       }
     }
   }
